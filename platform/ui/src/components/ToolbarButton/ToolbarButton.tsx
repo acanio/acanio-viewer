@@ -25,7 +25,7 @@ const ToolbarButton = ({
       ? 'text-black'
       : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
     toggle: isActive
-      ? '!text-[#348CFD]'
+      ? '!text-[#007CAACC]'
       : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
     action: isActive
       ? 'text-black'

@@ -75,20 +75,20 @@
 }
 
 .ohif-select .customSelect__menu-list::-webkit-scrollbar-thumb {
-  background-color: #0944b3;
+  background-color: #007caa;
   border-radius: 10px;
 }
 
 .customSelect__option--is-focused {
-  background-color: #0944b391 !important;
+  background-color: #007caa91 !important;
 }
 
 .ohif-select .customSelect__option:hover {
-  background-color: #0944b391;
+  background-color: #007caa91;
 }
 
 .ohif-select .customSelect__menu {
-  border: 2px solid #0944b3;
+  border: 2px solid #007caa;
   border-radius: 6px;
   background-color: #151515 !important;
 }

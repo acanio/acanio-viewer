@@ -25,6 +25,8 @@ const NODE_ENV = process.env.NODE_ENV;
 const QUICK_BUILD = process.env.QUICK_BUILD;
 const BUILD_NUM = process.env.CIRCLE_BUILD_NUM || '0';
 
+const PRODUCT_VERSION_NUMBER = fs.readFileSync(path.join(__dirname, '../version-product.txt'), 'utf8') || '';
+
 // read from ../version.txt
 const VERSION_NUMBER = fs.readFileSync(path.join(__dirname, '../version.txt'), 'utf8') || '';
 
@@ -40,6 +42,7 @@ const defineValues = {
   'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
   'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL || '/'),
   'process.env.BUILD_NUM': JSON.stringify(BUILD_NUM),
+  'process.env.PRODUCT_VERSION_NUMBER': JSON.stringify(PRODUCT_VERSION_NUMBER),
   'process.env.VERSION_NUMBER': JSON.stringify(VERSION_NUMBER),
   'process.env.COMMIT_HASH': JSON.stringify(COMMIT_HASH),
   /* i18n */

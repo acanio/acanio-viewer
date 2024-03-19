@@ -19,7 +19,7 @@ function LayoutSelector({ onSelection, rows, columns }) {
         display: 'grid',
         gridTemplateColumns: gridSize.repeat(columns),
         gridTemplateRows: gridSize.repeat(rows),
-        backgroundColor: '#090c29', // primary-dark
+        backgroundColor: '#233243', // primary-dark
       }}
       className="p-2"
     >
@@ -32,7 +32,7 @@ function LayoutSelector({ onSelection, rows, columns }) {
             key={index}
             style={{
               border: '1px solid white',
-              backgroundColor: isHovered(index) ? '#5acce6' : '#0b1a42',
+              backgroundColor: isHovered(index) ? '#007caacc' : '#007caa33',
             }}
             data-cy={`Layout-${index % columns}-${Math.floor(index / columns)}`}
             className="cursor-pointer"

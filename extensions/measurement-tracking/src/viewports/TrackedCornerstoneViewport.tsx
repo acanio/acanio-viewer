@@ -17,8 +17,12 @@ function TrackedCornerstoneViewport(props) {
 
   const { t } = useTranslation('Common');
 
-  const { measurementService, cornerstoneViewportService, viewportGridService } =
+  const { measurementService, cornerstoneViewportService, viewportGridService, customizationService } =
     servicesManager.services;
+
+  const viewportActionBarCustomization = customizationService.getModeCustomization(
+    'cornerstoneViewportActionBar'
+  );
 
   // Todo: handling more than one displaySet on the same viewport
   const displaySet = displaySets[0];
@@ -203,6 +207,7 @@ function TrackedCornerstoneViewport(props) {
 
   return (
     <>
+      {viewportActionBarCustomization?.disabled !== true && (
       <ViewportActionBar
         onDoubleClick={evt => {
           evt.stopPropagation();
@@ -231,6 +236,7 @@ function TrackedCornerstoneViewport(props) {
           },
         }}
       />
+      )}
       {/* TODO: Viewport interface to accept stack or layers of content like this? */}
       <div className="relative flex h-full w-full flex-row overflow-hidden">
         {getCornerstoneViewport()}

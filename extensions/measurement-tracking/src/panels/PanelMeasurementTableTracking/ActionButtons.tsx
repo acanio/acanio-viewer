@@ -12,20 +12,21 @@ function ActionButtons({ onExportClick, onCreateReportClick, disabled }) {
       <Button
         onClick={onExportClick}
         disabled={disabled}
-        type={ButtonEnums.type.secondary}
+        type={ButtonEnums.type.primary}
         size={ButtonEnums.size.small}
+        className='bg-inputfield-disabled'
       >
         {t('Export')}
       </Button>
-      <Button
-        className="ml-2"
+      {/* <Button
+        className="ml-2 bg-inputfield-disabled"
         onClick={onCreateReportClick}
-        type={ButtonEnums.type.secondary}
+        type={ButtonEnums.type.primary}
         size={ButtonEnums.size.small}
         disabled={disabled}
       >
         {t('Create Report')}
-      </Button>
+      </Button> */}
     </React.Fragment>
   );
 }

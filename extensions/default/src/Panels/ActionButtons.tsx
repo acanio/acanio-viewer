@@ -20,12 +20,12 @@ function ActionButtons({ onExportClick, onCreateReportClick }) {
         >
           {t('Export CSV')}
         </LegacyButton>
-        <LegacyButton
+        {/* <LegacyButton
           className="px-2 py-2 text-base"
           onClick={onCreateReportClick}
         >
           {t('Create Report')}
-        </LegacyButton>
+        </LegacyButton> */}
       </LegacyButtonGroup>
     </React.Fragment>
   );

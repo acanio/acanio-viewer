@@ -62,7 +62,7 @@ const Notification = ({ id, type, message, actions, onSubmit, onOutsideClick }) 
   return (
     <div
       ref={notificationRef}
-      className="border-customblue-10 bg-customblue-400 mx-2 mt-2 flex flex-col rounded-md border-2 p-2"
+      className="border-customblue-10 bg-primary-dark mx-2 mt-2 flex flex-col rounded-md border-2 p-2"
       data-cy={id}
     >
       <div className="flex grow items-center">
@@ -70,7 +70,7 @@ const Notification = ({ id, type, message, actions, onSubmit, onOutsideClick }) 
           name={icon}
           className={classnames('h-6 w-6', color)}
         />
-        <span className="ml-2 text-[13px] text-black">{message}</span>
+        <span className="ml-2 text-[13px] text-white">{message}</span>
       </div>
       <div className="mt-2 flex flex-wrap justify-end gap-2">
         {actions?.map((action, index) => {

@@ -22,6 +22,7 @@
     "build:dev": "lerna run build:dev --stream",
     "build:ci": "lerna run build:viewer:ci --stream",
     "build:qa": "lerna run build:viewer:qa --stream",
+    "build:nextcloud": "lerna run build:viewer:nextcloud --stream",
     "cli": "node ./platform/cli/src/index.js",
     "build:ui:deploy-preview": "lerna run build:ui:deploy-preview --stream",
     "build:demo": "lerna run build:viewer:demo --stream",

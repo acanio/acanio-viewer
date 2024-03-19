@@ -54,7 +54,9 @@ function initDefaultToolGroup(extensionManager, toolGroupService, commandsManage
       { toolName: toolNames.CalibrationLine },
     ],
     // enabled
-    enabled: [{ toolName: toolNames.ImageOverlayViewer }],
+    enabled: [
+      // { toolName: toolNames.ImageOverlayViewer }
+    ],
     // disabled
     disabled: [{ toolName: toolNames.ReferenceLines }],
   };

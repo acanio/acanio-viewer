@@ -51,7 +51,9 @@ function initDefaultToolGroup(extensionManager, toolGroupService, commandsManage
       { toolName: toolNames.SegmentationDisplay },
     ],
     // enabled
-    enabled: [{ toolName: toolNames.ImageOverlayViewer }],
+    enabled: [
+      // { toolName: toolNames.ImageOverlayViewer }
+    ],
     // disabled
     disabled: [{ toolName: toolNames.ReferenceLines }],
   };

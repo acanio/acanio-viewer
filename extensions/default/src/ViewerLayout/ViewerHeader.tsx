@@ -43,6 +43,7 @@ function ViewerHeader({ hotkeysManager, extensionManager, servicesManager }) {
   const { t } = useTranslation();
   const { show, hide } = useModal();
   const { hotkeyDefinitions, hotkeyDefaults } = hotkeysManager;
+  const productVersionNumber = process.env.PRODUCT_VERSION_NUMBER;
   const versionNumber = process.env.VERSION_NUMBER;
   const commitHash = process.env.COMMIT_HASH;
 
@@ -53,8 +54,8 @@ function ViewerHeader({ hotkeysManager, extensionManager, servicesManager }) {
       onClick: () =>
         show({
           content: AboutModal,
-          title: t('AboutModal:About OHIF Viewer'),
-          contentProps: { versionNumber, commitHash },
+          title: t('AboutModal:About'),
+          contentProps: { productVersionNumber, versionNumber, commitHash },
         }),
     },
     {

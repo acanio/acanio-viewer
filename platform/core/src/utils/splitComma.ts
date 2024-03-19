@@ -23,6 +23,22 @@ const getSplitParam = (
   lowerCaseKey: string,
   params = new URLSearchParams(window.location.search)
 ): string[] => {
+  // Also check query parameters which are into the URL param for the JSON URLs
+  const urlParamKey = [...params.keys()].find(key => key.toLowerCase() === 'url');
+  if (urlParamKey) {
+    const urlParamValue = params.get(urlParamKey);
+    const [, urlQueryParameter] = urlParamValue.split('?');
+
+    const urlQueryParameterParams = new URLSearchParams(urlQueryParameter);
+    [...urlQueryParameterParams.keys()].forEach(urlQueryParameterKey => {
+      const urlQueryParameterValue = urlQueryParameterParams.get(urlQueryParameterKey);
+
+      if (!params.has(urlQueryParameterKey, urlQueryParameterValue)) {
+        params.append(urlQueryParameterKey, urlQueryParameterValue);
+      }
+    });
+  }
+
   const sourceKey = [...params.keys()].find(it => it.toLowerCase() === lowerCaseKey);
   if (!sourceKey) {
     return;

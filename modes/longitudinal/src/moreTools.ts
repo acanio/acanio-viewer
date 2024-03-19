@@ -114,22 +114,22 @@ const moreTools = [
             },
           }
         ),
-        ToolbarService._createToggleButton(
-          'ImageOverlayViewer',
-          'toggle-dicom-overlay',
-          'Image Overlay',
-          [
-            {
-              commandName: 'setToolActive',
-              commandOptions: {
-                toolName: 'ImageOverlayViewer',
-              },
-              context: 'CORNERSTONE',
-            },
-          ],
-          'Image Overlay',
-          { isActive: true }
-        ),
+        // ToolbarService._createToggleButton(
+        //   'ImageOverlayViewer',
+        //   'toggle-dicom-overlay',
+        //   'Image Overlay',
+        //   [
+        //     {
+        //       commandName: 'setToolActive',
+        //       commandOptions: {
+        //         toolName: 'ImageOverlayViewer',
+        //       },
+        //       context: 'CORNERSTONE',
+        //     },
+        //   ],
+        //   'Image Overlay',
+        //   { isActive: true }
+        // ),
         ToolbarService._createToolButton(
           'StackScroll',
           'tool-stack-scroll',

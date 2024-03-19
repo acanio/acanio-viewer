@@ -1,7 +1,7 @@
 {
-  "name": "OHIF Viewer",
-  "short_name": "Viewer",
-  "description": "OHIF Viewer",
+  "name": "Acan.io",
+  "short_name": "Acan.io",
+  "description": "Acan.io DICOM Viewer",
   "dir": "auto",
   "lang": "en-US",
   "orientation": "any",
