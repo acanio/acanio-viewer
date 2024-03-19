@@ -18,6 +18,10 @@ reconstructed representations; allows for the manipulation, annotation, and
 serialization of observations; supports internationalization, OpenID Connect,
 offline use, hotkeys, and many more features.
 
+Apart from functioning as an individual medical image viewer, the most notable feature is 
+its utilization of Nextcloud, facilitating medical image sharing, collaboration, and 
+security within HIPAA-compliant platform.
+
 Almost everything offers some degree of customization and configuration. If it
 doesn't support something you need, we accept pull requests and have an ever
 improving Extension System.
@@ -60,7 +64,7 @@ forking).
 - [Request a Feature 🚀](https://github.com/acanio/acanio-viewer/issues/new?assignees=&labels=Community%3A+Request+%3Ahand%3A&projects=&template=feature-request.yml&title=%5BFeature+Request%5D+)
 
 For commercial support, academic collaborations, and answers to common
-questions; please use [Get Support](https://acanio.com/contact) to contact
+questions; please use [Get Support](https://acanio.com/#contact-us) to contact
 us.
 
 
