@@ -15,6 +15,12 @@ services:
       - path: /*
         name: cache-control
         value: max-age=0, no-cache, no-store, must-revalidate
+      - path: /*
+        name: Cross-Origin-Opener-Policy
+        value: same-origin
+      - path: /*
+        name: Cross-Origin-Embedder-Policy
+        value: require-corp
     routes:
       - type: rewrite
         source: /*
