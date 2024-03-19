@@ -19,7 +19,7 @@ function LayoutSelector({ onSelection = () => {}, rows = 3, columns = 4 }) {
         display: 'grid',
         gridTemplateColumns: gridSize.repeat(columns),
         gridTemplateRows: gridSize.repeat(rows),
-        backgroundColor: '#090c29', // primary-dark
+        backgroundColor: '#233243', // primary-dark
       }}
     >
       {Array.apply(null, Array(rows * columns))
@@ -29,7 +29,10 @@ function LayoutSelector({ onSelection = () => {}, rows = 3, columns = 4 }) {
         .map(index => (
           <div
             key={index}
-            className={`border-primary-dark border ${isHovered(index) ? 'bg-primary-active' : 'bg-[#04225b]'} cursor-pointer`}
+            style={{
+              border: '1px solid white',
+              backgroundColor: isHovered(index) ? '#007caacc' : '#007caa33',
+            }}
             data-cy={`Layout-${index % columns}-${Math.floor(index / columns)}`}
             onClick={() => {
               const x = index % columns;

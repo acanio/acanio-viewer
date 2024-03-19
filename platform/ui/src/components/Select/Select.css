@@ -89,21 +89,21 @@
   @apply text-aqua-pale pl-1.5;
 }
 
-.customSelect__menu-portal .customSelect__menu-list::-webkit-scrollbar-thumb {
-  background-color: #0944b3;
+.ohif-select .customSelect__menu-list::-webkit-scrollbar-thumb {
+  background-color: #007caa;
   border-radius: 10px;
 }
 
 .customSelect__option--is-focused {
-  background-color: #0944b391 !important;
+  background-color: #007caa91 !important;
 }
 
-.customSelect__menu-portal .customSelect__option:hover {
-  background-color: #0944b391;
+.ohif-select .customSelect__option:hover {
+  background-color: #007caa91;
 }
 
-.customSelect__menu-portal .customSelect__menu {
-  border: 2px solid #0944b3;
+.ohif-select .customSelect__menu {
+  border: 2px solid #007caa;
   border-radius: 6px;
   background-color: #151515 !important;
 }

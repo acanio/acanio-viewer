@@ -9,9 +9,11 @@ body:
       value: |
         👋 Hello, and thank you for contributing to our project! Your support is greatly appreciated.
 
-        🔍 Before proceeding, please make sure to read our [Rules of Conduct](https://github.com/OHIF/Viewers/blob/master/CODE_OF_CONDUCT.md) and familiarize yourself with our [development process](https:/docs.ohif.org/development/our-process).
+        🔍 Before proceeding, please make sure to read our [Rules of Conduct](https://github.com/acanio/acanio-viewer/blob/master/CODE_OF_CONDUCT.md) and familiarize yourself with our [development process](https:/docs.ohif.org/development/our-process).
 
-        ❓ If you're here to seek general support or ask a question, we encourage you to visit our [community discussion board](https://community.ohif.org/)
+        ❓ If you're here to seek general support or ask a question, we encourage you to visit our dependency, OHIF Viewer [community discussion board](https://community.ohif.org/)
+
+        ❓ If you're here to seek commercial support, we encourage you to send an email to [ACANIO LLC](email:support@acanio.com)
 
         🐞 For bug reports, please complete the following template in as much detail as possible. This will help us reproduce and address the issue efficiently.
 

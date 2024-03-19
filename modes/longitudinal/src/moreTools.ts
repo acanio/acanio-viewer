@@ -87,14 +87,14 @@ const moreTools = [
           },
           evaluate: 'evaluate.cornerstoneTool.toggle',
         }),
-        createButton({
-          id: 'ImageOverlayViewer',
-          icon: 'toggle-dicom-overlay',
-          label: 'Image Overlay',
-          tooltip: 'Toggle Image Overlay',
-          commands: 'toggleEnabledDisabledToolbar',
-          evaluate: 'evaluate.cornerstoneTool.toggle',
-        }),
+        // createButton({
+        //   id: 'ImageOverlayViewer',
+        //   icon: 'toggle-dicom-overlay',
+        //   label: 'Image Overlay',
+        //   tooltip: 'Toggle Image Overlay',
+        //   commands: 'toggleEnabledDisabledToolbar',
+        //   evaluate: 'evaluate.cornerstoneTool.toggle',
+        // }),
         createButton({
           id: 'StackScroll',
           icon: 'tool-stack-scroll',

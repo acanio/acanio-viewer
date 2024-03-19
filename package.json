@@ -26,6 +26,7 @@
     "build:qa": "lerna run build:viewer:qa --stream",
     "clean": "npx lerna run clean --stream",
     "clean:deep": "npx lerna run clean:deep --stream",
+    "build:nextcloud": "lerna run build:viewer:nextcloud --stream",
     "cli": "node ./platform/cli/src/index.js",
     "build:ui:deploy-preview": "lerna run build:ui:deploy-preview --stream",
     "build:demo": "lerna run build:viewer:demo --stream",

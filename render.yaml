@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: acanio-viewer
+    runtime: static
+    buildCommand: chmod +x .netlify/build-deploy-preview.sh && .netlify/build-deploy-preview.sh
+    staticPublishPath: .netlify/www/pwa/
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+      - path: /*
+        name: cache-control
+        value: max-age=0, no-cache, no-store, must-revalidate
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

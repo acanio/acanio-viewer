@@ -33,11 +33,11 @@ const Link = ({ href, children, showIcon = false }) => {
 
 const Row = ({ title, value, link }) => {
   return (
-    <div className="mb-4 flex">
+    <div className="mb-4 flex ml-2">
       <Typography
         variant="subtitle"
         component="p"
-        className="w-48 text-white"
+        className="w-64 text-white"
       >
         {title}
       </Typography>
@@ -57,7 +57,7 @@ const Row = ({ title, value, link }) => {
   );
 };
 
-const AboutModal = ({ buildNumber, versionNumber, commitHash }) => {
+const AboutModal = ({ productVersionNumber, versionNumber }) => {
   const { os, version, name } = detect();
   const browser = `${name[0].toUpperCase()}${name.substr(1)} ${version}`;
   const { t } = useTranslation('AboutModal');
@@ -75,65 +75,16 @@ const AboutModal = ({ buildNumber, versionNumber, commitHash }) => {
   );
   return (
     <div>
-      {renderRowTitle(t('Important links'))}
-      <div className="mb-8 flex">
-        <Link
-          href="https://community.ohif.org/"
-          showIcon={true}
-        >
-            {t('Visit the forum')}
-        </Link>
-        <span className="ml-4">
-          <Link
-            href="https://github.com/OHIF/Viewers/issues/new/choose"
-            showIcon={true}
-          >
-            {t('Report an issue')}
-          </Link>
-        </span>
-        <span className="ml-4">
-          <Link
-            href="https://ohif.org/"
-            showIcon={true}
-          >
-          {t('More details')}
-          </Link>
-        </span>
-      </div>
-
       {renderRowTitle(t('Version information'))}
       <div className="flex flex-col">
         <Row
-          title={t('Repository URL')}
-          value="https://github.com/OHIF/Viewers/"
-          link="https://github.com/OHIF/Viewers/"
+          title={t('Product Version Number')}
+          value={productVersionNumber}
         />
         <Row
-          title={t('Data citation')}
-          value="https://github.com/OHIF/Viewers/blob/master/DATACITATION.md"
-          link="https://github.com/OHIF/Viewers/blob/master/DATACITATION.md"
-        />
-        {/* <Row
-          title={t('Last master commits')}
-          value="https://github.com/OHIF/Viewers/"
-          link="https://github.com/OHIF/Viewers/"
-        /> */}
-        <Row
-          title={t('Version number')}
+          title={t('Dependency Version Number')}
           value={versionNumber}
         />
-        {buildNumber && (
-          <Row
-            title={t('Build number')}
-            value={buildNumber}
-          />
-        )}
-        {commitHash && (
-          <Row
-            title={t('Commit hash')}
-            value={commitHash}
-          />
-        )}
         <Row
           title={t('Browser')}
           value={browser}
@@ -142,6 +93,26 @@ const AboutModal = ({ buildNumber, versionNumber, commitHash }) => {
           title={t('OS')}
           value={os}
         />
+      </div>
+
+      {renderRowTitle(t('Important links'))}
+      <div className="mb-8 flex">
+        <span className="ml-2">
+          <Link
+              href="https://github.com/acanio/acanio-viewer/issues/new/choose"
+              showIcon={true}
+          >
+            {t('Report an issue')}
+          </Link>
+        </span>
+        <span className="ml-4">
+          <Link
+              href="https://acan.io"
+              showIcon={true}
+          >
+          {t('More details')}
+          </Link>
+        </span>
       </div>
     </div>
   );

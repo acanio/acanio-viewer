@@ -92,13 +92,13 @@ function initDefaultToolGroup(
       { toolName: toolNames.WindowLevelRegion },
     ],
     enabled: [
-      { toolName: toolNames.ImageOverlayViewer },
-      { toolName: toolNames.ReferenceLines },
+      // { toolName: toolNames.ImageOverlayViewer },
       {
         toolName: SRToolNames.SRSCOORD3DPoint,
       },
     ],
     disabled: [
+      { toolName: toolNames.ReferenceLines },
       {
         toolName: toolNames.AdvancedMagnify,
       },
@@ -328,7 +328,7 @@ function initToolGroups(extensionManager, toolGroupService, commandsManager, mod
     'default',
     modeLabelConfig
   );
-  initSRToolGroup(extensionManager, toolGroupService, commandsManager);
+  initSRToolGroup(extensionManager, toolGroupService);
   initMPRToolGroup(extensionManager, toolGroupService, commandsManager, modeLabelConfig);
   initVolume3DToolGroup(extensionManager, toolGroupService);
 }

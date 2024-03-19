@@ -40,24 +40,24 @@ module.exports = {
       inherit: 'inherit',
 
       indigo: {
-        dark: '#0b1a42',
+        dark: '#44626f',
       },
       aqua: {
-        pale: '#7bb2ce',
+        pale: '#88d3f1',
       },
 
       primary: {
-        light: '#5acce6',
-        main: '#0944b3',
-        dark: '#090c29',
-        active: '#348cfd',
+        light: '#c4e2f3',
+        main: '#527a88',
+        dark: '#233243',
+        active: '#fff',
       },
 
       secondary: {
-        light: '#3a3f99',
-        main: '#2b166b',
-        dark: '#041c4a',
-        active: '#1f1f27',
+        light: '#55b0db',
+        main: '#293d51',
+        dark: '#16202b',
+        active: '#c0e6f7',
       },
 
       common: {
@@ -65,7 +65,7 @@ module.exports = {
         light: '#a19fad',
         main: '#fff',
         dark: '#726f7e',
-        active: '#2c3074',
+        active: '#20a5d6',
       },
 
       customgreen: {
@@ -89,7 +89,7 @@ primary: {
   light: ‘#5ACCE6’,
   main: ‘#0944B3’,
   dark: ‘#090C29’,
-  active: ‘#348CFD’,
+  active: ‘#007CAACC’,
 }
 ```
 

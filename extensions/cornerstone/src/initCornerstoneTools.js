@@ -41,7 +41,6 @@ import {
 } from '@cornerstonejs/tools';
 
 import CalibrationLineTool from './tools/CalibrationLineTool';
-import ImageOverlayViewerTool from './tools/ImageOverlayViewerTool';
 
 export default function initCornerstoneTools(configuration = {}) {
   CrosshairsTool.isAnnotation = false;
@@ -78,7 +77,6 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(ReferenceLinesTool);
   addTool(CalibrationLineTool);
   addTool(TrackballRotateTool);
-  addTool(ImageOverlayViewerTool);
   addTool(AdvancedMagnifyTool);
   addTool(UltrasoundDirectionalTool);
   addTool(PlanarFreehandROITool);
@@ -87,6 +85,10 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(OrientationMarkerTool);
   addTool(WindowLevelRegionTool);
   addTool(PlanarFreehandContourSegmentationTool);
+  addTool(CircleScissorsTool);
+  addTool(RectangleScissorsTool);
+  addTool(SphereScissorsTool);
+  // addTool(ImageOverlayViewerTool);
 
   // Modify annotation tools to use dashed lines on SR
   const annotationStyle = {
@@ -133,7 +135,6 @@ const toolNames = {
   CircleScissors: CircleScissorsTool.toolName,
   RectangleScissors: RectangleScissorsTool.toolName,
   SphereScissors: SphereScissorsTool.toolName,
-  ImageOverlayViewer: ImageOverlayViewerTool.toolName,
   AdvancedMagnify: AdvancedMagnifyTool.toolName,
   UltrasoundDirectional: UltrasoundDirectionalTool.toolName,
   SplineROI: SplineROITool.toolName,
@@ -142,6 +143,7 @@ const toolNames = {
   OrientationMarker: OrientationMarkerTool.toolName,
   WindowLevelRegion: WindowLevelRegionTool.toolName,
   PlanarFreehandContourSegmentation: PlanarFreehandContourSegmentationTool.toolName,
+  // ImageOverlayViewer: ImageOverlayViewerTool.toolName,
 };
 
 export { toolNames };
