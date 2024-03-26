@@ -8816,13 +8816,6 @@ detab@2.0.4:
   dependencies:
     repeat-string "^1.5.4"
 
-detect-gpu@^4.0.16:
-  version "4.0.50"
-  resolved "https://registry.yarnpkg.com/detect-gpu/-/detect-gpu-4.0.50.tgz#ba9df7e6b8416b1160303811015102bbad283aa0"
-  integrity sha512-T67HE5+ONONN8rPXCBJPupyCg2QT8+l2NUUMuPxAppsMJBDPG/Jg0URLs6GyDzLm2niUE+oncIHSuy3VinoPeQ==
-  dependencies:
-    webgl-constants "^1.1.1"
-
 detect-gpu@^5.0.22:
   version "5.0.34"
   resolved "https://registry.yarnpkg.com/detect-gpu/-/detect-gpu-5.0.34.tgz#c4a29f99e3d78ac35df44355f0298f5ae29c6fe4"
