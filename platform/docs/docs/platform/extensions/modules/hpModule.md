@@ -290,7 +290,7 @@ value.  Some of the possible attributes are:
 * `activeStudy`: To match the active study
 * `studies`: To match the list of studies to display
 * `displaySets`: The display sets for the current study
-* `allDisplaySets`: Alll available display sets
+* `allDisplaySets`: All available display sets
 * `instance`: An instance from the current display set being tested
 * `options`: Gets the options object itself, eg if you want a simple top level
   value.
