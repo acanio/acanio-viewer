@@ -454,7 +454,7 @@ Viewer's configuration, you can run:
 
 ## Next Steps
 
-### Keycloak Theming
+#### Keycloak Theming
 
 The `Login` screen for the `ohif-viewer` client is using a Custom Keycloak
 theme. You can find the source files for it in

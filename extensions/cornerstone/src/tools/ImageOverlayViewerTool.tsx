@@ -16,7 +16,7 @@ interface CachedStat {
 }
 
 /**
- * Image Overlay Viewer tool is not a traditional tool that requires user interactin.
+ * Image Overlay Viewer tool is not a traditional tool that requires user interaction.
  * But it is used to display Pixel Overlays. And it will provide toggling capability.
  *
  * The documentation for Overlay Plane Module of DICOM can be found in [C.9.2 of

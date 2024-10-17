@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 import { utils } from '@ohif/core';
-import { DragAndDropProvider, ImageViewerProvider } from '@ohif/ui';
+import { DragAndDropProvider, ImageViewerProvider, LoadingIndicatorProgress } from '@ohif/ui';
 import { useSearchParams } from '@hooks';
 import { useAppConfig } from '@state';
 import ViewportGrid from '@components/ViewportGrid';
@@ -376,7 +376,18 @@ export default function ModeRoute({
     <ImageViewerProvider StudyInstanceUIDs={studyInstanceUIDs}>
       {CombinedExtensionsContextProvider ? (
         <CombinedExtensionsContextProvider>
-          <DragAndDropProvider>{LayoutComponent}</DragAndDropProvider>
+          <DragAndDropProvider>
+          {layoutTemplateData.current &&
+          studyInstanceUIDs?.[0] !== undefined &&
+          ExtensionDependenciesLoaded ? (
+            LayoutComponent
+          ) : (
+            <div className="flex flex-col items-center justify-center pt-48">
+              <LoadingIndicatorProgress className={'h-full w-full bg-black'} />
+            </div>
+          )}
+
+            </DragAndDropProvider>
         </CombinedExtensionsContextProvider>
       ) : (
         <DragAndDropProvider>{LayoutComponent}</DragAndDropProvider>
