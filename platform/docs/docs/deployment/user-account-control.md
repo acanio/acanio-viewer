@@ -157,7 +157,7 @@ All other files are found in: `/docker/OpenResty-Orthanc-Keycloak/`
 \* These are the seed values for Keycloak. They can be manually updated at
 `http://127.0.0.1/auth/admin`
 
-#### Keycloak Themeing
+#### Keycloak Theming
 
 The `Login` screen for the `ohif-viewer` client is using a Custom Keycloak
 theme. You can find the source files for it in
