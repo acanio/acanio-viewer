@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 // TODO: DicomMetadataStore should be injected?
 import { DicomMetadataStore, ServicesManager, utils, Types, log } from '@ohif/core';
-import { DragAndDropProvider, ImageViewerProvider } from '@ohif/ui';
+import { DragAndDropProvider, ImageViewerProvider, LoadingIndicatorProgress } from '@ohif/ui';
 import { useSearchParams } from '@hooks';
 import { useAppConfig } from '@state';
 import ViewportGrid from '@components/ViewportGrid';
@@ -454,12 +454,17 @@ export default function ModeRoute({
       <CombinedContextProvider>
         <DragAndDropProvider>
           {layoutTemplateData.current &&
-            studyInstanceUIDs?.[0] !== undefined &&
-            ExtensionDependenciesLoaded &&
+          studyInstanceUIDs?.[0] !== undefined &&
+          ExtensionDependenciesLoaded ? (
             renderLayoutData({
               ...layoutTemplateData.current.props,
               ViewportGridComp: ViewportGridWithDataSource,
-            })}
+            })
+          ) : (
+            <div className="flex flex-col items-center justify-center pt-48">
+              <LoadingIndicatorProgress className={'h-full w-full bg-black'} />
+            </div>
+          )}
         </DragAndDropProvider>
       </CombinedContextProvider>
     </ImageViewerProvider>
