@@ -38,7 +38,10 @@ export default function Toolbar({
   return (
     <>
       {toolbarButtons.map(toolDef => {
-        const { id, Component, componentProps } = toolDef;
+        const { id, hidden, Component, componentProps } = toolDef;
+        if (hidden === true) {
+          return '';
+        }
         return (
           // The margin for separating the tools on the toolbar should go here and NOT in each individual component (button) item.
           // This allows for the individual items to be included in other UI components where perhaps alternative margins are desired.

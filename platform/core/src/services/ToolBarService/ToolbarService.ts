@@ -85,6 +85,8 @@ export default class ToolbarService extends PubSubService {
 
   defaultTool: Record<string, unknown>;
 
+  config: Record<string, unknown> = {};
+
   constructor(commandsManager: CommandsManager) {
     super(EVENTS);
     this._commandsManager = commandsManager;
@@ -121,6 +123,14 @@ export default class ToolbarService extends PubSubService {
 
   public getDefaultTool() {
     return this.defaultTool;
+  }
+
+  public setConfig(c) {
+    this.config = c;
+  }
+
+  public getConfig() {
+    return this.config;
   }
 
   /**
@@ -348,6 +358,10 @@ export default class ToolbarService extends PubSubService {
         const btn = this.buttons[btnId];
         const metadata = {};
         const mappedBtn = this._mapButtonToDisplay(btn, toolGroupId, metadata, props);
+
+        if (btnId === 'Capture' && this.config.hideCapture) {
+          mappedBtn.hidden = true;
+        }
 
         buttonsInSection.push(mappedBtn);
       });
