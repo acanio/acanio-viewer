@@ -55,6 +55,8 @@ export default class ToolbarService extends PubSubService {
   _evaluateFunction: Record<string, EvaluateFunction> = {};
   _serviceSubscriptions = [];
 
+  config: Record<string, unknown> = {};
+
   constructor(
     commandsManager: CommandsManager,
     extensionManager: ExtensionManager,
@@ -141,6 +143,14 @@ export default class ToolbarService extends PubSubService {
     this._broadcastEvent(this.EVENTS.TOOL_BAR_MODIFIED, {
       ...this.state,
     });
+  }
+
+  public setConfig(c) {
+    this.config = c;
+  }
+
+  public getConfig() {
+    return this.config;
   }
 
   /**

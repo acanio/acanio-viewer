@@ -138,6 +138,12 @@ export default function ModeRoute({
       return;
     }
 
+    const { toolbar: toolbarConfig } = dataSource.getConfig() || {};
+    servicesManager.services.ToolBarService.setConfig({
+      ...(servicesManager.services.ToolBarService.getConfig()),
+      ...toolbarConfig,
+    });
+
     const retrieveLayoutData = async () => {
       const layoutData = await route.layoutTemplate({
         location,
