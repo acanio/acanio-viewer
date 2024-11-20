@@ -61,7 +61,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-chevron-closed</title>
       <g
         id="icon-chevron-closed"
         stroke="none"
@@ -97,7 +96,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-chevron-open</title>
       <g
         id="icon-chevron-open"
         stroke="none"
@@ -373,7 +371,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-download</title>
       <g
         id="icon-download"
         stroke="none"
@@ -612,7 +609,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-list-view</title>
       <g
         id="icon-list-view"
         stroke="none"
@@ -687,7 +683,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-more</title>
       <g
         id="icon-more"
         stroke="none"
@@ -892,7 +887,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-pin-fill</title>
       <g
         id="icon-pin-fill"
         stroke="none"
@@ -938,7 +932,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-pin</title>
       <g
         id="icon-pin"
         stroke="none"
@@ -1028,7 +1021,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-thumbnail-view</title>
       <g
         id="icon-thumbnail-view"
         stroke="none"
@@ -1091,7 +1083,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>info-mpr</title>
       <g
         id="info-mpr"
         stroke="none"
@@ -1141,7 +1132,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>info-series</title>
       <g
         id="info-series"
         stroke="none"
@@ -1279,7 +1269,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>status-tracking</title>
       <g
         id="status-tracking"
         stroke="none"
@@ -1325,7 +1314,6 @@ export const Icons = {
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>status-warning</title>
       <g
         id="status-warning"
         stroke="none"
@@ -1422,7 +1410,6 @@ export const Icons = {
       fill="currentColor"
       {...props}
     >
-      <title id="title">Trash</title>
       <path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" />
     </svg>
   ),
@@ -1592,7 +1579,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-display-settings</title>
       <g
         id="Artboards"
         stroke="none"
@@ -1755,7 +1741,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-panel-close-left</title>
       <g
         id="Artboards-Updated"
         stroke="none"
@@ -1825,7 +1810,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>icon-panel-close-right</title>
       <g
         id="Artboards-Updated"
         stroke="none"
@@ -1969,7 +1953,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>tab-studies</title>
       <g
         id="Artboards-Updated"
         stroke="none"
@@ -2026,7 +2009,6 @@ export const Icons = {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <title>tab-4d</title>
       <g
         id="tab-4d"
         stroke="none"
@@ -2136,7 +2118,6 @@ export const Icons = {
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>tool-dicom-tag-browser</title>
       <g
         id="tool-dicom-tag-browser"
         stroke="none"

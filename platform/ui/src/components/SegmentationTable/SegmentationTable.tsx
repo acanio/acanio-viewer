@@ -47,7 +47,7 @@ const SegmentationTable = ({
 
   return (
     <div>
-      <div className="bg-secondary-main flex justify-between px-2 py-1">
+      <div className="bg-customblue-40 flex justify-between px-2 py-1">
         <span className="text-base font-bold uppercase tracking-widest text-white">{title}</span>
         <div className="flex">
           <span className="text-base font-bold text-white">{amount}</span>

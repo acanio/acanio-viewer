@@ -205,7 +205,7 @@ function LayoutSelector({
                 {advancedPresets.map((preset, index) => (
                   <LayoutPreset
                     key={index + commonPresets.length}
-                    classNames="hover:bg-primary-dark group flex gap-2 p-1 cursor-pointer"
+                    classNames="hover:bg-primary-dark group flex gap-2 p-1 cursor-pointer text-customblue-50"
                     icon={preset.icon}
                     title={preset.title}
                     disabled={preset.disabled}

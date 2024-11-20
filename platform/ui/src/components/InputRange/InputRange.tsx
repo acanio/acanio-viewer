@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { InputNumber } from '../../components';
 import './InputRange.css';
 import getMaxDigits from '../../utils/getMaxDigits';
+import tailwindConfig from '../../../tailwind.config';
 
 /**
  * React Range Input component
@@ -11,6 +12,9 @@ import getMaxDigits from '../../utils/getMaxDigits';
  * onChange is a function that will be called when the range input is changed
  *
  */
+
+const customBlue50 = tailwindConfig.theme.colors.customblue['50'];
+const customBlue100 = tailwindConfig.theme.colors.customblue['100'];
 
 type Label = {
   text: string;
@@ -52,8 +56,8 @@ const InputRange: React.FC<InputRangeProps> = ({
   labelClassName,
   showLabel = true,
   labelPosition = 'right',
-  leftColor = '#5acce6',
-  rightColor = '#3a3f99',
+  leftColor = customBlue100,
+  rightColor = customBlue50,
   thumbColor = '#5acce6',
   thumbColorOuter = '#090c29',
   trackHeight = '3px',

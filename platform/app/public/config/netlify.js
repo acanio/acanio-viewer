@@ -336,7 +336,7 @@ window.config = {
                       marginRight: '250px',
                     },
                   },
-                  'Acan.io'
+                  'Acan.io Viewer'
               )
           )
       );

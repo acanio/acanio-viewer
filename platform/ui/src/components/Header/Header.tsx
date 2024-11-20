@@ -18,7 +18,7 @@ function Header({
   onClickReturnButton,
   isSticky = false,
   WhiteLabeling,
-  showPatientInfo = PatientInfoVisibility.VISIBLE_COLLAPSED,
+  showPatientInfo = PatientInfoVisibility.DISABLED,
   servicesManager,
   Secondary,
   appConfig,
@@ -65,12 +65,14 @@ function Header({
           <div className="flex items-center justify-center space-x-2">{children}</div>
         </div>
         <div className="absolute right-0 top-1/2 flex -translate-y-1/2 select-none items-center">
-          {showPatientInfo !== PatientInfoVisibility.DISABLED && (
+          {showPatientInfo !== PatientInfoVisibility.DISABLED  ? (
             <HeaderPatientInfo
               servicesManager={servicesManager}
               appConfig={appConfig}
             />
-          )}
+          ) : 
+          <span className="text-gray-700 font-bold text-sm">INVESTIGATIONAL USE ONLY</span>
+          }
           <div className="border-primary-dark mx-1.5 h-[25px] border-r"></div>
           <div className="flex-shrink-0">
             <Dropdown

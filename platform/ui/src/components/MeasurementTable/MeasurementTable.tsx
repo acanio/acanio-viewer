@@ -39,7 +39,7 @@ const MeasurementTable = ({
 
   return (
     <div>
-      <div className="bg-secondary-main flex justify-between px-2 py-1">
+      <div className="bg-customblue-40 flex justify-between px-2 py-1">
         <span className="text-base font-bold uppercase tracking-widest text-white">{t(title)}</span>
         <span className="text-base font-bold text-white">{amount}</span>
       </div>
@@ -61,7 +61,7 @@ const MeasurementTable = ({
           ))}
         {data.length === 0 && (
           <div className="group flex cursor-default border border-transparent bg-black transition duration-300">
-            <div className="bg-primary-dark text-primary-light group-hover:bg-secondary-main w-6 py-1 text-center text-base transition duration-300"></div>
+            <div className="bg-customblue-50 text-primary-light group-hover:bg-customblue-100 w-6 py-1 text-center text-base transition duration-300"></div>
             <div className="flex flex-1 items-center justify-between px-2 py-4">
               <span className="text-primary-light mb-1 flex flex-1 items-center text-base">
                 {t('No tracked measurements')}

@@ -443,7 +443,7 @@ function OverlayItem(props) {
       style={{ color, background }}
       title={title}
     >
-      {label ? (<span className="mr-1 shrink-0">{label}</span>) : null}
+      {label ? (<span className="ml-1 mr-1 shrink-0">{label}</span>) : null}
       <span className="ml-1 mr-2 shrink-0">{value}</span>
     </div>);
 }
@@ -503,11 +503,11 @@ function InstanceNumberOverlayItem({
       <span>
         {instanceNumber !== undefined && instanceNumber !== null ? (
           <>
-            <span className="mr-1 shrink-0">I:</span>
+            <span className="ml-1 mr-1 shrink-0">I:</span>
             <span>{`${instanceNumber} (${imageIndex + 1}/${numberOfSlices})`}</span>
           </>
         ) : (
-          `${imageIndex + 1}/${numberOfSlices}`
+            <span className="ml-1 mr-1 shrink-0">{`${imageIndex + 1}/${numberOfSlices}`}</span>
         )}
       </span>
     </div>

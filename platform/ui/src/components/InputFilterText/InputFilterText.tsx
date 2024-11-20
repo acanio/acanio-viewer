@@ -61,7 +61,7 @@ const InputFilterText = ({
       <input
         ref={searchInputRef}
         type="text"
-        className="border-inputfield-main focus:border-inputfield-focus disabled:border-inputfield-disabled placeholder:text-inputfield-placeholder block w-full w-full appearance-none rounded-md border bg-black py-2 px-9 text-base leading-tight shadow transition duration-300 focus:outline-none"
+        className="border-inputfield-main focus:border-inputfield-focus disabled:border-inputfield-disabled placeholder:text-inputfield-placeholder block w-full w-full appearance-none border bg-black py-2 px-9 text-base leading-tight shadow transition duration-300 focus:outline-none"
         placeholder={placeholder}
         onChange={event => handleFilterTextChanged(event.target.value)}
         autoComplete="off"
@@ -70,7 +70,7 @@ const InputFilterText = ({
       <span className="absolute inset-y-0 right-0 flex items-center pr-2">
         <Icon
           name="icon-clear-field"
-          className={classNames('cursor-pointer', filterValue ? '' : 'hidden')}
+          className={classNames('cursor-pointer text-customblue-100', filterValue ? '' : 'hidden')}
           onClick={() => {
             searchInputRef.current.value = '';
             handleFilterTextChanged('');

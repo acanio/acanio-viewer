@@ -98,6 +98,17 @@ const Select = ({
       menuPortalTarget={document.body}
       styles={{
         menuPortal: base => ({ ...base, zIndex: 9999 }),
+        option: (provided, state) => ({
+          ...provided,
+          backgroundColor: state.isFocused
+            ? '#39404d !important'
+            : state.isSelected
+            ? '#506070 !important'
+            : '#273242 !important',
+          color: '#ffffff',
+          padding: 10,
+          cursor: 'pointer',
+        }),
       }}
       value={value && Array.isArray(value) ? selectedOptions : value}
       onChange={(selectedOptions, { action }) => {

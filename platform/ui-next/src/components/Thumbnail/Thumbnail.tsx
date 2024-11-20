@@ -82,12 +82,16 @@ const Thumbnail = ({
             )}
 
             {/* bottom left */}
-            <div className="bg-muted absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] p-[4px]">
+            <div className="bg-customblue-40 absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] p-[4px]">
               <div
                 className={classnames(
                   'h-[10px] w-[10px] rounded-[2px]',
-                  isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary/65',
-                  loadingProgress && loadingProgress < 1 && 'bg-primary/25'
+                  isActive
+                    ? 'bg-white'
+                    : isHydratedForDerivedDisplaySet
+                      ? 'bg-highlight'
+                      : 'bg-customblue-100',
+                  loadingProgress && loadingProgress < 1 && 'bg-customblue-100'
                 )}
               ></div>
               <div className="text-[11px] text-white">{modality}</div>
@@ -302,7 +306,7 @@ const Thumbnail = ({
     <div
       className={classnames(
         className,
-        'bg-muted hover:bg-primary/30 group flex cursor-pointer select-none flex-col outline-none',
+        'bg-customblue-40 hover:bg-customblue-100 group flex cursor-pointer select-none flex-col outline-none',
         viewPreset === 'thumbnails' && 'h-[170px] w-[135px]',
         viewPreset === 'list' && 'col-span-2 h-[40px] w-[275px]'
       )}

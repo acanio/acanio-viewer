@@ -97,29 +97,29 @@ export default function TMTVPatterns() {
         >
           {/* Segmentation Tools */}
           <AccordionItem value="segmentation-tools">
-            <AccordionTrigger className="bg-popover hover:bg-accent text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
+            <AccordionTrigger className="bg-popover hover:bg-customblue-100 text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
               <span>Segmentation Tools</span>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="bg-muted mb-0.5 h-32 rounded-b pb-3"></div>
+              <div className="bg-customblue-40 mb-0.5 h-32 rounded-b pb-3"></div>
             </AccordionContent>
           </AccordionItem>
           {/* Segmentation List */}
           <AccordionItem value="segmentation-list">
-            <AccordionTrigger className="bg-popover hover:bg-accent text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
+            <AccordionTrigger className="bg-popover hover:bg-customblue-100 text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
               <span>Segmentation List</span>
             </AccordionTrigger>
             <AccordionContent>
               {/* Appearance Settings */}
               <AccordionItem value="segmentation-display">
-                <AccordionTrigger className="bg-muted hover:bg-accent mt-0.5 flex h-7 w-full items-center justify-between rounded-b pr-1 pl-2 font-normal text-white">
+                <AccordionTrigger className="bg-customblue-40 hover:bg-customblue-100 mt-0.5 flex h-7 w-full items-center justify-between rounded-b pr-1 pl-2 font-normal text-white">
                   <div className="flex space-x-2">
                     <Icons.Controls className="text-primary" />
                     <span className="text-primary pr-1">Appearance Settings</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="bg-muted mb-0.5 space-y-2 rounded-b px-px pt-0.5 pb-3">
+                  <div className="bg-customblue-40 mb-0.5 space-y-2 rounded-b px-px pt-0.5 pb-3">
                     <div className="mx-1 mb-2.5 mt-1 flex items-center justify-between space-x-4">
                       {/* Display Label with Selected Tab */}
                       <div className="text-muted-foreground text-xs">Show: {selectedTab}</div>
@@ -142,7 +142,7 @@ export default function TMTVPatterns() {
                       </Tabs>
                     </div>
                     {/* Opacity Slider */}
-                    <div className="my-2 flex items-center ">
+                    <div className="my-2 flex items-center">
                       <Label className="text-muted-foreground mx-1 w-14 flex-none whitespace-nowrap text-xs">
                         Opacity
                       </Label>
@@ -189,7 +189,7 @@ export default function TMTVPatterns() {
                       </Label>
                     </div>
                     {/* Additional Opacity Slider */}
-                    <div className="my-2 flex items-center ">
+                    <div className="my-2 flex items-center">
                       <Label className="text-muted-foreground mx-1 w-14 flex-none whitespace-nowrap text-xs">
                         Opacity
                       </Label>
@@ -354,7 +354,7 @@ export default function TMTVPatterns() {
 
                       <div className="pl-1.5">TMTV2 Segmentation</div>
                     </div>
-                    <div className="mr-1 flex items-center ">
+                    <div className="mr-1 flex items-center">
                       <Button
                         variant="ghost"
                         size="icon"

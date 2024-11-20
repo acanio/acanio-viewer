@@ -100,7 +100,6 @@ const IconButton = ({
       className={classnames(
         baseClasses,
         variantClasses[variant][color],
-        roundedClasses[rounded],
         sizeClasses[size],
         fullWidthClasses[fullWidth],
         disabledClasses[disabled],

@@ -32,7 +32,7 @@ const StudyItem = ({
       defaultValue={isActive ? 'study-item' : undefined}
     >
       <AccordionItem value="study-item">
-        <AccordionTrigger className={classnames('hover:bg-accent bg-popover rounded')}>
+        <AccordionTrigger className={classnames('hover:bg-customblue-100 bg-customblue-40 rounded')}>
           <div className="flex h-[40px] flex-1 flex-row">
             <div className="flex w-full flex-row items-center justify-between">
               <div className="flex flex-col items-start text-[13px]">

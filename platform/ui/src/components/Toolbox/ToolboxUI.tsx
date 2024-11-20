@@ -79,7 +79,7 @@ function ToolboxUI(props: withAppTypes) {
                   key={id}
                   className={classnames({
                     [toolClasses]: true,
-                    'border-secondary-light flex flex-col items-center justify-center rounded-md border':
+                    'border-secondary-light flex flex-col items-center justify-center border':
                       true,
                   })}
                 >

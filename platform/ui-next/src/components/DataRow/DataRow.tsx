@@ -53,7 +53,7 @@ const DataRow: React.FC<DataRowProps> = ({
         {/* Row 1 with 'group' class to enable group-hover */}
         <div
           className={`flex items-center ${
-            isSelected ? 'bg-popover' : 'bg-muted'
+            isSelected ? 'bg-popover' : 'bg-customblue-40'
           } group relative cursor-pointer ${isVisible ? '' : 'opacity-60'}`}
           onClick={onSelect}
         >
@@ -63,7 +63,7 @@ const DataRow: React.FC<DataRowProps> = ({
           {/* Number Box */}
           <div
             className={`flex h-7 max-h-7 w-7 flex-shrink-0 items-center justify-center rounded-l border-r border-black text-sm ${
-              isSelected ? 'bg-highlight text-black' : 'bg-muted text-muted-foreground'
+              isSelected ? 'bg-highlight text-black' : 'bg-customblue-40 text-muted-foreground'
             } overflow-hidden`}
           >
             {number}

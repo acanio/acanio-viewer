@@ -211,7 +211,7 @@ function FrameControls({
       />
       <div className="mt-3 flex justify-between">
         <IconButton
-          className="bg-customblue-30 h-[26px] w-[58px] rounded-[4px]"
+          className="bg-customblue-20 h-[26px] w-[58px] rounded-[4px]"
           onClick={() => onPlayPauseChange(!isPlaying)}
         >
           <Icon

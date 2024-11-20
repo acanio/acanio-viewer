@@ -764,5 +764,18 @@ module.exports = {
     transitionDuration: ['responsive'],
   },
   corePlugins: {},
-  plugins: [],
+  plugins: [
+    // Add "customblue" properties to the root element in order to access them in CSS files
+    function ({ addBase, theme }) {
+      const customColors = theme('colors.customblue');
+      const cssVariables = Object.entries(customColors).reduce((acc, [key, value]) => {
+        acc[`--customblue-${key}`] = value;
+        return acc;
+      }, {});
+
+      addBase({
+        ':root': cssVariables,
+      });
+    },
+  ],
 };
