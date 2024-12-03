@@ -1,5 +1,9 @@
 import React, { ReactElement, useCallback, useState, useEffect } from 'react';
 import { VolumeRenderingQualityProps } from '../../types/ViewportPresets';
+import tailwindConfig from '../../../../../platform/ui/tailwind.config'
+
+const customBlue50 = tailwindConfig.theme.colors.customblue['50'];
+const customBlue100 = tailwindConfig.theme.colors.customblue['100'];
 
 export function VolumeRenderingQuality({
   volumeRenderingQualityRange,
@@ -24,7 +28,7 @@ export function VolumeRenderingQuality({
 
   const calculateBackground = value => {
     const percentage = ((value - 0) / (1 - 0)) * 100;
-    return `linear-gradient(to right, #5acce6 0%, #5acce6 ${percentage}%, #3a3f99 ${percentage}%, #3a3f99 100%)`;
+    return `linear-gradient(to right, ${customBlue100} 0%, ${customBlue100} ${percentage}%, ${customBlue50} ${percentage}%, ${customBlue50} 100%)`;
   };
 
   useEffect(() => {
