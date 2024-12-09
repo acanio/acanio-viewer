@@ -66,7 +66,7 @@ export function VolumeLighting({
             step={0.1}
             style={{
               background: calculateBackground(ambient),
-              '--thumb-inner-color': 'customblue100',
+              '--thumb-inner-color': '#5acce6',
               '--thumb-outer-color': '#090c29',
             }}
           />
@@ -94,7 +94,7 @@ export function VolumeLighting({
             step={0.1}
             style={{
               background: calculateBackground(diffuse),
-              '--thumb-inner-color': 'customblue100',
+              '--thumb-inner-color': '#5acce6',
               '--thumb-outer-color': '#090c29',
             }}
           />
@@ -123,7 +123,7 @@ export function VolumeLighting({
             step={0.1}
             style={{
               background: calculateBackground(specular),
-              '--thumb-inner-color': 'customblue100',
+              '--thumb-inner-color': '#5acce6',
               '--thumb-outer-color': '#090c29',
             }}
           />

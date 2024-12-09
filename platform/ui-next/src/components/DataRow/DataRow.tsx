@@ -184,13 +184,13 @@ const DataRow: React.FC<DataRowProps> = ({
     <div className={`flex flex-col ${isVisible ? '' : 'opacity-60'}`}>
       <div
         className={`flex items-center ${
-          isSelected ? 'bg-popover' : 'bg-muted'
+          isSelected ? 'bg-customblue-50' : 'bg-muted'
         } group relative cursor-pointer`}
         onClick={onSelect}
         data-cy="data-row"
       >
         {/* Hover Overlay */}
-        <div className="bg-primary/20 pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"></div>
+        <div className="bg-customblue-50/20 pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"></div>
 
         {/* Number Box */}
         <div

@@ -38,6 +38,9 @@ function HeaderPatientInfo({ servicesManager, appConfig }: withAppTypes) {
   const formattedPatientName = formatWithEllipsis(patientInfo.PatientName, 27);
   const formattedPatientID = formatWithEllipsis(patientInfo.PatientID, 15);
 
+  // Disabled intentionally
+  return null;
+
   return (
     <div
       className="hover:bg-primary-dark flex cursor-pointer items-center justify-center gap-1 rounded-lg"

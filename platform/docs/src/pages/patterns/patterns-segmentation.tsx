@@ -84,7 +84,7 @@ export default function SegmentationPanel() {
           >
             {/* Segmentation Tools */}
             <AccordionItem value="segmentation-tools">
-              <AccordionTrigger className="bg-popover hover:bg-accent text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
+              <AccordionTrigger className="bg-popover hover:bg-customblue-300 text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
                 <span>Segmentation Tools</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -94,7 +94,7 @@ export default function SegmentationPanel() {
 
             {/* Segmentation List */}
             <AccordionItem value="segmentation-list">
-              <AccordionTrigger className="bg-popover hover:bg-accent text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
+              <AccordionTrigger className="bg-popover hover:bg-customblue-300 text-muted-foreground my-0.5 flex h-7 w-full items-center justify-between rounded py-2 pr-1 pl-2 font-normal">
                 <span>Segmentation List</span>
               </AccordionTrigger>
               <AccordionContent>
@@ -165,7 +165,7 @@ export default function SegmentationPanel() {
 
                   {/* Appearance Settings */}
                   <AccordionItem value="segmentation-display">
-                    <AccordionTrigger className="bg-muted hover:bg-accent mt-0.5 flex h-7 w-full items-center justify-between rounded-b pr-1 pl-2 font-normal text-white">
+                    <AccordionTrigger className="bg-muted hover:bg-customblue-300 mt-0.5 flex h-7 w-full items-center justify-between rounded-b pr-1 pl-2 font-normal text-white">
                       <div className="flex space-x-2">
                         <Icons.Controls className="text-primary" />
                         <span className="text-primary pr-1">Appearance Settings</span>
