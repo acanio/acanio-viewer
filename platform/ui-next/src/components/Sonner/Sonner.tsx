@@ -28,8 +28,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
           description: 'group-[.toast]:text-secondary-foreground',
           actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
           cancelButton: 'group-[.toast]:bg-customblue-40 group-[.toast]:text-muted-foreground',
-        },
-      }}
+      },
+      style: {
+        width: '430px', // Set a maximum width
+        right: '8px',
+      },
+    }}
       {...props}
     />
   );

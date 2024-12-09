@@ -165,6 +165,10 @@ export default class CustomizationService extends PubSubService {
     this.modeCustomizations.clear();
   }
 
+  public onModeExit(): void {
+    this.onModeEnter();
+  }
+
   public getModeCustomizations(): Map<string, Customization> {
     return this.modeCustomizations;
   }
@@ -276,9 +280,33 @@ export default class CustomizationService extends PubSubService {
       return customization;
     }
     const parent = this.getCustomization(customizationType);
-    const result = parent ? Object.assign(Object.create(parent), customization) : customization;
+    const result = parent ? Object.assign({}, parent, customization) : customization;
     // Execute an nested type information
     return result.transform?.(this) || result;
+  }
+
+  /**
+   * Helper method to easily add and retrieve customizations
+   * @param id The unique identifier for the customization
+   * @param defaultComponent The default component to use if no customization is set
+   * @param customComponent Optional custom component to set
+   * @returns The custom component if set, otherwise the default component
+   */
+  public getCustomComponent(
+    id: string,
+    defaultComponent: React.ComponentType<any>,
+    customComponent?: React.ComponentType<any>
+  ) {
+    const customization = this.getCustomization(id, {
+      id: `default-${id}`,
+      content: defaultComponent,
+    });
+
+    if (customComponent) {
+      this.setModeCustomization(id, { content: customComponent });
+    }
+
+    return customization.content;
   }
 
   public addModeCustomizations(modeCustomizations): void {

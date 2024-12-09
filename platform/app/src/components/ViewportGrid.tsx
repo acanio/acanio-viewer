@@ -23,13 +23,8 @@ function ViewerViewportGrid(props: withAppTypes) {
   });
   const layoutHash = useRef(null);
 
-  const {
-    displaySetService,
-    measurementService,
-    hangingProtocolService,
-    cornerstoneViewportService,
-    uiNotificationService,
-  } = servicesManager.services;
+  const { displaySetService, measurementService, hangingProtocolService, uiNotificationService } =
+    servicesManager.services;
 
   const generateLayoutHash = () => `${numCols}-${numRows}`;
 
@@ -129,7 +124,7 @@ function ViewerViewportGrid(props: withAppTypes) {
           title: 'Drag and Drop',
           message:
             'The selected display sets could not be added to the viewport due to a mismatch in the Hanging Protocol rules.',
-          type: 'info',
+          type: 'error',
           duration: 3000,
         });
       }
@@ -297,7 +292,7 @@ function ViewerViewportGrid(props: withAppTypes) {
         >
           <div
             data-cy="viewport-pane"
-            className={classNames('flex h-full w-full flex-col', {
+            className={classNames('flex h-full w-full min-w-[5px] flex-col', {
               'pointer-events-none':
                 !isActive && (appConfig?.activateViewportBeforeInteraction ?? true),
             })}

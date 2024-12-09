@@ -11,6 +11,10 @@ import { useTrackedMeasurements } from './../getContextModule';
 import { BaseVolumeViewport, Enums } from '@cornerstonejs/core';
 
 const { formatDate } = utils;
+function TrackedCornerstoneViewport(
+  props: withAppTypes<{ viewportId: string; displaySets: AppTypes.DisplaySet[] }>
+) {
+  const { displaySets, viewportId, servicesManager, extensionManager } = props;
 
 function TrackedCornerstoneViewport(props) {
   const { displaySets, viewportId, viewportLabel, servicesManager, extensionManager } = props;
@@ -109,6 +113,9 @@ function TrackedCornerstoneViewport(props) {
   useEffect(() => {
     if (isTracked) {
       annotation.config.style.setViewportToolStyles(viewportId, {
+        ReferenceLines: {
+          lineDash: '4,4',
+        },
         global: {
           lineDash: '',
         },
@@ -190,6 +197,31 @@ function TrackedCornerstoneViewport(props) {
 
     measurementService.jumpToMeasurement(viewportId, newTrackedMeasurementUID);
   }
+  useEffect(() => {
+    const statusComponent = _getStatusComponent(isTracked, t);
+    const arrowsComponent = _getArrowsComponent(
+      isTracked,
+      switchMeasurement,
+      viewportId === activeViewportId
+    );
+
+    viewportActionCornersService.addComponents([
+      {
+        viewportId,
+        id: 'viewportStatusComponent',
+        component: statusComponent,
+        indexPriority: -100,
+        location: viewportActionCornersService.LOCATIONS.topLeft,
+      },
+      {
+        viewportId,
+        id: 'viewportActionArrowsComponent',
+        component: arrowsComponent,
+        indexPriority: 0,
+        location: viewportActionCornersService.LOCATIONS.topRight,
+      },
+    ]);
+  }, [activeViewportId, isTracked, switchMeasurement, viewportActionCornersService, viewportId]);
 
   const getCornerstoneViewport = () => {
     const { component: Component } = extensionManager.getModuleEntry(
@@ -317,9 +349,25 @@ function _getNextMeasurementUID(
   return newTrackedMeasurementId;
 }
 
-function _getStatusComponent(isTracked) {
-  const { t } = useTranslation('TrackedCornerstoneViewport');
+const _getArrowsComponent = (isTracked, switchMeasurement, isActiveViewport) => {
+  if (!isTracked) {
+    return null;
+  }
+
+  return (
+    <ViewportActionArrows
+      onArrowsClick={direction => switchMeasurement(direction)}
+      className={isActiveViewport ? 'visible' : 'invisible group-hover/pane:visible'}
+    ></ViewportActionArrows>
+  );
+};
+
+function _getStatusComponent(isTracked, t) {
   const trackedIcon = isTracked ? 'status-tracked' : 'status-untracked';
+
+  if (!isTracked) {
+    return null;
+  }
 
   return (
     <div className="relative">

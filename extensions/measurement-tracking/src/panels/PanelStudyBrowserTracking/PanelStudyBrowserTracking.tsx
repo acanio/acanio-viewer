@@ -8,16 +8,27 @@ import { StudyBrowser } from '@ohif/ui-next';
 
 import { useTrackedMeasurements } from '../../getContextModule';
 import { Separator } from '@ohif/ui-next';
-import { PanelStudyBrowserTrackingHeader } from './PanelStudyBrowserTrackingHeader';
+import { PanelStudyBrowserHeader } from '@ohif/extension-default';
+import { useAppConfig } from '@state';
 import { defaultActionIcons, defaultViewPresets } from './constants';
 
 const { formatDate, createStudyBrowserTabs } = utils;
-
+const thumbnailNoImageModalities = [
+  'SR',
+  'SEG',
+  'SM',
+  'RTSTRUCT',
+  'RTPLAN',
+  'RTDOSE',
+  'DOC',
+  'OT',
+  'PMAP',
+];
 /**
  *
  * @param {*} param0
  */
-function PanelStudyBrowserTracking({
+export default function PanelStudyBrowserTracking({
   servicesManager,
   getImageSrc,
   getStudiesForPatientByMRN,
@@ -35,6 +46,10 @@ function PanelStudyBrowserTracking({
     customizationService,
   } = servicesManager.services;
   const navigate = useNavigate();
+  const { mode: studyMode } = customizationService.getCustomization('PanelStudyBrowser.studyMode', {
+    id: 'default',
+    mode: 'all',
+  });
 
   const { t } = useTranslation('Common');
 
@@ -45,7 +60,8 @@ function PanelStudyBrowserTracking({
   const [{ activeViewportId, viewports, isHangingProtocolLayout }, viewportGridService] =
     useViewportGrid();
   const [trackedMeasurements, sendTrackedMeasurementsEvent] = useTrackedMeasurements();
-  const [activeTabName, setActiveTabName] = useState('all');
+
+  const [activeTabName, setActiveTabName] = useState(studyMode);
   const [expandedStudyInstanceUIDs, setExpandedStudyInstanceUIDs] = useState([
     ...StudyInstanceUIDs,
   ]);
@@ -94,7 +110,7 @@ function PanelStudyBrowserTracking({
         title: 'Thumbnail Double Click',
         message:
           'The selected display sets could not be added to the viewport due to a mismatch in the Hanging Protocol rules.',
-        type: 'info',
+        type: 'error',
         duration: 3000,
       });
     }
@@ -106,6 +122,10 @@ function PanelStudyBrowserTracking({
     viewports.get(activeViewportId)?.displaySetInstanceUIDs;
 
   const { trackedSeries } = trackedMeasurements.context;
+
+  useEffect(() => {
+    setActiveTabName(studyMode);
+  }, [studyMode]);
 
   // ~~ studyDisplayList
   useEffect(() => {
@@ -171,7 +191,11 @@ function PanelStudyBrowserTracking({
       return;
     }
 
-    const currentDisplaySets = displaySetService.activeDisplaySets;
+    let currentDisplaySets = displaySetService.activeDisplaySets;
+    // filter non based on the list of modalities that are supported by cornerstone
+    currentDisplaySets = currentDisplaySets.filter(
+      ds => !thumbnailNoImageModalities.includes(ds.Modality)
+    );
 
     if (!currentDisplaySets.length) {
       return;
@@ -468,7 +492,7 @@ function PanelStudyBrowserTracking({
   return (
     <>
       <>
-        <PanelStudyBrowserTrackingHeader
+        <PanelStudyBrowserHeader
           viewPresets={viewPresets}
           updateViewPresetValue={updateViewPresetValue}
           actionIcons={actionIcons}
@@ -513,8 +537,6 @@ PanelStudyBrowserTracking.propTypes = {
   getStudiesForPatientByMRN: PropTypes.func.isRequired,
   requestDisplaySetCreationForStudy: PropTypes.func.isRequired,
 };
-
-export default PanelStudyBrowserTracking;
 
 function getImageIdForThumbnail(displaySet: any, imageIds: any) {
   let imageId;
@@ -676,18 +698,6 @@ function _mapDisplaySets(
 
   return [...thumbnailDisplaySets, ...thumbnailNoImageDisplaySets];
 }
-
-const thumbnailNoImageModalities = [
-  'SR',
-  'SEG',
-  'SM',
-  'RTSTRUCT',
-  'RTPLAN',
-  'RTDOSE',
-  'DOC',
-  'OT',
-  'PMAP',
-];
 
 function _getComponentType(ds) {
   if (thumbnailNoImageModalities.includes(ds.Modality) || ds?.unsupported) {
