@@ -9,10 +9,10 @@ import Tooltip from '../Tooltip';
 import ListMenu from '../ListMenu';
 
 const baseClasses = {
-  Button: 'flex items-center rounded-md border-transparent group/button',
-  Primary: 'h-full rounded-tl-md rounded-bl-md group/primary',
+  Button: 'flex items-center border-transparent group/button',
+  Primary: 'h-full group/primary',
   Secondary:
-    'h-full flex items-center justify-center rounded-tr-md rounded-br-md w-4 border-2 border-transparent group/secondary',
+    'h-full flex items-center justify-center w-4 border-2 border-transparent group/secondary',
   SecondaryIcon: 'w-4 h-full stroke-1',
   Separator: 'border-l py-3 ml-0.5',
   Content: 'absolute z-10 top-0 mt-12',
@@ -31,7 +31,7 @@ const classes = {
       isActive
         ? isExpanded
           ? 'border-primary-dark !bg-primary-dark hover:border-primary-dark !text-primary-light'
-          : 'border-primary-light bg-primary-light rounded-md'
+          : 'border-primary-light bg-primary-light'
         : `focus:!text-black focus:!rounded-md focus:!border-primary-light focus:!bg-primary-light ${isExpanded ? 'border-primary-dark bg-primary-dark !text-primary-light' : 'border-secondary-dark bg-secondary-dark group-hover/button:border-primary-dark group-hover/button:text-primary-light hover:!bg-primary-dark hover:border-primary-dark focus:!text-black'}`
     ),
   Secondary: ({ isExpanded, primary }) =>

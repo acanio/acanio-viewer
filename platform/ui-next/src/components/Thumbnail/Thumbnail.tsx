@@ -95,7 +95,7 @@ const Thumbnail = ({
                     ? 'bg-white'
                     : isHydratedForDerivedDisplaySet
                       ? 'bg-highlight'
-                      : 'bg-customblue-100',
+                      : 'bg-primary-light',
                   loadingProgress && loadingProgress < 1 && 'bg-customblue-100'
                 )}
               ></div>

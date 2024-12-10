@@ -65,10 +65,13 @@ const InvestigationalUseDialog = ({
     <div className="fixed bottom-2 z-50 flex h-[86px] w-full justify-center">
       <div className="bg-secondary-dark border-primary-dark flex w-[90%] items-center justify-between rounded-lg border-2 pl-[22px] pr-[22px] pt-[10px] pb-[10px] shadow-lg">
         <div className="flex items-center gap-4">
-          <Icon
-            name="illustration-investigational-use"
-            className="h-18 w-18"
-          />
+          {React.createElement('img', {
+            src: '/assets/acanio.svg',
+            className: 'w-10 h-10',
+            style: {
+              display: 'inline-block',
+            },
+          })}
           <div className="flex flex-col">
             <div className="text-[19px] text-white">
               Acan.io Viewer is{' '}

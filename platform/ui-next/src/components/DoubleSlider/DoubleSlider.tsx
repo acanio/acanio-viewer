@@ -95,11 +95,11 @@ const DoubleSlider = React.forwardRef<HTMLDivElement, DoubleSliderProps>(
           value={value}
           onValueChange={handleSliderChange}
         >
-          <SliderPrimitive.Track className="bg-primary/30 relative h-1 w-full grow overflow-hidden rounded-full">
-            <SliderPrimitive.Range className="bg-primary absolute h-full" />
+          <SliderPrimitive.Track className="bg-customblue-50 relative h-1 w-full grow overflow-hidden rounded-full">
+            <SliderPrimitive.Range className="bg-customblue-50 absolute h-full" />
           </SliderPrimitive.Track>
-          <SliderPrimitive.Thumb className="border-background bg-primary focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
-          <SliderPrimitive.Thumb className="border-background bg-primary focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
+          <SliderPrimitive.Thumb className="border-background bg-customblue-100 focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
+          <SliderPrimitive.Thumb className="border-background bg-customblue-100 focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
         </SliderPrimitive.Root>
         <Input
           type="number"
