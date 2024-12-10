@@ -85,9 +85,9 @@ module.exports = {
         40: '#007caa66',
         50: '#007caa80',
         80: '#007caacc',
-        100: '#007caacc',
-        200: '#007caacc',
-        300: '#007caacc',
+        100: '#007caacc', // 80% opacity
+        200: '#007caae6', // 90% opacity 
+        300: '#007caa',  // 100% opacity
         400: '#007caacc',
       },
 
