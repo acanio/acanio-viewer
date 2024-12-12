@@ -55,7 +55,7 @@ const InputFilterText = ({
 
   return (
     <label className={classNames('relative', className)}>
-      <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+      <span className="absolute inset-y-0 left-0 flex items-center pl-2 pt-2">
         <Icon name="icon-search"></Icon>
       </span>
       <input
@@ -67,7 +67,7 @@ const InputFilterText = ({
         autoComplete="off"
         value={filterValue}
       ></input>
-      <span className="absolute inset-y-0 right-0 flex items-center pr-2">
+      <span className="absolute inset-y-0 right-0 flex items-center pr-2 pt-2">
         <Icon
           name="icon-clear-field"
           className={classNames('cursor-pointer text-customblue-100', filterValue ? '' : 'hidden')}

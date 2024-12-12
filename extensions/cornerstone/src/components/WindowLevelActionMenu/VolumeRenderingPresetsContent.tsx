@@ -42,7 +42,7 @@ export function VolumeRenderingPresetsContent({
     <div className="flex min-h-full w-full flex-col justify-between">
       <div className="border-secondary-light h-[433px] w-full overflow-hidden rounded border bg-black px-2.5">
         <div className="flex h-[46px] w-full items-center justify-start">
-          <div className="h-[26px] w-[200px]">
+          <div className="flex h-[26px] w-[200px]">
             <InputFilterText
               value={searchValue}
               onDebounceChange={handleSearchChange}
