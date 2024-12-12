@@ -57,9 +57,37 @@ export default async function init({
   // Note: this should run first before initializing the cornerstone
   // DO NOT CHANGE THE ORDER
 
-  await cs3DInit({
-    peerImport: appConfig.peerImport,
-  });
+  // Set configurations to retrieve benchmark data from the local file
+  const benchmarkPublicFileURL = '/benchmarks/';
+  const config = cornerstone.getConfiguration();
+  const newConfig = {
+    gpuTier: config.gpuTier,
+    rendering: {
+      ...config.rendering,
+      preferSizeOverAccuracy: Boolean(appConfig.preferSizeOverAccuracy),
+      useNorm16Texture: Boolean(appConfig.useNorm16Texture),
+    },
+    detectGPUConfig: {
+      benchmarksURL: benchmarkPublicFileURL,
+      override: {
+        // Load benchmark data from related public file
+        loadBenchmarks: async (file: string) => {
+          const benchmarkData = await fetch(`${benchmarkPublicFileURL}${file}`).then(res =>
+            res.json()
+          );
+          // Remove version tag and check version is supported
+          const version = parseInt((benchmarkData.shift() as unknown as string).split('.')[0], 10);
+          if (version < 4) {
+            console.warn('Detect GPU benchmark data is out of date. Please update to version 4x');
+          }
+          return benchmarkData;
+        },
+      },
+    },
+  };
+  // Set new configurations and run the initialization function with new configurations
+  cornerstone.setConfiguration(newConfig);
+  await cs3DInit(newConfig);
 
   // For debugging e2e tests that are failing on CI
   cornerstone.setUseCPURendering(Boolean(appConfig.useCPURendering));
