@@ -58,7 +58,7 @@ export default async function init({
   // DO NOT CHANGE THE ORDER
 
   // Set configurations to retrieve benchmark data from the local file
-  const benchmarkPublicFileURL = '/benchmarks/';
+  const benchmarkPublicFileURL = './benchmarks/';
   const config = cornerstone.getConfiguration();
   const newConfig = {
     gpuTier: config.gpuTier,
