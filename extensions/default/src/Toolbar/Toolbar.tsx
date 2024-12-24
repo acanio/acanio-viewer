@@ -20,10 +20,9 @@ export function Toolbar({ servicesManager, buttonSection = 'primary' }) {
           return null;
         }
 
-        const { id, hidden, Component, componentProps } = toolDef;
-        if (hidden) {
+        const { id, Component, componentProps } = toolDef;
+        if (componentProps.hidden === true) {
           return '';
-
         }
 
         const tool = (

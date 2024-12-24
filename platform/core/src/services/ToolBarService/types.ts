@@ -24,6 +24,7 @@ export type ButtonProps = {
   tooltip?: string;
   commands?: RunCommand;
   disabled?: boolean;
+  hidden?: boolean;
   className?: string;
   evaluate?: EvaluatePublic;
   listeners?: Record<string, RunCommand>;

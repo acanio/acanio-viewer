@@ -418,6 +418,11 @@ export default class ToolbarService extends PubSubService {
     return (
       buttonSectionIds?.map(btnId => {
         const btn = this.state.buttons[btnId];
+
+        if (btnId === 'Capture' && this.config.hideCapture) {
+          btn.props.hidden = true;
+        }
+
         return this._mapButtonToDisplay(btn, props);
       }) || []
     );

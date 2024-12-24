@@ -140,8 +140,8 @@ export default function ModeRoute({
     }
 
     const { toolbar: toolbarConfig } = dataSource.getConfig() || {};
-    servicesManager.services.ToolBarService.setConfig({
-      ...(servicesManager.services.ToolBarService.getConfig()),
+    servicesManager.services.toolbarService.setConfig({
+      ...(servicesManager.services.toolbarService.getConfig()),
       ...toolbarConfig,
     });
 
