@@ -34,7 +34,6 @@ module.exports = {
         dark: '#233243',
         active: '#fff',
       },
-
       inputfield: {
         main: '#2d4c5f',
         disabled: '#2a4250',
@@ -49,6 +48,10 @@ module.exports = {
         active: '#c0e6f7',
       },
 
+      indigo: {
+        dark: '#0b1a42',
+      },
+
       common: {
         bright: '#e1e1e1',
         light: '#a19fad',
@@ -56,7 +59,20 @@ module.exports = {
         dark: '#726f7e',
         active: '#20a5d6',
       },
-
+      bkg: {
+        low: '#050615',
+        med: '#090C29',
+        full: '#041C4A',
+      },
+      info: {
+        primary: '#FFFFFF',
+        secondary: '#7BB2CE',
+      },
+      actions: {
+        primary: '#348CFD',
+        highlight: '#5ACCE6',
+        hover: 'rgba(52, 140, 253, 0.2)',
+      },
       customgreen: {
         100: '#05D97C',
         200: '#0FD97C',
@@ -69,9 +85,9 @@ module.exports = {
         40: '#007caa66',
         50: '#007caa80',
         80: '#007caacc',
-        100: '#007caacc',
-        200: '#007caacc',
-        300: '#007caacc',
+        100: '#007caacc', // 80% opacity
+        200: '#007caae6', // 90% opacity 
+        300: '#007caa',  // 100% opacity
         400: '#007caacc',
       },
 
@@ -236,6 +252,18 @@ module.exports = {
     },
     fill: {
       current: 'currentColor',
+    },
+    fontSize: {
+      xxs: '0.6875rem', // 11px
+      xs: '0.75rem', // 12px
+      sm: '0.8125rem', // 13px
+      base: '0.875rem', // 14px
+      lg: '1rem', // 16px
+      xl: '1.125rem', // 18px
+      '2xl': '1.25rem', // 20px
+      '3xl': '1.375rem', // 22px
+      '4xl': '1.5rem', // 24px
+      '5xl': '1.875rem', // 30px
     },
     flex: {
       1: '1 1 0%',
@@ -748,5 +776,18 @@ module.exports = {
     transitionDuration: ['responsive'],
   },
   corePlugins: {},
-  plugins: [],
+  plugins: [
+    // Add "customblue" properties to the root element in order to access them in CSS files
+    function ({ addBase, theme }) {
+      const customColors = theme('colors.customblue');
+      const cssVariables = Object.entries(customColors).reduce((acc, [key, value]) => {
+        acc[`--customblue-${key}`] = value;
+        return acc;
+      }, {});
+
+      addBase({
+        ':root': cssVariables,
+      });
+    },
+  ],
 };

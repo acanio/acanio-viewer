@@ -73,7 +73,7 @@ us.
 ### Requirements
 
 - [Yarn 1.17.3+](https://yarnpkg.com/en/docs/install)
-- [Node 16+](https://nodejs.org/en/)
+- [Node 18+](https://nodejs.org/en/)
 - Yarn Workspaces should be enabled on your machine:
   - `yarn config set workspaces-experimental true`
 
@@ -105,7 +105,7 @@ These commands are available from the root directory. Each project directory
 also supports a number of commands that can be found in their respective
 `README.md` and `package.json` files.
 
-| Yarn Commands                | Description                                                   |
+| Commands                | Description                                                   |
 | ---------------------------- | ------------------------------------------------------------- |
 | **Develop**                  |                                                               |
 | `dev` or `start`             | Default development experience for Viewer                     |

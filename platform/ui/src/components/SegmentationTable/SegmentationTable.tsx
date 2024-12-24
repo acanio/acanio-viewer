@@ -5,14 +5,14 @@ import SegmentationItem from './SegmentationItem';
 import Icon from '../Icon';
 
 const SegmentationTable = ({
-  title,
-  segmentations,
-  activeSegmentationId,
-  onClick,
-  onEdit,
-  onDelete,
-  onToggleVisibility,
-  onToggleVisibilityAll,
+  title = '',
+  segmentations = [],
+  activeSegmentationId = '',
+  onClick = () => {},
+  onEdit = () => {},
+  onDelete = () => {},
+  onToggleVisibility = () => {},
+  onToggleVisibilityAll = () => {},
 }) => {
   const [hiddenSegmentationIds, setHiddenSegmentationIds] = useState([]);
   const amount = segmentations.length;
@@ -47,7 +47,7 @@ const SegmentationTable = ({
 
   return (
     <div>
-      <div className="bg-secondary-main flex justify-between px-2 py-1">
+      <div className="bg-customblue-40 flex justify-between px-2 py-1">
         <span className="text-base font-bold uppercase tracking-widest text-white">{title}</span>
         <div className="flex">
           <span className="text-base font-bold text-white">{amount}</span>
@@ -110,16 +110,6 @@ SegmentationTable.propTypes = {
   onDelete: PropTypes.func.isRequired,
   onToggleVisibility: PropTypes.func.isRequired,
   onToggleVisibilityAll: PropTypes.func.isRequired,
-};
-
-SegmentationTable.defaultProps = {
-  title: '',
-  segmentations: [],
-  activeSegmentationId: '',
-  onClick: () => {},
-  onEdit: () => {},
-  onToggleVisibility: () => {},
-  onToggleVisibilityAll: () => {},
 };
 
 export default SegmentationTable;

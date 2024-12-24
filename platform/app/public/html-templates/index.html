@@ -183,10 +183,6 @@
       href="<%= PUBLIC_URL %>assets/yandex-browser-manifest.json"
     />
 
-    <!-- Built with: https://polyfill.io/v3/url-builder/ -->
-    <!-- Targets IE11 -->
-    <!-- <script
-    src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=default%2CObject.values%2CArray.prototype.flat%2CObject.entries%2CSymbol%2CArray.prototype.includes%2CString.prototype.repeat%2CArray.prototype.find"></script>!-->
     <script
       rel="preload"
       as="script"
@@ -200,7 +196,7 @@
       src="<%= PUBLIC_URL %>init-service-worker.js"
     ></script>
 
-    <title>DICOM Viewer</title>
+    <title>Acan.io Viewer</title>
 
     <!-- WEB FONTS -->
     <link
@@ -227,7 +223,8 @@
 
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
-
-    <div id="root"></div>
+    <div id="react-portal"></div>
+    <div id="root">
+    </div>
   </body>
 </html>

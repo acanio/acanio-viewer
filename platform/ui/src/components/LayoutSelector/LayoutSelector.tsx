@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function LayoutSelector({ onSelection, rows, columns }) {
+function LayoutSelector({ onSelection = () => {}, rows = 3, columns = 4 }) {
   const [hoveredIndex, setHoveredIndex] = useState();
   const hoverX = hoveredIndex % columns;
   const hoverY = Math.floor(hoveredIndex / columns);
@@ -21,7 +21,6 @@ function LayoutSelector({ onSelection, rows, columns }) {
         gridTemplateRows: gridSize.repeat(rows),
         backgroundColor: '#233243', // primary-dark
       }}
-      className="p-2"
     >
       {Array.apply(null, Array(rows * columns))
         .map(function (_, i) {
@@ -35,7 +34,6 @@ function LayoutSelector({ onSelection, rows, columns }) {
               backgroundColor: isHovered(index) ? '#007caacc' : '#007caa33',
             }}
             data-cy={`Layout-${index % columns}-${Math.floor(index / columns)}`}
-            className="cursor-pointer"
             onClick={() => {
               const x = index % columns;
               const y = Math.floor(index / columns);
@@ -52,12 +50,6 @@ function LayoutSelector({ onSelection, rows, columns }) {
     </div>
   );
 }
-
-LayoutSelector.defaultProps = {
-  onSelection: () => {},
-  columns: 3,
-  rows: 3,
-};
 
 LayoutSelector.propTypes = {
   onSelection: PropTypes.func.isRequired,
