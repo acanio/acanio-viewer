@@ -6,6 +6,7 @@ import Tooltip from '../Tooltip/Tooltip';
 
 const sizeClasses = {
   [ButtonEnums.size.small]: 'h-[26px] text-[13px]',
+  [ButtonEnums.size.smallTall]: 'h-[32px] text-[13px]',
   [ButtonEnums.size.medium]: 'h-[32px] text-[14px]',
 };
 
@@ -24,11 +25,11 @@ const baseEnabledEffectClasses = 'transition duration-300 ease-in-out focus:outl
 const enabledEffectClasses = {
   [ButtonEnums.type.primary]: classnames(
     baseEnabledEffectClasses,
-    'hover:bg-customblue-100 active:bg-customblue-40'
+    'hover:bg-customblue-80 active:bg-customblue-40'
   ),
   [ButtonEnums.type.secondary]: classnames(
     baseEnabledEffectClasses,
-    'hover:bg-secondary-dark active:bg-customblue-20'
+    'hover:bg-customblue-50 active:bg-customblue-20'
   ),
 };
 
@@ -41,7 +42,7 @@ const enabledClasses = {
     enabledEffectClasses[ButtonEnums.type.primary]
   ),
   [ButtonEnums.type.secondary]: classnames(
-    'bg-secondary-main',
+    'bg-customblue-30',
     baseEnabledClasses,
     enabledEffectClasses[ButtonEnums.type.secondary]
   ),

@@ -25,27 +25,27 @@ module.exports = {
       inherit: 'inherit',
 
       aqua: {
-        pale: '#88d3f1',
+        pale: '#7bb2ce',
       },
 
       primary: {
-        light: '#c4e2f3',
-        main: '#527a88',
-        dark: '#233243',
-        active: '#fff',
+        light: '#5acce6',
+        main: '#0944b3',
+        dark: '#090c29',
+        active: '#348cfd',
       },
       inputfield: {
-        main: '#2d4c5f',
-        disabled: '#2a4250',
-        focus: '#1c2b35',
-        placeholder: '#000',
+        main: '#3a3f99',
+        disabled: '#2b166b',
+        focus: '#5acce6',
+        placeholder: '#39383f',
       },
 
       secondary: {
-        light: '#55b0db',
-        main: '#293d51',
-        dark: '#16202b',
-        active: '#c0e6f7',
+        light: '#3a3f99',
+        main: '#2b166b',
+        dark: '#041c4a',
+        active: '#1f1f27',
       },
 
       indigo: {
@@ -57,7 +57,7 @@ module.exports = {
         light: '#a19fad',
         main: '#fff',
         dark: '#726f7e',
-        active: '#20a5d6',
+        active: '#2c3074',
       },
       bkg: {
         low: '#050615',
@@ -79,16 +79,16 @@ module.exports = {
       },
 
       customblue: {
-        10: '#007caa1a',
-        20: '#007caa33',
-        30: '#007caa4d',
-        40: '#007caa66',
-        50: '#007caa80',
-        80: '#007caacc',
-        100: '#007caacc', // 80% opacity
-        200: '#007caae6', // 90% opacity 
-        300: '#007caa',  // 100% opacity
-        400: '#007caacc',
+        10: '#0A163F',
+        20: '#0B1F54',
+        30: '#09286e',
+        40: '#0E307F',
+        50: '#0F3A94',
+        80: '#1454D4',
+        100: '#c4fdff',
+        200: '#38daff',
+        300: '#1D204D',
+        400: '#90A0C1',
       },
 
       customgray: {
@@ -776,18 +776,5 @@ module.exports = {
     transitionDuration: ['responsive'],
   },
   corePlugins: {},
-  plugins: [
-    // Add "customblue" properties to the root element in order to access them in CSS files
-    function ({ addBase, theme }) {
-      const customColors = theme('colors.customblue');
-      const cssVariables = Object.entries(customColors).reduce((acc, [key, value]) => {
-        acc[`--customblue-${key}`] = value;
-        return acc;
-      }, {});
-
-      addBase({
-        ':root': cssVariables,
-      });
-    },
-  ],
+  plugins: [],
 };

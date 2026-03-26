@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ReactSelect, { components } from 'react-select';
-
-import Icon from '../Icon';
+import { Icons } from '@ohif/ui-next';
 
 import './Select.css';
 
@@ -24,9 +23,9 @@ const Option = props => {
       <div className="flex items-center">
         <div className="h-2 w-2">
           {props.isSelected ? (
-            <Icon name={'checkbox-active'} />
+            <Icons.ByName name={'checkbox-active'} />
           ) : (
-            <Icon name={'checkbox-default'} />
+            <Icons.ByName name={'checkbox-default'} />
           )}
         </div>
         <label
@@ -98,17 +97,6 @@ const Select = ({
       menuPortalTarget={document.body}
       styles={{
         menuPortal: base => ({ ...base, zIndex: 9999 }),
-        option: (provided, state) => ({
-          ...provided,
-          backgroundColor: state.isFocused
-            ? '#39404d !important'
-            : state.isSelected
-            ? '#506070 !important'
-            : '#273242 !important',
-          color: '#ffffff',
-          padding: 10,
-          cursor: 'pointer',
-        }),
       }}
       value={value && Array.isArray(value) ? selectedOptions : value}
       onChange={(selectedOptions, { action }) => {

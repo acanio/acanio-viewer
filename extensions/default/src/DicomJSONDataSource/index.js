@@ -15,7 +15,6 @@ const mappings = {
 let _store = {
   urls: [],
   studyInstanceUIDMap: new Map(), // map of urls to array of study instance UIDs
-  config: {},
   // {
   //   url: url1
   //   studies: [Study1, Study2], // if multiple studies
@@ -113,9 +112,6 @@ function createDicomJSONApi(dicomJsonConfig) {
         url,
         data.studies.map(study => study.StudyInstanceUID)
       );
-      _store.config.toolbar = {
-        hideCapture: data.hideCapture,
-      };
     },
     query: {
       studies: {
@@ -266,17 +262,19 @@ function createDicomJSONApi(dicomJsonConfig) {
 
       const { StudyInstanceUID, SeriesInstanceUID } = displaySet;
       const study = findStudies('StudyInstanceUID', StudyInstanceUID)[0];
-      const series = study.series.find(s => s.SeriesInstanceUID === SeriesInstanceUID) || [];
+      const series = study.series.find(s => s.SeriesInstanceUID === SeriesInstanceUID) || {};
 
       const instanceMap = new Map();
-      series.instances.forEach(instance => {
-        if (instance?.metadata?.SOPInstanceUID) {
-          const { metadata, url } = instance;
-          const existingInstances = instanceMap.get(metadata.SOPInstanceUID) || [];
-          existingInstances.push({ ...metadata, url });
-          instanceMap.set(metadata.SOPInstanceUID, existingInstances);
-        }
-      });
+      if (series.instances) {
+        series.instances.forEach(instance => {
+          if (instance?.metadata?.SOPInstanceUID) {
+            const { metadata, url } = instance;
+            const existingInstances = instanceMap.get(metadata.SOPInstanceUID) || [];
+            existingInstances.push({ ...metadata, url });
+            instanceMap.set(metadata.SOPInstanceUID, existingInstances);
+          }
+        });
+      }
 
       displaySet.images.forEach(instance => {
         const NumberOfFrames = instance.NumberOfFrames || 1;
@@ -300,9 +298,6 @@ function createDicomJSONApi(dicomJsonConfig) {
     getStudyInstanceUIDs: ({ params, query }) => {
       const url = query.get('url');
       return _store.studyInstanceUIDMap.get(url);
-    },
-    getConfig: () => {
-      return _store.config;
     },
   };
   return IWebApiDataSource.create(implementation);

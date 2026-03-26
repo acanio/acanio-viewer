@@ -54,7 +54,8 @@ const languagesMap = {
   vi: 'Vietnamese',
   zh: 'Chinese',
   'zh-CN': 'Chinese (China)',
-  'zh-TW': 'Chinese (Taiwan)'
+  'zh-TW': 'Chinese (Taiwan)',
+  'test-LNG': 'Test Language',
 };
 
 const getLanguageLabel = language => {

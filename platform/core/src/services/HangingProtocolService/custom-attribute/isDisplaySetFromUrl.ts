@@ -33,13 +33,7 @@ function sopInstanceLocation(displaySets) {
   if (!displaySet) {
     return;
   }
-
-  // Read it from JSON file or parameters
-  const initialSOPInstanceUID =
-    displaySet.instances.find(
-      (instance: { SOPInstanceUID: string, selected: boolean }) => instance.selected)?.SOPInstanceUID ||
-    getSplitParam('initialsopinstanceuid')
-
+  const initialSOPInstanceUID = getSplitParam('initialsopinstanceuid');
   if (!initialSOPInstanceUID) {
     return;
   }

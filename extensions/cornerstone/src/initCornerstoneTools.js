@@ -1,6 +1,7 @@
 import {
   PanTool,
   WindowLevelTool,
+  SegmentBidirectionalTool,
   StackScrollTool,
   VolumeRotateTool,
   ZoomTool,
@@ -30,25 +31,47 @@ import {
   TrackballRotateTool,
   AdvancedMagnifyTool,
   UltrasoundDirectionalTool,
+  UltrasoundPleuraBLineTool,
   PlanarFreehandROITool,
   PlanarFreehandContourSegmentationTool,
   SplineROITool,
   LivewireContourTool,
   OrientationMarkerTool,
   WindowLevelRegionTool,
+  SegmentSelectTool,
+  RegionSegmentPlusTool,
+  SegmentLabelTool,
+  LivewireContourSegmentationTool,
+  SculptorTool,
+  SplineContourSegmentationTool,
+  LabelMapEditWithContourTool,
 } from '@cornerstonejs/tools';
+import { LabelmapSlicePropagationTool, MarkerLabelmapTool } from '@cornerstonejs/ai';
+import * as polySeg from '@cornerstonejs/polymorphic-segmentation';
 
 import CalibrationLineTool from './tools/CalibrationLineTool';
-// import ImageOverlayViewerTool from './tools/ImageOverlayViewerTool';
+import ImageOverlayViewerTool from './tools/ImageOverlayViewerTool';
 
 export default function initCornerstoneTools(configuration = {}) {
   CrosshairsTool.isAnnotation = false;
+  LabelmapSlicePropagationTool.isAnnotation = false;
+  MarkerLabelmapTool.isAnnotation = false;
   ReferenceLinesTool.isAnnotation = false;
   AdvancedMagnifyTool.isAnnotation = false;
   PlanarFreehandContourSegmentationTool.isAnnotation = false;
 
-  init(configuration);
+  init({
+    addons: {
+      polySeg,
+    },
+    computeWorker: {
+      autoTerminateOnIdle: {
+        enabled: false,
+      },
+    },
+  });
   addTool(PanTool);
+  addTool(SegmentBidirectionalTool);
   addTool(WindowLevelTool);
   addTool(StackScrollTool);
   addTool(VolumeRotateTool);
@@ -75,16 +98,25 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(ReferenceLinesTool);
   addTool(CalibrationLineTool);
   addTool(TrackballRotateTool);
-  // addTool(ImageOverlayViewerTool);
+  addTool(ImageOverlayViewerTool);
   addTool(AdvancedMagnifyTool);
   addTool(UltrasoundDirectionalTool);
+  addTool(UltrasoundPleuraBLineTool);
   addTool(PlanarFreehandROITool);
   addTool(SplineROITool);
   addTool(LivewireContourTool);
   addTool(OrientationMarkerTool);
   addTool(WindowLevelRegionTool);
   addTool(PlanarFreehandContourSegmentationTool);
-
+  addTool(SegmentSelectTool);
+  addTool(SegmentLabelTool);
+  addTool(LabelmapSlicePropagationTool);
+  addTool(MarkerLabelmapTool);
+  addTool(RegionSegmentPlusTool);
+  addTool(LivewireContourSegmentationTool);
+  addTool(SculptorTool);
+  addTool(SplineContourSegmentationTool);
+  addTool(LabelMapEditWithContourTool);
   // Modify annotation tools to use dashed lines on SR
   const annotationStyle = {
     textBoxFontSize: '15px',
@@ -128,15 +160,26 @@ const toolNames = {
   CircleScissors: CircleScissorsTool.toolName,
   RectangleScissors: RectangleScissorsTool.toolName,
   SphereScissors: SphereScissorsTool.toolName,
-  // ImageOverlayViewer: ImageOverlayViewerTool.toolName,
+  ImageOverlayViewer: ImageOverlayViewerTool.toolName,
   AdvancedMagnify: AdvancedMagnifyTool.toolName,
   UltrasoundDirectional: UltrasoundDirectionalTool.toolName,
+  UltrasoundAnnotation: UltrasoundPleuraBLineTool.toolName,
   SplineROI: SplineROITool.toolName,
   LivewireContour: LivewireContourTool.toolName,
   PlanarFreehandROI: PlanarFreehandROITool.toolName,
   OrientationMarker: OrientationMarkerTool.toolName,
   WindowLevelRegion: WindowLevelRegionTool.toolName,
   PlanarFreehandContourSegmentation: PlanarFreehandContourSegmentationTool.toolName,
+  SegmentBidirectional: SegmentBidirectionalTool.toolName,
+  SegmentSelect: SegmentSelectTool.toolName,
+  SegmentLabel: SegmentLabelTool.toolName,
+  LabelmapSlicePropagation: LabelmapSlicePropagationTool.toolName,
+  MarkerLabelmap: MarkerLabelmapTool.toolName,
+  RegionSegmentPlus: RegionSegmentPlusTool.toolName,
+  LivewireContourSegmentation: LivewireContourSegmentationTool.toolName,
+  SculptorTool: SculptorTool.toolName,
+  SplineContourSegmentation: SplineContourSegmentationTool.toolName,
+  LabelMapEditWithContourTool: LabelMapEditWithContourTool.toolName,
 };
 
 export { toolNames };
