@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import { utils } from '@ohif/core';
-import { ImageViewerProvider, DragAndDropProvider } from '@ohif/ui-next';
+import { ImageViewerProvider, DragAndDropProvider, LoadingIndicatorProgress } from '@ohif/ui-next';
 import { useSearchParams } from '../../hooks';
 import { useAppConfig } from '@state';
 import ViewportGrid from '@components/ViewportGrid';
@@ -121,6 +121,15 @@ export default function ModeRoute({
         params,
         query,
       });
+
+      const { toolbar: toolbarConfig } = dataSource.getConfig?.() || {};
+      if (toolbarConfig) {
+        servicesManager.services.toolbarService.setConfig({
+          ...servicesManager.services.toolbarService.getConfig(),
+          ...toolbarConfig,
+        });
+      }
+
       setStudyInstanceUIDs(dataSource.getStudyInstanceUIDs({ params, query }));
     };
 
@@ -327,7 +336,11 @@ export default function ModeRoute({
   ]);
 
   if (!studyInstanceUIDs || !layoutTemplateData.current || !ExtensionDependenciesLoaded) {
-    return null;
+    return (
+      <div className="flex flex-col items-center justify-center pt-48">
+        <LoadingIndicatorProgress className={'h-full w-full bg-black'} />
+      </div>
+    );
   }
 
   const ViewportGridWithDataSource = props => {
