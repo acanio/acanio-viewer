@@ -14,7 +14,7 @@ function AboutModalDefault() {
 
   return (
     <AboutModal className="w-[400px]">
-      <AboutModal.ProductName>OHIF Viewer</AboutModal.ProductName>
+      <AboutModal.ProductName>Acan.io Viewer</AboutModal.ProductName>
       <AboutModal.ProductVersion>{main}</AboutModal.ProductVersion>
       {beta && <AboutModal.ProductBeta>{beta}</AboutModal.ProductBeta>}
 
@@ -29,8 +29,8 @@ function AboutModalDefault() {
         />
         <AboutModal.SocialItem
           icon="SocialGithub"
-          url="OHIF/Viewers"
-          text="github.com/OHIF/Viewers"
+          url="acanio/acanio-viewer"
+          text="github.com/acanio/acanio-viewer"
         />
       </AboutModal.Body>
     </AboutModal>

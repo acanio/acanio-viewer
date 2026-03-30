@@ -1,6 +1,6 @@
 # OHIF public demo data sets
 
-The OHIF Viewer's public demo page, available at https://viewer.ohif.org/, uses publicly anonymized demo datasets.
+This project's public demo and deploy preview pages use publicly anonymized demo datasets.
 These datasets were mostly obtained from the [NIH NCI Imaging Data Commons](https://datacommons.cancer.gov/repository/imaging-data-commons)
 and [NIH NCI TCIA](https://www.cancerimagingarchive.net/). Before listing the datasets,
 we would like to extend a special thank you to all groups who have made their datasets publicly available.

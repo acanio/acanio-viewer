@@ -50,7 +50,7 @@ import { LabelmapSlicePropagationTool, MarkerLabelmapTool } from '@cornerstonejs
 import * as polySeg from '@cornerstonejs/polymorphic-segmentation';
 
 import CalibrationLineTool from './tools/CalibrationLineTool';
-import ImageOverlayViewerTool from './tools/ImageOverlayViewerTool';
+// import ImageOverlayViewerTool from './tools/ImageOverlayViewerTool';
 
 export default function initCornerstoneTools(configuration = {}) {
   CrosshairsTool.isAnnotation = false;
@@ -98,7 +98,7 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(ReferenceLinesTool);
   addTool(CalibrationLineTool);
   addTool(TrackballRotateTool);
-  addTool(ImageOverlayViewerTool);
+  // addTool(ImageOverlayViewerTool);
   addTool(AdvancedMagnifyTool);
   addTool(UltrasoundDirectionalTool);
   addTool(UltrasoundPleuraBLineTool);
@@ -160,7 +160,7 @@ const toolNames = {
   CircleScissors: CircleScissorsTool.toolName,
   RectangleScissors: RectangleScissorsTool.toolName,
   SphereScissors: SphereScissorsTool.toolName,
-  ImageOverlayViewer: ImageOverlayViewerTool.toolName,
+  // ImageOverlayViewer: ImageOverlayViewerTool.toolName,
   AdvancedMagnify: AdvancedMagnifyTool.toolName,
   UltrasoundDirectional: UltrasoundDirectionalTool.toolName,
   UltrasoundAnnotation: UltrasoundPleuraBLineTool.toolName,

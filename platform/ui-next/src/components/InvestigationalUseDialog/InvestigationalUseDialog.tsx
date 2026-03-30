@@ -70,15 +70,15 @@ const InvestigationalUseDialog = ({
           <Icons.InvestigationalUse className="h-18 w-18" />
           <div className="flex flex-col">
             <div className="text-[19px] text-white">
-              OHIF Viewer is{' '}
+              Acan.io Viewer is{' '}
               <span className="text-primary-light">{t('for investigational use only')}</span>
             </div>
             <div className="text-[13px] text-white">
               <span
                 className="text-primary-active cursor-pointer"
-                onClick={() => window.open('https://ohif.org/', '_blank')}
+                onClick={() => window.open('https://acan.io', '_blank')}
               >
-                {t('Learn more about OHIF Viewer')}
+                {t('Learn more about Acan.io Viewer')}
               </span>
             </div>
           </div>
