@@ -5,8 +5,9 @@ import { Button } from '../Button';
 import { cn } from '../../lib/utils';
 import { useIconPresentation } from '../../contextProviders/IconPresentationProvider';
 
-const baseClasses = '!rounded-lg inline-flex items-center justify-center';
-const defaultClasses = 'bg-transparent text-foreground/80 hover:bg-background hover:text-highlight';
+const baseClasses = '!rounded-none inline-flex items-center justify-center';
+const defaultClasses =
+  'bg-transparent text-primary-active hover:bg-primary-dark hover:text-primary-light';
 const activeClasses = 'bg-highlight text-background hover:!bg-highlight/80';
 const disabledClasses =
   'text-common-bright hover:bg-primary-dark hover:text-primary-light opacity-40 cursor-not-allowed';

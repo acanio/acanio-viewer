@@ -200,7 +200,7 @@ const Menu = (props: MenuProps) => {
         {isMenuVisible && (
           <div
             className={classNames(
-              'bg-popover/90 text-foreground flex select-none flex-col rounded px-1 py-1.5',
+              'bg-secondary-dark flex select-none flex-col rounded px-1 py-1.5 text-white opacity-90',
               menuClassName
             )}
             style={menuStyle}

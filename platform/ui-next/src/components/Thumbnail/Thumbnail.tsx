@@ -63,29 +63,32 @@ const Thumbnail = ({
       <div
         className={classnames(
           'flex h-full w-full flex-col items-center justify-center gap-[2px] p-[4px]',
-          isActive && 'bg-popover rounded'
         )}
       >
         <div className="h-[114px] w-[128px]">
-          <div className="relative bg-black">
+          <div className="relative">
             {imageSrc ? (
               <img
                 src={imageSrc}
                 alt={imageAltText}
-                className="h-[114px] w-[128px] rounded object-contain"
+                className="h-[114px] w-[128px] rounded-none object-contain"
                 crossOrigin="anonymous"
               />
             ) : (
-              <div className="bg-background h-[114px] w-[128px] rounded"></div>
+              <div className="bg-background h-[114px] w-[128px] rounded-none"></div>
             )}
 
             {/* bottom left */}
-            <div className="absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] rounded-tr pt-[10px] pb-[10px] pr-[6px] pl-[5px]">
+            <div className="bg-customblue-40 absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] p-[4px]">
               <div
                 className={classnames(
-                  'h-[10px] w-[10px] rounded-[2px]',
-                  isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary/65',
-                  loadingProgress && loadingProgress < 1 && 'bg-primary/25'
+                  'h-[10px] w-[10px] rounded-none',
+                  isActive
+                    ? 'bg-white'
+                    : isHydratedForDerivedDisplaySet
+                      ? 'bg-highlight'
+                      : 'bg-primary-light',
+                  loadingProgress && loadingProgress < 1 && 'bg-customblue-100'
                 )}
               ></div>
               <div
@@ -116,7 +119,7 @@ const Thumbnail = ({
                   <TooltipContent side="right">
                     <div className="flex flex-1 flex-row">
                       <div className="flex-2 flex items-center justify-center pr-4">
-                        <Icons.InfoLink className="text-primary" />
+                        <Icons.InfoLink className="text-primary-active" />
                       </div>
                       <div className="flex flex-1 flex-col">
                         <span>
@@ -175,13 +178,12 @@ const Thumbnail = ({
       <div
         className={classnames(
           'flex h-full w-full items-center justify-between pr-[8px] pl-[8px] pt-[4px] pb-[4px]',
-          isActive && 'bg-popover rounded'
         )}
       >
         <div className="relative flex h-[32px] w-full items-center gap-[8px] overflow-hidden">
           <div
             className={classnames(
-              'h-[32px] w-[4px] min-w-[4px] rounded',
+              'h-[32px] w-[4px] min-w-[4px] rounded-none',
               isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary/65',
               loadingProgress && loadingProgress < 1 && 'bg-primary/25'
             )}
@@ -242,7 +244,7 @@ const Thumbnail = ({
               <TooltipContent side="right">
                 <div className="flex flex-1 flex-row">
                   <div className="flex-2 flex items-center justify-center pr-4">
-                    <Icons.InfoLink className="text-primary" />
+                    <Icons.InfoLink className="text-primary-active" />
                   </div>
                   <div className="flex flex-1 flex-col">
                     <span>
@@ -269,7 +271,7 @@ const Thumbnail = ({
     <div
       className={classnames(
         className,
-        'bg-muted hover:bg-primary/30 group flex cursor-pointer select-none flex-col rounded outline-none',
+        'bg-customblue-40 hover:bg-customblue-100 group flex cursor-pointer select-none flex-col outline-none',
         viewPreset === 'thumbnails' && 'h-[170px] w-[135px]',
         viewPreset === 'list' && 'h-[40px] w-full'
       )}

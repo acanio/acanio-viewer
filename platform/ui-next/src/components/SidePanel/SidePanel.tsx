@@ -58,7 +58,8 @@ const closeIconWidth = 30;
 const gridHorizontalPadding = 10;
 const tabSpacerWidth = 2;
 
-const baseClasses = 'bg-black border-black justify-start box-content flex flex-col';
+const baseClasses =
+  'transition-all duration-300 ease-in-out bg-black border-black justify-start box-content flex flex-col';
 
 const openStateIconName = {
   left: 'SidePanelCloseLeft',
@@ -112,9 +113,7 @@ const getTabClassNames = (
   isTabDisabled: boolean
 ) =>
   classnames('h-[28px] mb-[2px] cursor-pointer text-white bg-black', {
-    'hover:text-primary': !isActiveTab && !isTabDisabled,
-    'rounded-l': tabIndex % numColumns === 0,
-    'rounded-r': (tabIndex + 1) % numColumns === 0 || tabIndex === numTabs - 1,
+    'hover:text-primary-active': !isActiveTab && !isTabDisabled,
   });
 
 const getTabStyle = (numTabs: number) => {
@@ -125,8 +124,7 @@ const getTabStyle = (numTabs: number) => {
 
 const getTabIconClassNames = (numTabs: number, isActiveTab: boolean) => {
   return classnames('h-full w-full flex items-center justify-center', {
-    'bg-primary-main': isActiveTab,
-    rounded: isActiveTab,
+    'bg-customblue-40': isActiveTab,
   });
 };
 const createStyleMap = (
@@ -285,7 +283,7 @@ const SidePanel = ({
       <>
         <div
           className={classnames(
-            'bg-secondary-dark flex h-[28px] w-full cursor-pointer items-center rounded-md',
+            'bg-secondary-dark flex h-[28px] w-full cursor-pointer items-center',
             side === 'left' ? 'justify-end pr-2' : 'justify-start pl-2'
           )}
           onClick={() => {
@@ -294,7 +292,10 @@ const SidePanel = ({
           data-cy={`side-panel-header-${side}`}
         >
           <Icons.NavigationPanelReveal
-            className={classnames('text-primary', side === 'left' && 'rotate-180 transform')}
+            className={classnames(
+              'text-primary-active',
+              side === 'left' && 'rotate-180 transform'
+            )}
           />
         </div>
         <div className={classnames('mt-3 flex flex-col space-y-3')}>
@@ -304,14 +305,14 @@ const SidePanel = ({
                 <div
                   id={`${childComponent.name}-btn`}
                   data-cy={`${childComponent.name}-btn`}
-                  className="text-primary hover:cursor-pointer"
+                  className="text-primary-active hover:cursor-pointer"
                   onClick={() => {
                     return childComponent.disabled ? null : updateActiveTabIndex(index, true);
                   }}
                 >
                   {React.createElement(Icons[childComponent.iconName] || Icons.MissingIcon, {
                     className: classnames({
-                      'text-primary': true,
+                      'text-primary-active': true,
                       'ohif-disabled': childComponent.disabled,
                     }),
                     style: {
@@ -352,7 +353,7 @@ const SidePanel = ({
         data-cy={`side-panel-header-${side}`}
       >
         {React.createElement(Icons[openStateIconName[side]] || Icons.MissingIcon, {
-          className: 'text-primary',
+          className: 'text-primary-active',
         })}
       </div>
     );
@@ -365,7 +366,7 @@ const SidePanel = ({
       <>
         {getCloseIcon()}
         <div className={classnames('flex grow justify-center')}>
-          <div className={classnames('bg-primary-dark text-primary flex flex-wrap')}>
+          <div className={classnames('bg-primary-dark text-primary-active flex flex-wrap')}>
             {tabs.map((tab, tabIndex) => {
               const { disabled } = tab;
               return (
@@ -401,7 +402,7 @@ const SidePanel = ({
                         >
                           {React.createElement(Icons[tab.iconName] || Icons.MissingIcon, {
                             className: classnames({
-                              'text-primary': true,
+                              'text-primary-active': true,
                               'ohif-disabled': disabled,
                             }),
                             style: {
@@ -429,7 +430,7 @@ const SidePanel = ({
     return (
       <div
         className={classnames(
-          'text-primary flex grow cursor-pointer select-none justify-center self-center text-[13px]'
+          'text-primary-active flex grow cursor-pointer select-none justify-center self-center text-[13px]'
         )}
         data-cy={`${tabs[0].name}-btn`}
         onClick={() => updatePanelOpen(!panelOpen)}
@@ -443,7 +444,7 @@ const SidePanel = ({
   const getOpenStateComponent = () => {
     return (
       <>
-        <div className="bg-bkg-med flex h-[40px] flex-shrink-0 select-none rounded-t p-2">
+        <div className="bg-bkg-med flex h-[40px] flex-shrink-0 select-none p-2">
           {tabs.length === 1 ? getOneTabComponent() : getTabGridComponent()}
         </div>
         <Separator

@@ -25,8 +25,7 @@ function PresetBody({ children, className }: PresetBodyProps) {
   return (
     <div
       className={cn(
-        // Adjust these classes for your desired look
-        'flex min-h-0 flex-1 flex-col rounded-md border border-white/10 bg-black p-2',
+        'bg-primary-dark border-secondary-light/30 flex min-h-0 flex-1 flex-col rounded-md border p-2',
         className
       )}
     >
@@ -91,8 +90,7 @@ interface PresetOptionProps {
 function PresetOption({ label = 'Label', className }: PresetOptionProps) {
   return (
     <div className={cn('flex flex-col items-start space-y-1', className)}>
-      {/* Default dark placeholder box (swap in an <img> if you like) */}
-      <div className="bg-popover h-16 w-24 rounded" />
+      <div className="bg-customblue-40 h-16 w-24 rounded" />
       <div className="text-muted-foreground text-left text-base">{label}</div>
     </div>
   );

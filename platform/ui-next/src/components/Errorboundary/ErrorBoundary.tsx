@@ -196,7 +196,7 @@ const DefaultFallback = ({
     >
       <DialogTitle className="invisible">{errorTitle}</DialogTitle>
       <DialogContent
-        className="bg-muted max-w-3xl overflow-hidden border-0 p-0"
+        className="bg-primary-dark max-w-3xl overflow-hidden border-0 p-0"
         onInteractOutside={e => e.preventDefault()}
       >
         <div className="p-5 pb-4">
@@ -211,7 +211,7 @@ const DefaultFallback = ({
         {code && (
           <>
             <ScrollArea className="bg-background text-foreground mx-6 h-[321px] rounded-b-md">
-              <div className="bg-background border-input flex items-center justify-between rounded-t-md border-b px-4 py-2">
+              <div className="bg-bkg-med border-secondary-light/30 flex items-center justify-between rounded-t-md border-b px-4 py-2">
                 <div className="text-muted-foreground text-base">
                   {firstFilename || 'Error Stack'}
                 </div>
@@ -241,7 +241,7 @@ const DefaultFallback = ({
         <div className="flex items-center justify-end p-6 pt-2">
           <Button
             variant="link"
-            className="text-primary p-0"
+            className="text-customblue-100 p-0"
             onClick={() =>
               window.open(
                 'https://github.com/OHIF/Viewers/issues/new?template=bug-report.yml',

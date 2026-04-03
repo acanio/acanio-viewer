@@ -240,23 +240,23 @@ const DataRowComponent = React.forwardRef<HTMLDivElement, DataRowProps>(
       >
         <div
           className={`flex items-center ${
-            isSelected ? 'bg-popover' : 'bg-muted'
+            isSelected ? 'bg-customblue-50' : 'bg-muted'
           } group relative cursor-pointer`}
           onClick={onSelect}
           data-cy="data-row"
         >
           {/* Secondary Selection Tint (below hover, always visible when secondary-selected) */}
           {isSecondarySelected && (
-            <div className="bg-primary/20 pointer-events-none absolute inset-0"></div>
+            <div className="bg-customblue-50/20 pointer-events-none absolute inset-0"></div>
           )}
 
-          <div className="bg-primary/20 pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"></div>
+          <div className="bg-customblue-50/20 pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"></div>
 
           {/* Number Box */}
           {number !== null && (
             <div
               className={`flex h-7 max-h-7 w-7 flex-shrink-0 items-center justify-center rounded-l border-r border-black text-base ${
-                isSelected ? 'bg-highlight text-black' : 'bg-muted text-muted-foreground'
+                isSelected ? 'bg-highlight text-black' : 'bg-customblue-40 text-muted-foreground'
               } overflow-hidden`}
             >
               {number}

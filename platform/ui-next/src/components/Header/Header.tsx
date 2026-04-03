@@ -70,7 +70,9 @@ function Header({
               onClick={onClickReturn}
               data-cy="return-to-work-list"
             >
-              {isReturnEnabled && <Icons.ArrowLeft className="text-primary ml-1 h-7 w-7" />}
+              {isReturnEnabled && (
+                <Icons.ArrowLeft className="text-primary-active ml-1 h-7 w-7" />
+              )}
               <div className="ml-1">
                 {WhiteLabeling?.createLogoComponentFn?.(React, props) || <Icons.OHIFLogo />}
               </div>
@@ -91,7 +93,7 @@ function Header({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-primary hover:bg-primary-dark mt-2 h-full w-full"
+                    className="text-primary-active hover:bg-primary-dark rounded-none mt-2 h-full w-full"
                   >
                     <Icons.GearSettings />
                   </Button>

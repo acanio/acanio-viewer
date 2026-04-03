@@ -33,7 +33,7 @@ module.exports = {
       inherit: 'inherit',
 
       indigo: {
-        dark: '#44626f',
+        dark: '#0b1a42',
       },
       aqua: {
         pale: '#88d3f1',

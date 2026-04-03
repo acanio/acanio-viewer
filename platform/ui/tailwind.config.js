@@ -49,7 +49,7 @@ module.exports = {
       },
 
       indigo: {
-        dark: '#44626f',
+        dark: '#0b1a42',
       },
 
       common: {
@@ -182,7 +182,7 @@ module.exports = {
         700: '#4c51bf',
         800: '#434190',
         900: '#3c366b',
-        dark: '#44626f',
+        dark: '#0b1a42',
       },
       purple: {
         100: '#faf5ff',
