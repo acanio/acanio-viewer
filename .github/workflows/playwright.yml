@@ -11,20 +11,21 @@ jobs:
   playwright-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    # Pin the render environment so visual snapshots are deterministic and
-    # match the committed baselines. Image tag must track the @playwright/test
-    # version in the lockfile (currently 1.56.1).
+    # Pinned container keeps screenshot rendering deterministic; tag tracks the
+    # @playwright/test version in the lockfile (currently 1.56.1).
     container:
       image: mcr.microsoft.com/playwright:v1.56.1-noble
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20]
+        # Shard across jobs so no single process hits the 800s globalTimeout
+        # in playwright.config.ts (same approach as master).
+        shardIndex: [1, 2, 3, 4, 5]
+        shardTotal: [5]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Git safe directory
-        # The container runs as root, so git flags the checkout as dubious
-        # ownership; whitelist it before any git-dependent step runs.
+        # Container runs as root, so git flags the checkout as dubious ownership.
         run: git config --global --add safe.directory '*'
       - name: Install unzip
         # setup-bun downloads bun as a .zip; the Playwright container ships
@@ -35,39 +36,53 @@ jobs:
           bun-version: 1.2.23
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
       - name: Install Yarn
         run: npm install -g yarn@1.22.22
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Playwright browsers
-        # Browsers and OS deps ship in the container image; this just verifies
-        # the matching browser build is present (no --with-deps / apt needed).
         run: npx playwright install
       - name: Run Playwright tests
         run: |
-          export NODE_OPTIONS="--max_old_space_size=10192"
-          bun run test:e2e:coverage
-      - name: Create directory of test results
-        if: ${{ !cancelled() }}
-        run: |
-          mkdir -p packaged-test-results
-          cp -r ./tests/test-results packaged-test-results/ || true
-          cp ./tests/playwright-report.json packaged-test-results/ || true
-      - name: Upload directory of test results artifact
+          export NODE_OPTIONS="--max_old_space_size=8192"
+          TEST_ENV=true bunx playwright test \
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
+            --reporter=blob
+      - name: Upload blob report to GitHub Actions Artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-results
-          path: packaged-test-results/
-          retention-days: 5
-      - name: create the coverage report
-        run: |
-          bun nyc report --reporter=lcov --reporter=text
-      - name: Upload the coverage report to GitHub Actions Artifacts
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
+          retention-days: 1
+
+  merge-reports:
+    if: ${{ !cancelled() }}
+    needs: [playwright-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.23
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+      - name: Merge into HTML Report
+        run: bunx playwright merge-reports --reporter html ./all-blob-reports
+      - name: Upload HTML report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report-pr
-          path: coverage
-          retention-days: 3
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 14
