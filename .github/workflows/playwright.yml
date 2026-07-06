@@ -26,6 +26,10 @@ jobs:
         # The container runs as root, so git flags the checkout as dubious
         # ownership; whitelist it before any git-dependent step runs.
         run: git config --global --add safe.directory '*'
+      - name: Install unzip
+        # setup-bun downloads bun as a .zip; the Playwright container ships
+        # without unzip, so install it first.
+        run: apt-get update && apt-get install -y unzip
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.2.23
