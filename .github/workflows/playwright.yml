@@ -10,7 +10,7 @@ concurrency:
 jobs:
   playwright-tests:
     timeout-minutes: 60
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Playwright browsers
-        run: npx playwright install
+        run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: |
           export NODE_OPTIONS="--max_old_space_size=10192"
