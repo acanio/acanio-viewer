@@ -11,12 +11,21 @@ jobs:
   playwright-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    # Pin the render environment so visual snapshots are deterministic and
+    # match the committed baselines. Image tag must track the @playwright/test
+    # version in the lockfile (currently 1.56.1).
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
     strategy:
       fail-fast: false
       matrix:
         node-version: [20]
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Git safe directory
+        # The container runs as root, so git flags the checkout as dubious
+        # ownership; whitelist it before any git-dependent step runs.
+        run: git config --global --add safe.directory '*'
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.2.23
@@ -28,7 +37,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        # Browsers and OS deps ship in the container image; this just verifies
+        # the matching browser build is present (no --with-deps / apt needed).
+        run: npx playwright install
       - name: Run Playwright tests
         run: |
           export NODE_OPTIONS="--max_old_space_size=10192"
