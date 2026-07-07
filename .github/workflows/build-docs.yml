@@ -2,7 +2,7 @@ name: Build and Deploy Docs
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 env:
   ACTIONS_STEP_DEBUG: true

@@ -8,8 +8,6 @@ provided by the Open Health Imaging Foundation (OHIF). It is a configurable and 
 
 <hr />
 
-[![Render Status][render-image]][render-url]
-
 ## About
 
 Acan.io, built on top of the OHIF Viewer v3 that is for viewing medical images.
@@ -164,9 +162,6 @@ you'll see the following:
   -->
 
 <!-- prettier-ignore-start -->
-<!-- Badges -->
-[render-image]: https://img.shields.io/badge/Render-Preview-4ea4c4
-[render-url]: https://acanio-viewer.onrender.com
 <!-- Links -->
 [monorepo]: https://en.wikipedia.org/wiki/Monorepo
 [how-to-fork]: https://help.github.com/en/articles/fork-a-repo
