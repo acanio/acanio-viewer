@@ -17,7 +17,7 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'border-input text-foreground ring-offset-background placeholder:text-muted-foreground focus:ring-customblue-100 [&>span]:line-clamp-1 hover:bg-primary/10 flex h-7 w-full items-center justify-between whitespace-nowrap rounded border px-2 py-2 text-base shadow-sm focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50',
+      'border-input text-foreground ring-offset-background placeholder:text-muted-foreground focus:ring-customblue-100 hover:bg-primary/10 flex h-7 w-full min-w-0 items-center justify-between rounded border bg-transparent px-2 py-2 text-base shadow-sm focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:truncate',
       className
     )}
     {...props}
@@ -64,8 +64,8 @@ const SelectContent = React.forwardRef<
 >(({ className, children, position = 'popper', ...props }, ref) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
-      ref={ref}
-      className={cn(
+    ref={ref}
+    className={cn(
         'bg-primary-dark text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-input relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded border shadow-md',
         position === 'popper' &&
           'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
@@ -119,7 +119,13 @@ const SelectItem = React.forwardRef<
         <CheckIcon className="h-4 w-4" />
       </SelectPrimitive.ItemIndicator>
     </span>
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    {typeof children === 'string' ? (
+      <SelectPrimitive.ItemText>
+        <span className="truncate">{children}</span>
+      </SelectPrimitive.ItemText>
+    ) : (
+      children
+    )}
   </SelectPrimitive.Item>
 ));
 SelectItem.displayName = SelectPrimitive.Item.displayName;

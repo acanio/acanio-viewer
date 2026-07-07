@@ -14,4 +14,3 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # [1.0.0-beta.1](https://github.com/acanio/acanio-viewer/compare/v1.0.0-beta.1) (2024-03-26)
 
 # [1.0.0-beta.0](https://github.com/acanio/acanio-viewer/compare/v1.0.0-beta.0) (2024-03-01)
-

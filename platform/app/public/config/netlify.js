@@ -1,150 +1,137 @@
 /** @type {AppTypes.Config} */
 
 window.config = {
-  routerBasename: '/',
+  routerBasename: null,
   extensions: [],
   modes: [],
-  customizationService: {
-    cornerstoneViewportActionBar: {
-      disabled: true,
-    },
-    cornerstoneOverlayTopLeft: {
-      id: 'cornerstoneOverlayTopLeft',
-      items: [
+  customizationService: [
+    {
+      cornerstoneViewportActionBar: {
+        disabled: true,
+      },
+      'viewportOverlay.topLeft': [
         {
           id: 'PatientName',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
-          condition: ({ instance }) =>
-              instance && instance.PatientName && (typeof instance.PatientName === 'string' || instance.PatientName.Alphabetic),
-          contentF: ({ instance, formatters: { formatPN } }) =>
-              (typeof instance.PatientName === 'string' ? formatPN(instance.PatientName) : formatPN(instance.PatientName.Alphabetic)) +
-              ' ' +
-              (instance.PatientSex ? '(' + instance.PatientSex + ')' : ''),
+          condition: ({ referenceInstance }) =>
+            referenceInstance && referenceInstance.PatientName && (typeof referenceInstance.PatientName === 'string' || referenceInstance.PatientName.Alphabetic),
+          contentF: ({ referenceInstance, formatters: { formatPN } }) =>
+            (typeof referenceInstance.PatientName === 'string' ? formatPN(referenceInstance.PatientName) : formatPN(referenceInstance.PatientName.Alphabetic)) +
+            ' ' +
+            (referenceInstance.PatientSex ? '(' + referenceInstance.PatientSex + ')' : ''),
         },
         {
           id: 'PID',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
           title: 'Patient PID',
-          condition: ({ instance }) => instance && instance.PatientID,
-          contentF: ({ instance }) => instance.PatientID,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.PatientID,
+          contentF: ({ referenceInstance }) => referenceInstance.PatientID,
         },
         {
           id: 'PatientBirthDate',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'DOB:',
           title: "Patient's Date of birth",
-          condition: ({ instance }) => instance && instance.PatientBirthDate,
-          contentF: ({ instance }) => instance.PatientBirthDate,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.PatientBirthDate,
+          contentF: ({ referenceInstance }) => referenceInstance.PatientBirthDate,
         },
         {
           id: 'OtherPid',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Other PID:',
           title: 'Other Patient IDs',
-          condition: ({ instance }) => instance && instance.OtherPatientIDs,
-          contentF: ({ instance, formatters: { formatPN } }) => formatPN(instance.OtherPatientIDs),
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.OtherPatientIDs,
+          contentF: ({ referenceInstance, formatters: { formatPN } }) => formatPN(referenceInstance.OtherPatientIDs),
         },
       ],
-    },
-    cornerstoneOverlayTopRight: {
-      id: 'cornerstoneOverlayTopRight',
-
-      items: [
+      'viewportOverlay.topRight': [
         {
           id: 'SeriesDescription',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
           title: 'Series Description',
-          condition: ({ instance }) => instance && instance.SeriesDescription,
-          contentF: ({ instance }) => instance.SeriesDescription,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SeriesDescription,
+          contentF: ({ referenceInstance }) => referenceInstance.SeriesDescription,
         },
         {
           id: 'StudyDateTime',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
           title: 'Study date',
-          condition: ({ instance }) => instance && (instance.StudyDate || instance.StudyTime),
-          contentF: ({ instance, formatters: { formatDate, formatTime } }) =>
-              [
-                instance.StudyDate ? formatDate(instance.StudyDate) : '',
-                instance.StudyTime ? formatTime(instance.StudyTime) : ''
-              ].join(' '),
+          condition: ({ referenceInstance }) => referenceInstance && (referenceInstance.StudyDate || referenceInstance.StudyTime),
+          contentF: ({ referenceInstance, formatters: { formatDate, formatTime } }) =>
+            [
+              referenceInstance.StudyDate ? formatDate(referenceInstance.StudyDate) : '',
+              referenceInstance.StudyTime ? formatTime(referenceInstance.StudyTime) : ''
+            ].join(' '),
         },
       ],
-    },
-    cornerstoneOverlayBottomLeft: {
-      id: 'cornerstoneOverlayBottomLeft',
-
-      items: [
+      'viewportOverlay.bottomLeft': [
         {
           id: 'SeriesNumber',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Ser:',
           title: 'Series Number',
-          condition: ({ instance }) => instance && instance.SeriesNumber,
-          contentF: ({ instance }) => instance.SeriesNumber,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SeriesNumber,
+          contentF: ({ referenceInstance }) => referenceInstance.SeriesNumber,
         },
         {
-          id: 'InstanceNmber',
-          customizationType: 'ohif.overlayItem.instanceNumber',
+          id: 'InstanceNumber',
+          inheritsFrom: 'ohif.overlayItem.instanceNumber',
           color: '#fff',
         },
         {
           id: 'ColumnsRows',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
-          condition: ({ instance }) => instance && instance.Columns && instance.Rows,
-          contentF: ({ instance }) => `${instance.Columns} x ${instance.Rows}`,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.Columns && referenceInstance.Rows,
+          contentF: ({ referenceInstance }) => `${referenceInstance.Columns} x ${referenceInstance.Rows}`,
         },
         {
           id: 'SliceLocation',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Loc:',
           title: 'Slice Location',
-          condition: ({ instance }) => instance && instance.SliceLocation,
-          contentF: ({ instance, formatters: { formatNumberPrecision } }) =>
-              formatNumberPrecision(instance.SliceLocation, 2) + ' mm',
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SliceLocation,
+          contentF: ({ referenceInstance, formatters: { formatNumberPrecision } }) =>
+            formatNumberPrecision(referenceInstance.SliceLocation, 2) + ' mm',
         },
         {
           id: 'SliceThickness',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Thick:',
           title: 'Slice Thickness',
-          condition: ({ instance }) => instance && instance.SliceThickness,
-          contentF: ({ instance, formatters: { formatNumberPrecision } }) =>
-              formatNumberPrecision(instance.SliceThickness, 2) + ' mm',
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SliceThickness,
+          contentF: ({ referenceInstance, formatters: { formatNumberPrecision } }) =>
+            formatNumberPrecision(referenceInstance.SliceThickness, 2) + ' mm',
         },
       ],
-    },
-    cornerstoneOverlayBottomRight: {
-      id: 'cornerstoneOverlayBottomRight',
-
-      items: [
+      'viewportOverlay.bottomRight': [
         {
           id: 'ZoomLevel',
-          customizationType: 'ohif.overlayItem.zoomLevel',
+          inheritsFrom: 'ohif.overlayItem.zoomLevel',
           color: '#fff',
         },
         {
           id: 'WindowLevel',
-          customizationType: 'ohif.overlayItem.windowLevel',
+          inheritsFrom: 'ohif.overlayItem.windowLevel',
           color: '#fff',
         },
       ],
     },
-  },
+  ],
   showStudyList: true,
   // below flag is for performance reasons, but it might not work for all servers
   showWarningMessageForCrossOrigin: true,
@@ -301,45 +288,42 @@ window.config = {
     console.warn(error);
   },
   whiteLabeling: {
-    /* Optional: Should return a React component to be rendered in the "Logo" section of the application's Top Navigation bar */
     createLogoComponentFn: function (React) {
       return React.createElement(
-          'a',
+        'a',
+        {
+          target: '_blank',
+          href: 'https://acan.io',
+        },
+        React.createElement(
+          'div',
           {
-            target: '_blank',
-            href: 'https://acan.io',
+            className: 'h-8',
+            style: {
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            },
           },
+          React.createElement('img', {
+            src: './assets/acanio.svg',
+            className: 'w-10 h-10',
+            style: {
+              display: 'inline-block',
+            },
+          }),
           React.createElement(
-              'div',
-              {
-                className: 'h-8',
-                style: {
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                },
+            'span',
+            {
+              className: 'ml-3 text-xl',
+              style: {
+                color: '#fff',
+                marginRight: '250px',
               },
-              React.createElement(
-                  'img',
-                  {
-                    src: '/assets/acanio.svg',
-                    className: 'w-10 h-10',
-                    style: {
-                      display: 'inline-block',
-                    },
-                  }),
-              React.createElement(
-                  'span',
-                  {
-                    className: 'ml-3 text-xl',
-                    style: {
-                      color: '#fff',
-                      marginRight: '250px',
-                    },
-                  },
-                  'Acan.io Viewer'
-              )
+            },
+            'Acan.io Viewer'
           )
+        )
       );
     },
   },
@@ -373,18 +357,12 @@ window.config = {
     { commandName: 'resetViewport', label: 'Reset', keys: ['space'] },
     { commandName: 'nextImage', label: 'Next Image', keys: ['down'] },
     { commandName: 'previousImage', label: 'Previous Image', keys: ['up'] },
-    // {
-    //   commandName: 'previousViewportDisplaySet',
-    //   label: 'Previous Series',
-    //   keys: ['pagedown'],
-    // },
-    // {
-    //   commandName: 'nextViewportDisplaySet',
-    //   label: 'Next Series',
-    //   keys: ['pageup'],
-    // },
-    { commandName: 'setZoomTool', label: 'Zoom', keys: ['z'] },
-    // ~ Window level presets
+    {
+      commandName: 'setToolActive',
+      commandOptions: { toolName: 'Zoom' },
+      label: 'Zoom',
+      keys: ['z'],
+    },
     {
       commandName: 'windowLevelPreset1',
       label: 'W/L Preset 1',
@@ -440,169 +418,96 @@ window.config = {
           id: 'scroll',
           title: 'Scrolling Through Images',
           text: 'You can scroll through the images using the mouse wheel or scrollbar.',
-          attachTo: {
-            element: '.viewport-element',
-            on: 'top',
-          },
-          advanceOn: {
-            selector: '.cornerstone-viewport-element',
-            event: 'CORNERSTONE_TOOLS_MOUSE_WHEEL',
-          },
+          attachTo: { element: '.viewport-element', on: 'top' },
+          advanceOn: { selector: '.cornerstone-viewport-element', event: 'CORNERSTONE_TOOLS_MOUSE_WHEEL' },
           beforeShowPromise: () => waitForElement('.viewport-element'),
         },
         {
           id: 'zoom',
           title: 'Zooming In and Out',
           text: 'You can zoom the images using the right click.',
-          attachTo: {
-            element: '.viewport-element',
-            on: 'left',
-          },
-          advanceOn: {
-            selector: '.cornerstone-viewport-element',
-            event: 'CORNERSTONE_TOOLS_MOUSE_UP',
-          },
+          attachTo: { element: '.viewport-element', on: 'left' },
+          advanceOn: { selector: '.cornerstone-viewport-element', event: 'CORNERSTONE_TOOLS_MOUSE_UP' },
           beforeShowPromise: () => waitForElement('.viewport-element'),
         },
         {
           id: 'pan',
           title: 'Panning the Image',
           text: 'You can pan the images using the middle click.',
-          attachTo: {
-            element: '.viewport-element',
-            on: 'top',
-          },
-          advanceOn: {
-            selector: '.cornerstone-viewport-element',
-            event: 'CORNERSTONE_TOOLS_MOUSE_UP',
-          },
+          attachTo: { element: '.viewport-element', on: 'top' },
+          advanceOn: { selector: '.cornerstone-viewport-element', event: 'CORNERSTONE_TOOLS_MOUSE_UP' },
           beforeShowPromise: () => waitForElement('.viewport-element'),
         },
         {
           id: 'windowing',
           title: 'Adjusting Window Level',
           text: 'You can modify the window level using the left click.',
-          attachTo: {
-            element: '.viewport-element',
-            on: 'left',
-          },
-          advanceOn: {
-            selector: '.cornerstone-viewport-element',
-            event: 'CORNERSTONE_TOOLS_MOUSE_UP',
-          },
+          attachTo: { element: '.viewport-element', on: 'left' },
+          advanceOn: { selector: '.cornerstone-viewport-element', event: 'CORNERSTONE_TOOLS_MOUSE_UP' },
           beforeShowPromise: () => waitForElement('.viewport-element'),
         },
         {
           id: 'length',
           title: 'Using the Measurement Tools',
           text: 'You can measure the length of a region using the Length tool.',
-          attachTo: {
-            element: '[data-cy="MeasurementTools-split-button-primary"]',
-            on: 'bottom',
-          },
-          advanceOn: {
-            selector: '[data-cy="MeasurementTools-split-button-primary"]',
-            event: 'click',
-          },
-          beforeShowPromise: () =>
-            waitForElement('[data-cy="MeasurementTools-split-button-primary]'),
+          attachTo: { element: '[data-cy="MeasurementTools-split-button-primary"]', on: 'bottom' },
+          advanceOn: { selector: '[data-cy="MeasurementTools-split-button-primary"]', event: 'click' },
+          beforeShowPromise: () => waitForElement('[data-cy="MeasurementTools-split-button-primary]'),
         },
         {
           id: 'drawAnnotation',
           title: 'Drawing Length Annotations',
           text: 'Use the length tool on the viewport to measure the length of a region.',
-          attachTo: {
-            element: '.viewport-element',
-            on: 'right',
-          },
-          advanceOn: {
-            selector: 'body',
-            event: 'event::measurement_added',
-          },
+          attachTo: { element: '.viewport-element', on: 'right' },
+          advanceOn: { selector: 'body', event: 'event::measurement_added' },
           beforeShowPromise: () => waitForElement('.viewport-element'),
         },
         {
           id: 'trackMeasurement',
           title: 'Tracking Measurements in the Panel',
           text: 'Click yes to track the measurements in the measurement panel.',
-          attachTo: {
-            element: '[data-cy="prompt-begin-tracking-yes-btn"]',
-            on: 'bottom',
-          },
-          advanceOn: {
-            selector: '[data-cy="prompt-begin-tracking-yes-btn"]',
-            event: 'click',
-          },
+          attachTo: { element: '[data-cy="prompt-begin-tracking-yes-btn"]', on: 'bottom' },
+          advanceOn: { selector: '[data-cy="prompt-begin-tracking-yes-btn"]', event: 'click' },
           beforeShowPromise: () => waitForElement('[data-cy="prompt-begin-tracking-yes-btn"]'),
         },
         {
           id: 'openMeasurementPanel',
           title: 'Opening the Measurements Panel',
           text: 'Click the measurements button to open the measurements panel.',
-          attachTo: {
-            element: '#trackedMeasurements-btn',
-            on: 'left-start',
-          },
-          advanceOn: {
-            selector: '#trackedMeasurements-btn',
-            event: 'click',
-          },
+          attachTo: { element: '#trackedMeasurements-btn', on: 'left-start' },
+          advanceOn: { selector: '#trackedMeasurements-btn', event: 'click' },
           beforeShowPromise: () => waitForElement('#trackedMeasurements-btn'),
         },
         {
           id: 'scrollAwayFromMeasurement',
           title: 'Scrolling Away from a Measurement',
           text: 'Scroll the images using the mouse wheel away from the measurement.',
-          attachTo: {
-            element: '.viewport-element',
-            on: 'left',
-          },
-          advanceOn: {
-            selector: '.cornerstone-viewport-element',
-            event: 'CORNERSTONE_TOOLS_MOUSE_WHEEL',
-          },
+          attachTo: { element: '.viewport-element', on: 'left' },
+          advanceOn: { selector: '.cornerstone-viewport-element', event: 'CORNERSTONE_TOOLS_MOUSE_WHEEL' },
           beforeShowPromise: () => waitForElement('.viewport-element'),
         },
         {
           id: 'jumpToMeasurement',
           title: 'Jumping to Measurements in the Panel',
           text: 'Click the measurement in the measurement panel to jump to it.',
-          attachTo: {
-            element: '[data-cy="data-row"]',
-            on: 'left-start',
-          },
-          advanceOn: {
-            selector: '[data-cy="data-row"]',
-            event: 'click',
-          },
+          attachTo: { element: '[data-cy="data-row"]', on: 'left-start' },
+          advanceOn: { selector: '[data-cy="data-row"]', event: 'click' },
           beforeShowPromise: () => waitForElement('[data-cy="data-row"]'),
         },
         {
           id: 'changeLayout',
           title: 'Changing Layout',
           text: 'You can change the layout of the viewer using the layout button.',
-          attachTo: {
-            element: '[data-cy="Layout"]',
-            on: 'bottom',
-          },
-          advanceOn: {
-            selector: '[data-cy="Layout"]',
-            event: 'click',
-          },
+          attachTo: { element: '[data-cy="Layout"]', on: 'bottom' },
+          advanceOn: { selector: '[data-cy="Layout"]', event: 'click' },
           beforeShowPromise: () => waitForElement('[data-cy="Layout"]'),
         },
         {
           id: 'selectLayout',
           title: 'Selecting the MPR Layout',
           text: 'Select the MPR layout to view the images in MPR mode.',
-          attachTo: {
-            element: '[data-cy="MPR"]',
-            on: 'left-start',
-          },
-          advanceOn: {
-            selector: '[data-cy="MPR"]',
-            event: 'click',
-          },
+          attachTo: { element: '[data-cy="MPR"]', on: 'left-start' },
+          advanceOn: { selector: '[data-cy="MPR"]', event: 'click' },
           beforeShowPromise: () => waitForElement('[data-cy="MPR"]'),
         },
       ],
@@ -612,9 +517,7 @@ window.config = {
           buttons: [
             {
               text: 'Skip all',
-              action() {
-                this.complete();
-              },
+              action() { this.complete(); },
               secondary: true,
             },
           ],

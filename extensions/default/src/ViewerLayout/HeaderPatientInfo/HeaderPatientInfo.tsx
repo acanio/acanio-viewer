@@ -38,12 +38,9 @@ function HeaderPatientInfo({ servicesManager, appConfig }: withAppTypes) {
   const formattedPatientName = formatWithEllipsis(patientInfo.PatientName, 27);
   const formattedPatientID = formatWithEllipsis(patientInfo.PatientID, 15);
 
-  // Disabled intentionally
-  return null;
-
   return (
     <div
-      className="hover:bg-primary-dark flex cursor-pointer items-center justify-center gap-1 rounded-lg"
+      className="hover:bg-primary-dark flex cursor-pointer items-center justify-center gap-1 rounded-none"
       onClick={handleOnClick}
     >
       {isMixedPatients ? (
@@ -69,7 +66,7 @@ function HeaderPatientInfo({ servicesManager, appConfig }: withAppTypes) {
           </div>
         )}
       </div>
-      <Icons.ChevronPatient className={`text-primary-active ${expanded ? 'rotate-180' : ''}`} />
+      <Icons.ArrowLeft className={`text-primary-active ${expanded ? 'rotate-180' : ''}`} />
     </div>
   );
 }

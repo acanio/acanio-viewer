@@ -11,10 +11,22 @@ interface DoubleSliderProps {
   step?: number;
   defaultValue?: [number, number];
   onValueChange?: (value: [number, number]) => void;
+  showNumberInputs?: boolean;
 }
 
 const DoubleSlider = React.forwardRef<HTMLDivElement, DoubleSliderProps>(
-  ({ className, min, max, step = 1, defaultValue = [min, max], onValueChange }, ref) => {
+  (
+    {
+      className,
+      min,
+      max,
+      onValueChange,
+      step = 1,
+      defaultValue = [min, max],
+      showNumberInputs = false,
+    },
+    ref
+  ) => {
     const [value, setValue] = React.useState<[number, number]>(defaultValue);
 
     const prevDefaultValueRef = React.useRef<[number, number] | null>(null);
@@ -77,16 +89,18 @@ const DoubleSlider = React.forwardRef<HTMLDivElement, DoubleSliderProps>(
         ref={ref}
         className={cn('flex w-full items-center space-x-2', className)}
       >
-        <Input
-          type="number"
-          value={formatValue(value[0])}
-          onChange={e => handleInputChange(0, e.target.value)}
-          onBlur={() => handleInputChange(0, value[0].toString())}
-          className="w-14"
-          min={min}
-          max={max}
-          step={step}
-        />
+        {showNumberInputs && (
+          <Input
+            type="number"
+            value={formatValue(value[0])}
+            onChange={e => handleInputChange(0, e.target.value)}
+            onBlur={() => handleInputChange(0, value[0].toString())}
+            className="w-14"
+            min={min}
+            max={max}
+            step={step}
+          />
+        )}
         <SliderPrimitive.Root
           className="relative flex h-4 w-full touch-none select-none items-center"
           min={min}
@@ -95,22 +109,24 @@ const DoubleSlider = React.forwardRef<HTMLDivElement, DoubleSliderProps>(
           value={value}
           onValueChange={handleSliderChange}
         >
-          <SliderPrimitive.Track className="bg-customblue-50 relative h-1 w-full grow overflow-hidden rounded-full">
-            <SliderPrimitive.Range className="bg-customblue-50 absolute h-full" />
+          <SliderPrimitive.Track className="bg-primary/30 relative h-1 w-full grow overflow-hidden rounded-full">
+            <SliderPrimitive.Range className="bg-primary absolute h-full" />
           </SliderPrimitive.Track>
-          <SliderPrimitive.Thumb className="border-background bg-customblue-100 focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
-          <SliderPrimitive.Thumb className="border-background bg-customblue-100 focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
+          <SliderPrimitive.Thumb className="border-background bg-primary focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
+          <SliderPrimitive.Thumb className="border-background bg-primary focus-visible:ring-ring block h-4 w-4 rounded-full border-2 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
         </SliderPrimitive.Root>
-        <Input
-          type="number"
-          value={formatValue(value[1])}
-          onChange={e => handleInputChange(1, e.target.value)}
-          onBlur={() => handleInputChange(1, value[1].toString())}
-          className="w-14"
-          min={min}
-          max={max}
-          step={step}
-        />
+        {showNumberInputs && (
+          <Input
+            type="number"
+            value={formatValue(value[1])}
+            onChange={e => handleInputChange(1, e.target.value)}
+            onBlur={() => handleInputChange(1, value[1].toString())}
+            className="w-14"
+            min={min}
+            max={max}
+            step={step}
+          />
+        )}
       </div>
     );
   }

@@ -3,8 +3,7 @@ import { cache as cs3DCache, Enums, volumeLoader } from '@cornerstonejs/core';
 
 import getCornerstoneViewportType from '../../utils/getCornerstoneViewportType';
 import { StackViewportData, VolumeViewportData } from '../../types/CornerstoneCacheService';
-
-const VOLUME_LOADER_SCHEME = 'cornerstoneStreamingImageVolume';
+import { VOLUME_LOADER_SCHEME } from '../../constants';
 
 class CornerstoneCacheService {
   static REGISTRATION = {
@@ -108,7 +107,7 @@ class CornerstoneCacheService {
 
         volume.imageIds.forEach(imageId => {
           if (cs3DCache.getImageLoadObject(imageId)) {
-            cs3DCache.removeImageLoadObject(imageId);
+            cs3DCache.removeImageLoadObject(imageId, { force: true });
           }
         });
       }
@@ -234,7 +233,7 @@ class CornerstoneCacheService {
     for (const displaySet of displaySets) {
       const { Modality } = displaySet;
       const isParametricMap = Modality === 'PMAP';
-      const isSeg = Modality === 'SEG';
+      const isSegOrRtstruct = Modality === 'SEG' || Modality === 'RTSTRUCT';
 
       // Don't create volumes for the displaySets that have custom load
       // function (e.g., SEG, RT, since they rely on the reference volumes
@@ -277,7 +276,7 @@ class CornerstoneCacheService {
 
       // Parametric maps do not have image ids but they already have volume data
       // therefore a new volume should not be created.
-      if (!isParametricMap && !isSeg && (!volumeImageIds || !volume)) {
+      if (!isParametricMap && !isSegOrRtstruct && (!volumeImageIds || !volume)) {
         volumeImageIds = this._getCornerstoneVolumeImageIds(displaySet, dataSource);
 
         volume = await volumeLoader.createAndCacheVolume(volumeId, {

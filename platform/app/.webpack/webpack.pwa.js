@@ -24,12 +24,14 @@ const PROXY_TARGET = process.env.PROXY_TARGET;
 const PROXY_DOMAIN = process.env.PROXY_DOMAIN;
 const PROXY_PATH_REWRITE_FROM = process.env.PROXY_PATH_REWRITE_FROM;
 const PROXY_PATH_REWRITE_TO = process.env.PROXY_PATH_REWRITE_TO;
+const IS_COVERAGE = process.env.COVERAGE === 'true';
 
 const OHIF_PORT = Number(process.env.OHIF_PORT || 3000);
 const ENTRY_TARGET = process.env.ENTRY_TARGET || `${SRC_DIR}/index.js`;
 const Dotenv = require('dotenv-webpack');
 const writePluginImportFile = require('./writePluginImportsFile.js');
 // const MillionLint = require('@million/lint');
+const open = process.env.OHIF_OPEN !== 'false';
 
 const copyPluginFromExtensions = writePluginImportFile(SRC_DIR, DIST_DIR);
 
@@ -100,6 +102,10 @@ module.exports = (env, argv) => {
               ignore: ['**/config/**', '**/html-templates/**', '.DS_Store'],
             },
           },
+          {
+            from: '../../../node_modules/onnxruntime-web/dist',
+            to: `${DIST_DIR}/ort`,
+          },
           // Short term solution to make sure GCloud config is available in output
           // for our docker implementation
           {
@@ -110,14 +116,6 @@ module.exports = (env, argv) => {
           {
             from: `${PUBLIC_DIR}/${APP_CONFIG}`,
             to: `${DIST_DIR}/app-config.js`,
-          },
-          // Copy Dicom Microscopy Viewer build files
-          {
-            from: '../../../node_modules/dicom-microscopy-viewer/dist/dynamic-import',
-            to: DIST_DIR,
-            globOptions: {
-              ignore: ['**/*.min.js.map'],
-            },
           },
         ],
       }),
@@ -130,14 +128,18 @@ module.exports = (env, argv) => {
         },
       }),
       // Generate a service worker for fast local loads
-      new InjectManifest({
-        swDest: 'sw.js',
-        swSrc: path.join(SRC_DIR, 'service-worker.js'),
-        // Need to exclude the theme as it is updated independently
-        exclude: [/theme/],
-        // Cache large files for the manifests to avoid warning messages
-        maximumFileSizeToCacheInBytes: 1024 * 1024 * 50,
-      }),
+      ...(IS_COVERAGE
+        ? []
+        : [
+            new InjectManifest({
+              swDest: 'sw.js',
+              swSrc: path.join(SRC_DIR, 'service-worker.js'),
+              // Need to exclude the theme as it is updated independently
+              exclude: [/theme/],
+              // Cache large files for the manifests to avoid warning messages
+              maximumFileSizeToCacheInBytes: 1024 * 1024 * 50,
+            }),
+          ]),
     ],
     // https://webpack.js.org/configuration/dev-server/
     devServer: {
@@ -146,14 +148,16 @@ module.exports = (env, argv) => {
       // compress: true,
       // http2: true,
       // https: true,
-      open: true,
+      open,
       port: OHIF_PORT,
       client: {
         overlay: { errors: true, warnings: false },
       },
-      proxy: {
-        '/dicomweb': 'http://localhost:5000',
-      },
+      proxy: [
+        {
+          '/dicomweb': 'http://localhost:5000',
+        },
+      ],
       static: [
         {
           directory: '../../testdata',
@@ -180,15 +184,16 @@ module.exports = (env, argv) => {
 
   if (hasProxy) {
     mergedConfig.devServer.proxy = mergedConfig.devServer.proxy || {};
-    mergedConfig.devServer.proxy = {
-      [PROXY_TARGET]: {
+    mergedConfig.devServer.proxy = [
+      {
+        context: [PROXY_PATH_REWRITE_FROM || '/dicomweb'],
         target: PROXY_DOMAIN,
         changeOrigin: true,
         pathRewrite: {
           [`^${PROXY_PATH_REWRITE_FROM}`]: PROXY_PATH_REWRITE_TO,
         },
       },
-    };
+    ];
   }
 
   if (isProdBuild) {
