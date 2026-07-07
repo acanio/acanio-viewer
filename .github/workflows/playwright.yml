@@ -19,9 +19,10 @@ jobs:
       fail-fast: false
       matrix:
         # Shard across jobs so no single process hits the 800s globalTimeout
-        # in playwright.config.ts (same approach as master).
-        shardIndex: [1, 2, 3, 4, 5]
-        shardTotal: [5]
+        # in playwright.config.ts. Workers=1 per shard (see config), so use many
+        # shards for parallelism.
+        shardIndex: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        shardTotal: [10]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Git safe directory
@@ -47,8 +48,7 @@ jobs:
         run: |
           export NODE_OPTIONS="--max_old_space_size=8192"
           TEST_ENV=true bunx playwright test \
-            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} \
-            --reporter=blob
+            --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - name: Upload blob report to GitHub Actions Artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
