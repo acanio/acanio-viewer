@@ -122,7 +122,7 @@ export const SegmentationTableRoot = (props: SegmentationTableProps) => {
           {hasConfigComponent && (
             <div className="ml-auto mr-2">
               <Icons.Settings
-                className="text-primary h-4 w-4"
+                className={`h-4 w-4 ${showConfig ? 'text-highlight' : 'text-primary-active'}`}
                 onClick={e => {
                   e.stopPropagation();
                   toggleShowConfig();
