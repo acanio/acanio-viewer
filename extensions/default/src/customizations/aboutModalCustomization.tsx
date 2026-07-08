@@ -7,8 +7,7 @@ function AboutModalDefault() {
   const { t } = useTranslation('AboutModal');
   const { os, version, name } = detect();
   const browser = `${name[0].toUpperCase()}${name.substr(1)} ${version}`;
-  const versionNumber = process.env.VERSION_NUMBER;
-  const commitHash = process.env.COMMIT_HASH;
+  const versionNumber = process.env.PRODUCT_VERSION_NUMBER;
 
   const [main, beta] = versionNumber.split('-');
 
@@ -19,10 +18,6 @@ function AboutModalDefault() {
       {beta && <AboutModal.ProductBeta>{beta}</AboutModal.ProductBeta>}
 
       <AboutModal.Body>
-        <AboutModal.DetailItem
-          label={t('Commit Hash')}
-          value={commitHash}
-        />
         <AboutModal.DetailItem
           label={t('Current Browser & OS')}
           value={`${browser}, ${os}`}
