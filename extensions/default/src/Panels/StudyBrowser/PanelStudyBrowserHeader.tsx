@@ -14,9 +14,10 @@ function PanelStudyBrowserHeader({
   actionIcons: actionIcon[];
   updateActionIconValue: (actionIcon: actionIcon) => void;
 }) {
+  // Button order: Settings button then List view mode (thumbnails vs. list)
   return (
     <>
-      <div className="bg-customblue-20 flex h-[40px] select-none rounded-t p-2">
+      <div className="bg-primary-dark flex h-[40px] select-none p-2">
         <div className={'flex h-[24px] w-full select-none justify-center self-center text-[14px]'}>
           <div className="flex w-full items-center gap-[10px]">
             <div className="flex items-center justify-center">
@@ -25,7 +26,7 @@ function PanelStudyBrowserHeader({
                   React.createElement(Icons[icon.iconName] || Icons.MissingIcon, {
                     key: index,
                     onClick: () => updateActionIconValue(icon),
-                    className: `cursor-pointer`,
+                    className: 'text-primary-active cursor-pointer',
                   })
                 )}
               </div>

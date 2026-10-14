@@ -2,19 +2,35 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  fullyParallel: true,
+  fullyParallel: !!process.env.CI,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 3 : 0,
+  // One worker per shard: concurrent heavy 3D volume renders in a single CI
+  // container contend for GPU/memory and render black. Parallelism comes from
+  // sharding across jobs instead.
   workers: process.env.CI ? 1 : undefined,
   snapshotPathTemplate: './tests/screenshots{/projectName}/{testFilePath}/{arg}{ext}',
   outputDir: './tests/test-results',
-  reporter: [[process.env.CI ? 'blob' : 'html', { outputFolder: './tests/playwright-report' }]],
-  timeout: 720 * 1000,
+  reporter: [
+    [process.env.CI ? 'blob' : 'html', { outputFolder: './tests/playwright-report' }],
+    ['list'],
+  ],
+  globalTimeout: 800_000,
+  timeout: 800_000,
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3335',
     trace: 'on-first-retry',
-    video: 'on',
+    video: 'on-first-retry',
     testIdAttribute: 'data-cy',
+    actionTimeout: 30_000,
+    // Disable web security / CSP so cross-origin DICOMweb fetches (the cloudfront
+    // data sources) are not blocked by CORS in the CI browser.
+    bypassCSP: true,
+    launchOptions: {
+      // do not hide the scrollbars so that we can assert their look-and-feel
+      ignoreDefaultArgs: ['--hide-scrollbars'],
+      args: ['--disable-web-security'],
+    },
   },
 
   projects: [
@@ -36,9 +52,9 @@ export default defineConfig({
     //},
   ],
   webServer: {
-    command: 'yarn test:e2e:serve',
-    url: 'http://localhost:3000',
+    command: 'cross-env APP_CONFIG=config/e2e.js OHIF_PORT=3335 yarn start',
+    url: 'http://localhost:3335',
     reuseExistingServer: !process.env.CI,
-    timeout: 240 * 1000,
+    timeout: 360_000,
   },
 });

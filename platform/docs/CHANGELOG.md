@@ -6,4 +6,3 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # [1.0.0-beta.0](https://github.com/OHIF/Viewers/compare/v3.8.0-beta.27...v3.8.0-beta.28) (2024-03-01)
 
 **Note:** Initial version
-

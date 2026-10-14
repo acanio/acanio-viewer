@@ -89,7 +89,7 @@
   @apply text-aqua-pale pl-1.5;
 }
 
-.ohif-select .customSelect__menu-list::-webkit-scrollbar-thumb {
+.customSelect__menu-portal .customSelect__menu-list::-webkit-scrollbar-thumb {
   background-color: #007caa;
   border-radius: 10px;
 }
@@ -98,11 +98,11 @@
   background-color: #007caa91 !important;
 }
 
-.ohif-select .customSelect__option:hover {
+.customSelect__menu-portal .customSelect__option:hover {
   background-color: #007caa91;
 }
 
-.ohif-select .customSelect__menu {
+.customSelect__menu-portal .customSelect__menu {
   border: 2px solid #007caa;
   border-radius: 6px;
   background-color: #151515 !important;

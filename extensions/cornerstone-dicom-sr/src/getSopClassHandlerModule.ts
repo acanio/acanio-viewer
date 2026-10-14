@@ -1,4 +1,5 @@
-import { utils, classes, DisplaySetService, Types } from '@ohif/core';
+import { utils, classes, DisplaySetService, Types as OhifTypes } from '@ohif/core';
+import i18n from '@ohif/i18n';
 import { Enums as CSExtensionEnums } from '@ohif/extension-cornerstone';
 import { adaptersSR } from '@cornerstonejs/adapters';
 
@@ -14,10 +15,14 @@ import { CodeNameCodeSequenceValues, CodingSchemeDesignators } from './enums';
 
 const { sopClassDictionary } = utils;
 const { CORNERSTONE_3D_TOOLS_SOURCE_NAME, CORNERSTONE_3D_TOOLS_SOURCE_VERSION } = CSExtensionEnums;
-const { ImageSet, MetadataProvider: metadataProvider } = classes;
-const { CodeScheme: Cornerstone3DCodeScheme } = adaptersSR.Cornerstone3D;
+const { MetadataProvider: metadataProvider } = classes;
+const {
+  TEXT_ANNOTATION_POSITION,
+  COMMENT_CODE,
+  CodeScheme: Cornerstone3DCodeScheme,
+} = adaptersSR.Cornerstone3D;
 
-type InstanceMetadata = Types.InstanceMetadata;
+type InstanceMetadata = OhifTypes.InstanceMetadata;
 
 /**
  * TODO
@@ -30,6 +35,7 @@ const sopClassUids = [
   sopClassDictionary.BasicTextSR,
   sopClassDictionary.EnhancedSR,
   sopClassDictionary.ComprehensiveSR,
+  sopClassDictionary.Comprehensive3DSR,
 ];
 
 const validateSameStudyUID = (uid: string, instances): void => {
@@ -48,7 +54,7 @@ const validateSameStudyUID = (uid: string, instances): void => {
  * @param instances is a list of instances from THIS series that are not
  *     in this DICOM SR Display Set already.
  */
-function addInstances(instances: InstanceMetadata[], displaySetService: DisplaySetService) {
+function addInstances(instances: InstanceMetadata[], _displaySetService: DisplaySetService) {
   this.instances.push(...instances);
   utils.sortStudyInstances(this.instances);
   // The last instance is the newest one, so is the one most interesting.
@@ -63,9 +69,10 @@ function addInstances(instances: InstanceMetadata[], displaySetService: DisplayS
  * DICOM SR SOP Class Handler
  * For all referenced images in the TID 1500/300 sections, add an image to the
  * display.
- * @param instances is a set of instances all from the same series
- * @param servicesManager is the services that can be used for creating
- * @returns The list of display sets created for the given instances object
+ * @param {InstanceMetadata[]} instances - A set of instances all from the same series
+ * @param {AppTypes.ServicesManager} servicesManager - The services that can be used for creating
+ * @param {AppTypes.ExtensionManager} extensionManager - The extension manager
+ * @returns {Types.DisplaySet[]} The list of display sets created for the given instances object
  */
 function _getDisplaySetsFromSeries(
   instances,
@@ -90,8 +97,10 @@ function _getDisplaySetsFromSeries(
     SeriesDescription,
     SeriesNumber,
     SeriesDate,
+    SeriesTime,
     ConceptNameCodeSequence,
     SOPClassUID,
+    imageId: predecessorImageId,
   } = instance;
   validateSameStudyUID(instance.StudyInstanceUID, instances);
 
@@ -106,6 +115,7 @@ function _getDisplaySetsFromSeries(
     SeriesDescription,
     SeriesNumber,
     SeriesDate,
+    SeriesTime,
     SOPInstanceUID,
     SeriesInstanceUID,
     StudyInstanceUID,
@@ -119,7 +129,9 @@ function _getDisplaySetsFromSeries(
     isImagingMeasurementReport,
     sopClassUids,
     instance,
+    predecessorImageId,
     addInstances,
+    label: SeriesDescription || `${i18n.t('Series')} ${SeriesNumber} - ${i18n.t('SR')}`,
   };
 
   displaySet.load = () => _load(displaySet, servicesManager, extensionManager);
@@ -134,7 +146,7 @@ function _getDisplaySetsFromSeries(
  * @param extensionManager - The extension manager containing data sources.
  */
 async function _load(
-  srDisplaySet: Types.DisplaySet,
+  srDisplaySet: OhifTypes.DisplaySet,
   servicesManager: AppTypes.ServicesManager,
   extensionManager: AppTypes.ExtensionManager
 ) {
@@ -174,6 +186,10 @@ async function _load(
     srDisplaySet.referencedImages = [];
     srDisplaySet.measurements = [];
   }
+  const { predecessorImageId } = srDisplaySet;
+  for (const measurement of srDisplaySet.measurements) {
+    measurement.predecessorImageId = predecessorImageId;
+  }
 
   const mappings = measurementService.getSourceMappings(
     CORNERSTONE_3D_TOOLS_SOURCE_NAME,
@@ -212,17 +228,15 @@ async function _load(
   });
 }
 
-/**
- * Checks if measurements can be added to a display set.
- *
- * @param srDisplaySet - The source display set containing measurements.
- * @param newDisplaySet - The new display set to check if measurements can be added.
- * @param dataSource - The data source used to retrieve image IDs.
- * @param servicesManager - The services manager.
- */
+function _measurementBelongsToDisplaySet({ measurement, displaySet }) {
+  return (
+    measurement.coords[0].ReferencedFrameOfReferenceSequence === displaySet.FrameOfReferenceUID
+  );
+}
+
 function _checkIfCanAddMeasurementsToDisplaySet(
-  srDisplaySet,
-  newDisplaySet,
+  srDisplaySet: OhifTypes.DisplaySet,
+  newDisplaySet: OhifTypes.DisplaySet,
   dataSource,
   servicesManager: AppTypes.ServicesManager
 ) {
@@ -232,17 +246,9 @@ function _checkIfCanAddMeasurementsToDisplaySet(
     measurement => measurement.loaded === false
   );
 
-  if (
-    unloadedMeasurements.length === 0 ||
-    !(newDisplaySet instanceof ImageSet) ||
-    newDisplaySet.unsupported
-  ) {
+  if (!unloadedMeasurements.length || newDisplaySet.unsupported) {
     return;
   }
-
-  // const { sopClassUids } = newDisplaySet;
-  // Create a Set for faster lookups
-  // const sopClassUidSet = new Set(sopClassUids);
 
   // Create a Map to efficiently look up ImageIds by SOPInstanceUID and frame number
   const imageIdMap = new Map<string, string>();
@@ -262,10 +268,11 @@ function _checkIfCanAddMeasurementsToDisplaySet(
 
   for (let j = unloadedMeasurements.length - 1; j >= 0; j--) {
     let measurement = unloadedMeasurements[j];
+    const is3DMeasurement = measurement.coords?.[0]?.ValueType === 'SCOORD3D';
 
-    const onBeforeSRAddMeasurement = customizationService.getModeCustomization(
+    const onBeforeSRAddMeasurement = customizationService.getCustomization(
       'onBeforeSRAddMeasurement'
-    )?.value;
+    );
 
     if (typeof onBeforeSRAddMeasurement === 'function') {
       measurement = onBeforeSRAddMeasurement({
@@ -276,9 +283,15 @@ function _checkIfCanAddMeasurementsToDisplaySet(
     }
 
     // if it is 3d SR we can just add the SR annotation
-    if (is3DSR) {
-      addSRAnnotation(measurement, null, null);
+    if (
+      is3DSR &&
+      is3DMeasurement &&
+      _measurementBelongsToDisplaySet({ measurement, displaySet: newDisplaySet })
+    ) {
+      addSRAnnotation({ measurement, displaySet: newDisplaySet });
       measurement.loaded = true;
+      measurement.displaySetInstanceUID = newDisplaySet.displaySetInstanceUID;
+      unloadedMeasurements.splice(j, 1);
       continue;
     }
 
@@ -296,15 +309,12 @@ function _checkIfCanAddMeasurementsToDisplaySet(
       imageId &&
       _measurementReferencesSOPInstanceUID(measurement, ReferencedSOPInstanceUID, frame)
     ) {
-      addSRAnnotation(measurement, imageId, frame);
-
-      // Update measurement properties
+      addSRAnnotation({ measurement, imageId, frameNumber: frame, displaySet: newDisplaySet });
       measurement.loaded = true;
       measurement.imageId = imageId;
       measurement.displaySetInstanceUID = newDisplaySet.displaySetInstanceUID;
       measurement.ReferencedSOPInstanceUID = ReferencedSOPInstanceUID;
       measurement.frameNumber = frame;
-
       unloadedMeasurements.splice(j, 1);
     }
   }
@@ -312,10 +322,10 @@ function _checkIfCanAddMeasurementsToDisplaySet(
 
 /**
  * Checks if a measurement references a specific SOP Instance UID.
- * @param measurement - The measurement object.
- * @param SOPInstanceUID - The SOP Instance UID to check against.
- * @param frameNumber - The frame number to check against (optional).
- * @returns True if the measurement references the specified SOP Instance UID, false otherwise.
+ * @param {any} measurement - The measurement object.
+ * @param {string} sopInstanceUID - The SOP Instance UID to check against.
+ * @param {number} frameNumber - The frame number to check against (optional).
+ * @returns {boolean} True if the measurement references the specified SOP Instance UID, false otherwise.
  */
 function _measurementReferencesSOPInstanceUID(measurement, SOPInstanceUID, frameNumber) {
   const { coords } = measurement;
@@ -347,12 +357,11 @@ function _measurementReferencesSOPInstanceUID(measurement, SOPInstanceUID, frame
 /**
  * Retrieves the SOP class handler module.
  *
- * @param {Object} options - The options for retrieving the SOP class handler module.
- * @param {Object} options.servicesManager - The services manager.
- * @param {Object} options.extensionManager - The extension manager.
- * @returns {Array} An array containing the SOP class handler module.
+ * @param {OhifTypes.Extensions.ExtensionParams} params - The extension parameters.
+ * @returns {Array} An array containing the SOP class handler modules.
  */
-function getSopClassHandlerModule({ servicesManager, extensionManager }) {
+function getSopClassHandlerModule(params: OhifTypes.Extensions.ExtensionParams) {
+  const { servicesManager, extensionManager } = params;
   const getDisplaySetsFromSeries = instances => {
     return _getDisplaySetsFromSeries(instances, servicesManager, extensionManager);
   };
@@ -373,8 +382,8 @@ function getSopClassHandlerModule({ servicesManager, extensionManager }) {
 /**
  * Retrieves the measurements from the ImagingMeasurementReportContentSequence.
  *
- * @param {Array} ImagingMeasurementReportContentSequence - The ImagingMeasurementReportContentSequence array.
- * @returns {Array} - The array of measurements.
+ * @param {any[]} imagingMeasurementReportContentSequence - The ImagingMeasurementReportContentSequence array.
+ * @returns {any[]} The array of measurements.
  */
 function _getMeasurements(ImagingMeasurementReportContentSequence) {
   const ImagingMeasurements = ImagingMeasurementReportContentSequence.find(
@@ -412,8 +421,8 @@ function _getMeasurements(ImagingMeasurementReportContentSequence) {
 /**
  * Retrieves merged content sequences by tracking unique identifiers.
  *
- * @param {Array} MeasurementGroups - The measurement groups.
- * @returns {Object} - The merged content sequences by tracking unique identifiers.
+ * @param {any[]} measurementGroups - The measurement groups.
+ * @returns {Object} The merged content sequences by tracking unique identifiers.
  */
 function _getMergedContentSequencesByTrackingUniqueIdentifiers(MeasurementGroups) {
   const mergedContentSequencesByTrackingUniqueIdentifiers = {};
@@ -460,15 +469,11 @@ function _getMergedContentSequencesByTrackingUniqueIdentifiers(MeasurementGroups
  * it calls the _processTID1410Measurement function.
  * Otherwise, it calls the _processNonGeometricallyDefinedMeasurement function.
  *
- * @param {Array<Object>} mergedContentSequence - The merged content sequence to process.
- * @returns {any} - The processed measurement result.
+ * @param {any[]} mergedContentSequence - The merged content sequence to process.
+ * @returns {any} The processed measurement result.
  */
 function _processMeasurement(mergedContentSequence) {
-  if (
-    mergedContentSequence.some(
-      group => group.ValueType === 'SCOORD' || group.ValueType === 'SCOORD3D'
-    )
-  ) {
+  if (mergedContentSequence.some(group => isScoordOr3d(group) && !isTextPosition(group))) {
     return _processTID1410Measurement(mergedContentSequence);
   }
 
@@ -480,8 +485,8 @@ function _processMeasurement(mergedContentSequence) {
  * TID 1410 style measurements have a SCOORD or SCOORD3D at the top level,
  * and non-geometric representations where each NUM has "INFERRED FROM" SCOORD/SCOORD3D.
  *
- * @param mergedContentSequence - The merged content sequence containing the measurements.
- * @returns The measurement object containing the loaded status, labels, coordinates, tracking unique identifier, and tracking identifier.
+ * @param {any[]} mergedContentSequence - The merged content sequence containing the measurements.
+ * @returns {any} The measurement object containing the loaded status, labels, coordinates, tracking unique identifier, and tracking identifier.
  */
 function _processTID1410Measurement(mergedContentSequence) {
   // Need to deal with TID 1410 style measurements, which will have a SCOORD or SCOORD3D at the top level,
@@ -506,12 +511,25 @@ function _processTID1410Measurement(mergedContentSequence) {
 
   const NUMContentItems = mergedContentSequence.filter(group => group.ValueType === 'NUM');
 
+  const { ConceptNameCodeSequence: conceptNameItem } = graphicItem;
+  const { CodeValue: graphicValue, CodingSchemeDesignator: graphicDesignator } = conceptNameItem;
+  const graphicCode = `${graphicDesignator}:${graphicValue}`;
+
+  const pointDataItem = _getCoordsFromSCOORDOrSCOORD3D(graphicItem);
+  const is3DMeasurement = pointDataItem.ValueType === 'SCOORD3D';
+  const pointLength = is3DMeasurement ? 3 : 2;
+  const pointsLength = pointDataItem.GraphicData.length / pointLength;
+
   const measurement = {
     loaded: false,
     labels: [],
-    coords: [_getCoordsFromSCOORDOrSCOORD3D(graphicItem)],
+    coords: [pointDataItem],
     TrackingUniqueIdentifier: UIDREFContentItem.UID,
     TrackingIdentifier: TrackingIdentifierContentItem.TextValue,
+    graphicCode,
+    is3DMeasurement,
+    pointsLength,
+    graphicType: pointDataItem.GraphicType,
   };
 
   NUMContentItems.forEach(item => {
@@ -541,8 +559,8 @@ function _processTID1410Measurement(mergedContentSequence) {
 /**
  * Processes the non-geometrically defined measurement from the merged content sequence.
  *
- * @param mergedContentSequence The merged content sequence containing the measurement data.
- * @returns The processed measurement object.
+ * @param {any[]} mergedContentSequence The merged content sequence containing the measurement data.
+ * @returns {any} The processed measurement object.
  */
 function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
   const NUMContentItems = mergedContentSequence.filter(group => group.ValueType === 'NUM');
@@ -562,6 +580,12 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
       item.ConceptNameCodeSequence.CodeValue === CodeNameCodeSequenceValues.FindingSite
   );
 
+  const commentSites = mergedContentSequence.filter(
+    item =>
+      item.ConceptNameCodeSequence.CodingSchemeDesignator === COMMENT_CODE.schemeDesignator &&
+      item.ConceptNameCodeSequence.CodeValue === COMMENT_CODE.value
+  );
+
   const measurement = {
     loaded: false,
     labels: [],
@@ -569,6 +593,14 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
     TrackingUniqueIdentifier: UIDREFContentItem.UID,
     TrackingIdentifier: TrackingIdentifierContentItem.TextValue,
   };
+
+  if (commentSites) {
+    for (const group of commentSites) {
+      if (group.TextValue) {
+        measurement.labels.push({ label: group.TextValue, value: '' });
+      }
+    }
+  }
 
   if (
     finding &&
@@ -605,15 +637,20 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
   NUMContentItems.forEach(item => {
     const { ConceptNameCodeSequence, ContentSequence, MeasuredValueSequence } = item;
 
-    const { ValueType } = ContentSequence;
-    if (!ValueType === 'SCOORD') {
-      console.warn(`Graphic ${ValueType} not currently supported, skipping annotation.`);
-      return;
-    }
+    // Handle spatial reference ONLY if ContentSequence exists
+    if (ContentSequence) {
+      const { ValueType } = ContentSequence;
 
-    const coords = _getCoordsFromSCOORDOrSCOORD3D(ContentSequence);
-    if (coords) {
-      measurement.coords.push(coords);
+      if (ValueType !== 'SCOORD' && ValueType !== 'SCOORD3D') {
+        console.warn(`Graphic ${ValueType} not currently supported, skipping annotation.`);
+        return;
+      }
+
+      const coords = _getCoordsFromSCOORDOrSCOORD3D(ContentSequence);
+
+      if (coords) {
+        measurement.coords.push(coords);
+      }
     }
 
     if (MeasuredValueSequence) {
@@ -628,8 +665,8 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
 
 /**
  * Extracts coordinates from a graphic item of type SCOORD or SCOORD3D.
- * @param {object} graphicItem - The graphic item containing the coordinates.
- * @returns {object} - The extracted coordinates.
+ * @param {any} graphicItem - The graphic item containing the coordinates.
+ * @returns {any} The extracted coordinates.
  */
 const _getCoordsFromSCOORDOrSCOORD3D = graphicItem => {
   const { ValueType, GraphicType, GraphicData } = graphicItem;
@@ -643,9 +680,9 @@ const _getCoordsFromSCOORDOrSCOORD3D = graphicItem => {
 
 /**
  * Retrieves the label and value from the provided ConceptNameCodeSequence and MeasuredValueSequence.
- * @param {Object} ConceptNameCodeSequence - The ConceptNameCodeSequence object.
- * @param {Object} MeasuredValueSequence - The MeasuredValueSequence object.
- * @returns {Object} - An object containing the label and value.
+ * @param {any} conceptNameCodeSequence - The ConceptNameCodeSequence object.
+ * @param {any} measuredValueSequence - The MeasuredValueSequence object.
+ * @returns {Object} An object containing the label and value.
  *                    The label represents the CodeMeaning from the ConceptNameCodeSequence.
  *                    The value represents the formatted NumericValue and CodeValue from the MeasuredValueSequence.
  *                    Example: { label: 'Long Axis', value: '31.00 mm' }
@@ -664,8 +701,8 @@ function _getLabelFromMeasuredValueSequence(ConceptNameCodeSequence, MeasuredVal
 /**
  * Retrieves a list of referenced images from the Imaging Measurement Report Content Sequence.
  *
- * @param {Array} ImagingMeasurementReportContentSequence - The Imaging Measurement Report Content Sequence.
- * @returns {Array} - The list of referenced images.
+ * @param {any[]} imagingMeasurementReportContentSequence - The Imaging Measurement Report Content Sequence.
+ * @returns {any[]} The list of referenced images.
  */
 function _getReferencedImagesList(ImagingMeasurementReportContentSequence) {
   const ImageLibrary = ImagingMeasurementReportContentSequence.find(
@@ -712,13 +749,26 @@ function _getReferencedImagesList(ImagingMeasurementReportContentSequence) {
  * Otherwise, the sequence is wrapped in an array and returned.
  *
  * @param {any} sequence - The DICOM sequence to convert.
- * @returns {any[]} - The converted array.
+ * @returns {any[]} The converted array.
  */
 function _getSequenceAsArray(sequence) {
   if (!sequence) {
     return [];
   }
   return Array.isArray(sequence) ? sequence : [sequence];
+}
+
+function isScoordOr3d(group) {
+  return group.ValueType === 'SCOORD' || group.ValueType === 'SCOORD3D';
+}
+
+function isTextPosition(group) {
+  const concept = group.ConceptNameCodeSequence[0];
+  return (
+    concept &&
+    concept.CodeValue === TEXT_ANNOTATION_POSITION.value &&
+    concept.CodingSchemeDesignator === TEXT_ANNOTATION_POSITION.schemeDesignator
+  );
 }
 
 export default getSopClassHandlerModule;

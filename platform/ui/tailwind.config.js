@@ -85,9 +85,9 @@ module.exports = {
         40: '#007caa66',
         50: '#007caa80',
         80: '#007caacc',
-        100: '#007caacc', // 80% opacity
-        200: '#007caae6', // 90% opacity 
-        300: '#007caa',  // 100% opacity
+        100: '#007caacc',
+        200: '#007caae6',
+        300: '#007caa',
         400: '#007caacc',
       },
 
@@ -777,17 +777,13 @@ module.exports = {
   },
   corePlugins: {},
   plugins: [
-    // Add "customblue" properties to the root element in order to access them in CSS files
     function ({ addBase, theme }) {
       const customColors = theme('colors.customblue');
       const cssVariables = Object.entries(customColors).reduce((acc, [key, value]) => {
         acc[`--customblue-${key}`] = value;
         return acc;
       }, {});
-
-      addBase({
-        ':root': cssVariables,
-      });
+      addBase({ ':root': cssVariables });
     },
   ],
 };

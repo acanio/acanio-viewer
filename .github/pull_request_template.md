@@ -73,9 +73,21 @@ after the commits are squashed.
 - [] My code has been well-documented (function documentation, inline comments,
   etc.)
 
+#### Public Documentation Updates
+
+<!-- https://docs.ohif.org/ -->
+
+- [] The documentation page has been updated as necessary for any public API
+  additions or removals.
+
 #### Tested Environment
 
 - [] OS: <!--[e.g. Windows 10, macOS 10.15.4]-->
 - [] Node version: <!--[e.g. 18.16.1]-->
 - [] Browser:
   <!--[e.g. Chrome 83.0.4103.116, Firefox 77.0.1, Safari 13.1.1]-->
+
+<!-- prettier-ignore-start -->
+[blog]: https://circleci.com/blog/triggering-trusted-ci-jobs-on-untrusted-forks/
+[script]: https://github.com/jklukas/git-push-fork-to-upstream-branch
+<!-- prettier-ignore-end -->

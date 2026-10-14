@@ -1,10 +1,18 @@
 import { utils, classes } from '@ohif/core';
+import i18n from '@ohif/i18n';
 import { id } from './id';
 import getDisplaySetMessages from './getDisplaySetMessages';
 import getDisplaySetsFromUnsupportedSeries from './getDisplaySetsFromUnsupportedSeries';
 import { chartHandler } from './SOPClassHandlers/chartSOPClassHandler';
+import { metaData } from '@cornerstonejs/core';
 
-const { isImage, sopClassDictionary, isDisplaySetReconstructable } = utils;
+const {
+  isImage,
+  sortStudyInstances,
+  instancesSortCriteria,
+  sopClassDictionary,
+  isDisplaySetReconstructable,
+} = utils;
 const { ImageSet } = classes;
 
 const DEFAULT_VOLUME_LOADER_SCHEME = 'cornerstoneStreamingImageVolume';
@@ -43,11 +51,16 @@ function getDisplaySetInfo(instances) {
     const timePoint = timePoints[0];
     const instancesMap = new Map();
 
-    // O(n) to convert it into a map and O(1) to find each instance
-    instances.forEach(instance => instancesMap.set(instance.imageId, instance));
+    let firstTimePointInstances;
 
-    const firstTimePointInstances = timePoint.map(imageId => instancesMap.get(imageId));
-
+    if (instances[0].NumberOfFrames > 1 && timePoints.length > 1) {
+      // handle multiframe dynamic volume
+      firstTimePointInstances = timePoints[0].map(imageId => metaData.get('instance', imageId));
+    } else {
+      // O(n) to convert it into a map and O(1) to find each instance
+      instances.forEach(instance => instancesMap.set(instance.imageId, instance));
+      firstTimePointInstances = timePoint.map(imageId => instancesMap.get(imageId));
+    }
     displaySetInfo = isDisplaySetReconstructable(firstTimePointInstances, appConfig);
   } else {
     displaySetInfo = isDisplaySetReconstructable(instances, appConfig);
@@ -60,10 +73,13 @@ function getDisplaySetInfo(instances) {
   };
 }
 
-const makeDisplaySet = instances => {
+const makeDisplaySet = (instances, index) => {
+  // Need to sort the instances in order to get a consistent instance/thumbnail
+  sortStudyInstances(instances);
   const instance = instances[0];
   const imageSet = new ImageSet(instances);
-
+  const { extensionManager } = appContext;
+  const dataSource = extensionManager.getActiveDataSource()[0];
   const {
     isDynamicVolume,
     value: isReconstructable,
@@ -99,16 +115,31 @@ const makeDisplaySet = instances => {
     averageSpacingBetweenFrames: averageSpacingBetweenFrames || null,
     isDynamicVolume,
     dynamicVolumeInfo,
+    supportsWindowLevel: true,
+    label:
+      instance.SeriesDescription ||
+      `${i18n.t('Series')} ${instance.SeriesNumber} - ${i18n.t(instance.Modality)}`,
+    FrameOfReferenceUID: instance.FrameOfReferenceUID,
   });
 
-  // Sort the images in this series if needed
-  const shallSort = true; //!OHIF.utils.ObjectPath.get(Meteor, 'settings.public.ui.sortSeriesByIncomingOrder');
-  if (shallSort) {
-    imageSet.sortBy((a, b) => {
-      // Sort by InstanceNumber (0020,0013)
-      return (parseInt(a.InstanceNumber) || 0) - (parseInt(b.InstanceNumber) || 0);
-    });
+  const imageIds = dataSource.getImageIdsForDisplaySet(imageSet);
+  let imageId = imageIds[Math.floor(imageIds.length / 2)];
+  let thumbnailInstance = instances[Math.floor(instances.length / 2)];
+  if (isDynamicVolume) {
+    const timePoints = dynamicVolumeInfo.timePoints;
+    const middleIndex = Math.floor(timePoints.length / 2);
+    const middleTimePointImageIds = timePoints[middleIndex];
+    imageId = middleTimePointImageIds[Math.floor(middleTimePointImageIds.length / 2)];
   }
+
+  imageSet.setAttributes({
+    getThumbnailSrc: dataSource.retrieve.getGetThumbnailSrc?.(thumbnailInstance, imageId),
+  });
+
+  const { servicesManager } = appContext;
+  const { customizationService } = servicesManager.services;
+
+  imageSet.sort(customizationService);
 
   // Include the first image instance number (after sorted)
   /*imageSet.setAttribute(
@@ -165,17 +196,15 @@ function getDisplaySetsFromSeries(instances) {
   // into their own specific display sets. Place the rest of each
   // series into another display set.
   const stackableInstances = [];
-  instances.forEach(instance => {
+  instances.forEach((instance, instanceIndex) => {
     // All imaging modalities must have a valid value for sopClassUid (x00080016) or rows (x00280010)
     if (!isImage(instance.SOPClassUID) && !instance.Rows) {
       return;
     }
 
     let displaySet;
-
     if (isMultiFrame(instance)) {
-      displaySet = makeDisplaySet([instance]);
-
+      displaySet = makeDisplaySet([instance], instanceIndex);
       displaySet.setAttributes({
         sopClassUids,
         numImageFrames: instance.NumberOfFrames,
@@ -184,7 +213,7 @@ function getDisplaySetsFromSeries(instances) {
       });
       displaySets.push(displaySet);
     } else if (isSingleImageModality(instance.Modality)) {
-      displaySet = makeDisplaySet([instance]);
+      displaySet = makeDisplaySet([instance], instanceIndex);
       displaySet.setAttributes({
         sopClassUids,
         instanceNumber: instance.InstanceNumber,
@@ -197,7 +226,7 @@ function getDisplaySetsFromSeries(instances) {
   });
 
   if (stackableInstances.length) {
-    const displaySet = makeDisplaySet(stackableInstances);
+    const displaySet = makeDisplaySet(stackableInstances, displaySets.length);
     displaySet.setAttribute('studyInstanceUid', instances[0].StudyInstanceUID);
     displaySet.setAttributes({
       sopClassUids,
@@ -260,6 +289,7 @@ const sopClassUids = [
   sopClassDictionary.LegacyConvertedEnhancedPETImageStorage,
   sopClassDictionary.RTImageStorage,
   sopClassDictionary.EnhancedUSVolumeStorage,
+  sopClassDictionary.RTDoseStorage,
 ];
 
 function getSopClassHandlerModule(appContextParam) {

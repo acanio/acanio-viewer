@@ -13,7 +13,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      'bg-customblue-100 text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md',
+      'bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md',
       className
     )}
     {...props}
@@ -76,7 +76,7 @@ const CommandEmpty = React.forwardRef<
 >((props, ref) => (
   <CommandPrimitive.Empty
     ref={ref}
-    className="py-6 text-center text-base"
+    className="py-5 text-center text-base"
     {...props}
   />
 ));

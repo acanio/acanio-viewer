@@ -1,149 +1,134 @@
+/** @type {AppTypes.Config} */
 window.config = {
   routerBasename: '__NEXTCLOUD_BASE_PATH__/apps/dicomviewer/ncviewer',
   // whiteLabeling: {},
   extensions: [],
   modes: [],
-  customizationService: {
-    cornerstoneViewportActionBar: {
-      disabled: true,
-    },
-    cornerstoneOverlayTopLeft: {
-      id: 'cornerstoneOverlayTopLeft',
-      items: [
+  customizationService: [
+    {
+      'viewportOverlay.topLeft': [
         {
           id: 'PatientName',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
-          condition: ({ instance }) =>
-            instance && instance.PatientName && (typeof instance.PatientName === 'string' || instance.PatientName.Alphabetic),
-          contentF: ({ instance, formatters: { formatPN } }) =>
-            (typeof instance.PatientName === 'string' ? formatPN(instance.PatientName) : formatPN(instance.PatientName.Alphabetic)) +
+          condition: ({ referenceInstance }) =>
+            referenceInstance && referenceInstance.PatientName && (typeof referenceInstance.PatientName === 'string' || referenceInstance.PatientName.Alphabetic),
+          contentF: ({ referenceInstance, formatters: { formatPN } }) =>
+            (typeof referenceInstance.PatientName === 'string' ? formatPN(referenceInstance.PatientName) : formatPN(referenceInstance.PatientName.Alphabetic)) +
             ' ' +
-            (instance.PatientSex ? '(' + instance.PatientSex + ')' : ''),
+            (referenceInstance.PatientSex ? '(' + referenceInstance.PatientSex + ')' : ''),
         },
         {
           id: 'PID',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
           title: 'Patient PID',
-          condition: ({ instance }) => instance && instance.PatientID,
-          contentF: ({ instance }) => instance.PatientID,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.PatientID,
+          contentF: ({ referenceInstance }) => referenceInstance.PatientID,
         },
         {
           id: 'PatientBirthDate',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'DOB:',
           title: "Patient's Date of birth",
-          condition: ({ instance }) => instance && instance.PatientBirthDate,
-          contentF: ({ instance }) => instance.PatientBirthDate,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.PatientBirthDate,
+          contentF: ({ referenceInstance }) => referenceInstance.PatientBirthDate,
         },
         {
           id: 'OtherPid',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Other PID:',
           title: 'Other Patient IDs',
-          condition: ({ instance }) => instance && instance.OtherPatientIDs,
-          contentF: ({ instance, formatters: { formatPN } }) => formatPN(instance.OtherPatientIDs),
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.OtherPatientIDs,
+          contentF: ({ referenceInstance, formatters: { formatPN } }) => formatPN(referenceInstance.OtherPatientIDs),
         },
       ],
-    },
-    cornerstoneOverlayTopRight: {
-      id: 'cornerstoneOverlayTopRight',
-
-      items: [
+      'viewportOverlay.topRight': [
         {
           id: 'SeriesDescription',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
           title: 'Series Description',
-          condition: ({ instance }) => instance && instance.SeriesDescription,
-          contentF: ({ instance }) => instance.SeriesDescription,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SeriesDescription,
+          contentF: ({ referenceInstance }) => referenceInstance.SeriesDescription,
         },
         {
           id: 'StudyDateTime',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
           title: 'Study date',
-          condition: ({ instance }) => instance && (instance.StudyDate || instance.StudyTime),
-          contentF: ({ instance, formatters: { formatDate, formatTime } }) =>
+          condition: ({ referenceInstance }) => referenceInstance && (referenceInstance.StudyDate || referenceInstance.StudyTime),
+          contentF: ({ referenceInstance, formatters: { formatDate, formatTime } }) =>
             [
-              instance.StudyDate ? formatDate(instance.StudyDate) : '',
-              instance.StudyTime ? formatTime(instance.StudyTime) : ''
+              referenceInstance.StudyDate ? formatDate(referenceInstance.StudyDate) : '',
+              referenceInstance.StudyTime ? formatTime(referenceInstance.StudyTime) : ''
             ].join(' '),
         },
       ],
-    },
-    cornerstoneOverlayBottomLeft: {
-      id: 'cornerstoneOverlayBottomLeft',
-
-      items: [
+      'viewportOverlay.bottomLeft': [
         {
           id: 'SeriesNumber',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Ser:',
           title: 'Series Number',
-          condition: ({ instance }) => instance && instance.SeriesNumber,
-          contentF: ({ instance }) => instance.SeriesNumber,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SeriesNumber,
+          contentF: ({ referenceInstance }) => referenceInstance.SeriesNumber,
         },
         {
-          id: 'InstanceNmber',
-          customizationType: 'ohif.overlayItem.instanceNumber',
+          id: 'InstanceNumber',
+          inheritsFrom: 'ohif.overlayItem.instanceNumber',
           color: '#fff',
         },
         {
           id: 'ColumnsRows',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: '',
-          condition: ({ instance }) => instance && instance.Columns && instance.Rows,
-          contentF: ({ instance }) => `${instance.Columns} x ${instance.Rows}`,
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.Columns && referenceInstance.Rows,
+          contentF: ({ referenceInstance }) => `${referenceInstance.Columns} x ${referenceInstance.Rows}`,
         },
         {
           id: 'SliceLocation',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Loc:',
           title: 'Slice Location',
-          condition: ({ instance }) => instance && instance.SliceLocation,
-          contentF: ({ instance, formatters: { formatNumberPrecision } }) =>
-            formatNumberPrecision(instance.SliceLocation, 2) + ' mm',
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SliceLocation,
+          contentF: ({ referenceInstance, formatters: { formatNumberPrecision } }) =>
+            formatNumberPrecision(referenceInstance.SliceLocation, 2) + ' mm',
         },
         {
           id: 'SliceThickness',
-          customizationType: 'ohif.overlayItem',
+          inheritsFrom: 'ohif.overlayItem',
           color: '#fff',
           label: 'Thick:',
           title: 'Slice Thickness',
-          condition: ({ instance }) => instance && instance.SliceThickness,
-          contentF: ({ instance, formatters: { formatNumberPrecision } }) =>
-            formatNumberPrecision(instance.SliceThickness, 2) + ' mm',
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SliceThickness,
+          contentF: ({ referenceInstance, formatters: { formatNumberPrecision } }) =>
+            formatNumberPrecision(referenceInstance.SliceThickness, 2) + ' mm',
         },
       ],
-    },
-    cornerstoneOverlayBottomRight: {
-      id: 'cornerstoneOverlayBottomRight',
-
-      items: [
+      'viewportOverlay.bottomRight': [
         {
           id: 'ZoomLevel',
-          customizationType: 'ohif.overlayItem.zoomLevel',
+          inheritsFrom: 'ohif.overlayItem.zoomLevel',
           color: '#fff',
         },
         {
           id: 'WindowLevel',
-          customizationType: 'ohif.overlayItem.windowLevel',
+          inheritsFrom: 'ohif.overlayItem.windowLevel',
           color: '#fff',
         },
       ],
     },
-  },
+  ],
   showStudyList: false,
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
@@ -260,16 +245,6 @@ window.config = {
     { commandName: 'resetViewport', label: 'Reset', keys: ['space'] },
     { commandName: 'nextImage', label: 'Next Image', keys: ['down'] },
     { commandName: 'previousImage', label: 'Previous Image', keys: ['up'] },
-    // {
-    //   commandName: 'previousViewportDisplaySet',
-    //   label: 'Previous Series',
-    //   keys: ['pagedown'],
-    // },
-    // {
-    //   commandName: 'nextViewportDisplaySet',
-    //   label: 'Next Series',
-    //   keys: ['pageup'],
-    // },
     {
       commandName: 'setToolActive',
       commandOptions: { toolName: 'Zoom' },

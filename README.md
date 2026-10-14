@@ -8,18 +8,16 @@ provided by the Open Health Imaging Foundation (OHIF). It is a configurable and 
 
 <hr />
 
-[![Render Status][render-image]][render-url]
-
 ## About
 
-Acan.io, built on top of the OHIF Viewer v3 that is for viewing medical images. 
+Acan.io, built on top of the OHIF Viewer v3 that is for viewing medical images.
 It can retrieve and load images from most sources and formats; render sets in 2D, 3D, and
 reconstructed representations; allows for the manipulation, annotation, and
 serialization of observations; supports internationalization, OpenID Connect,
 offline use, hotkeys, and many more features.
 
-Apart from functioning as an individual medical image viewer, the most notable feature is 
-its utilization of Nextcloud, facilitating medical image sharing, collaboration, and 
+Apart from functioning as an individual medical image viewer, the most notable feature is
+its utilization of Nextcloud, facilitating medical image sharing, collaboration, and
 security within HIPAA-compliant platform.
 
 Almost everything offers some degree of customization and configuration. If it
@@ -30,7 +28,7 @@ improving Extension System.
 
 ### Community & Experience
 
-Acan.io is an improved version of the OHIF Viewer v3 that is 
+Acan.io is an improved version of the OHIF Viewer v3 that is
 a collaborative effort that has served as the basis for many
 active, production, and FDA Cleared medical imaging viewers. It benefits from
 our extensive community's collective experience, and from the sponsored
@@ -164,9 +162,6 @@ you'll see the following:
   -->
 
 <!-- prettier-ignore-start -->
-<!-- Badges -->
-[render-image]: https://img.shields.io/badge/Render-Preview-4ea4c4
-[render-url]: https://acanio-viewer.onrender.com
 <!-- Links -->
 [monorepo]: https://en.wikipedia.org/wiki/Monorepo
 [how-to-fork]: https://help.github.com/en/articles/fork-a-repo

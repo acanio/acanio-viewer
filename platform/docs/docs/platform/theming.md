@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Theming
+title: Theming the OHIF Viewer
+summary: Documentation on customizing the visual appearance of the OHIF Viewer using Tailwind CSS and white-labeling capabilities, including how to modify the color scheme, add custom layouts via the LayoutTemplateModule, and replace the application logo with custom branding.
 ---
 
 # Viewer: Theming
@@ -40,24 +42,24 @@ module.exports = {
       inherit: 'inherit',
 
       indigo: {
-        dark: '#44626f',
+        dark: '#0b1a42',
       },
       aqua: {
-        pale: '#88d3f1',
+        pale: '#7bb2ce',
       },
 
       primary: {
-        light: '#c4e2f3',
-        main: '#527a88',
-        dark: '#233243',
-        active: '#fff',
+        light: '#5acce6',
+        main: '#0944b3',
+        dark: '#090c29',
+        active: '#348cfd',
       },
 
       secondary: {
-        light: '#55b0db',
-        main: '#293d51',
-        dark: '#16202b',
-        active: '#c0e6f7',
+        light: '#3a3f99',
+        main: '#2b166b',
+        dark: '#041c4a',
+        active: '#1f1f27',
       },
 
       common: {
@@ -65,7 +67,7 @@ module.exports = {
         light: '#a19fad',
         main: '#fff',
         dark: '#726f7e',
-        active: '#20a5d6',
+        active: '#2c3074',
       },
 
       customgreen: {
@@ -89,7 +91,7 @@ primary: {
   light: ‘#5ACCE6’,
   main: ‘#0944B3’,
   dark: ‘#090C29’,
-  active: ‘#007CAACC’,
+  active: ‘#348CFD’,
 }
 ```
 

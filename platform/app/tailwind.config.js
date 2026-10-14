@@ -33,7 +33,7 @@ module.exports = {
       inherit: 'inherit',
 
       indigo: {
-        dark: '#44626f',
+        dark: '#0b1a42',
       },
       aqua: {
         pale: '#88d3f1',
@@ -81,7 +81,7 @@ module.exports = {
         50: '#007caa80',
         80: '#007caacc',
         100: '#007caacc', // 80% opacity
-        200: '#007caae6', // 90% opacity 
+        200: '#007caae6', // 90% opacity
         300: '#007caa',  // 100% opacity
         400: '#007caacc',
       },
