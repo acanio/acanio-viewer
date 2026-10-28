@@ -21,6 +21,9 @@ const PUBLIC_URL = process.env.PUBLIC_URL || '/';
 // Add these constants
 const NODE_ENV = process.env.NODE_ENV;
 const BUILD_NUM = process.env.CIRCLE_BUILD_NUM || '0';
+const PRODUCT_VERSION_NUMBER = (
+  fs.readFileSync(path.join(__dirname, './version-product.txt'), 'utf8') || ''
+).trim();
 const VERSION_NUMBER = fs.readFileSync(path.join(__dirname, './version.txt'), 'utf8') || '';
 const COMMIT_HASH = fs.readFileSync(path.join(__dirname, './commit.txt'), 'utf8') || '';
 const PROXY_TARGET = process.env.PROXY_TARGET;
@@ -61,6 +64,7 @@ export default defineConfig({
       'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
       'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL || '/'),
       'process.env.BUILD_NUM': JSON.stringify(BUILD_NUM),
+      'process.env.PRODUCT_VERSION_NUMBER': JSON.stringify(PRODUCT_VERSION_NUMBER),
       'process.env.VERSION_NUMBER': JSON.stringify(VERSION_NUMBER),
       'process.env.COMMIT_HASH': JSON.stringify(COMMIT_HASH),
       'process.env.USE_LOCIZE': JSON.stringify(process.env.USE_LOCIZE || ''),

@@ -10,6 +10,7 @@
     "preinstall": "node preinstall.js",
     "cm": "npx git-cz",
     "build": "pnpm --filter @ohif/app run build:viewer",
+    "build:nextcloud": "pnpm --filter @ohif/app run build:viewer:nextcloud",
     "build:dev": "pnpm --filter @ohif/app run build:dev",
     "build:ci": "pnpm --filter @ohif/app run build:viewer:ci",
     "build:qa": "pnpm --filter @ohif/app run build:viewer:qa",
@@ -123,6 +124,13 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@cornerstonejs/codec-charls": "1.2.7",
+      "@cornerstonejs/codec-libjpeg-turbo-8bit": "1.2.8",
+      "@cornerstonejs/codec-openjph": "2.4.11"
+    }
   },
   "version": "3.13.13"
 }
