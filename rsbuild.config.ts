@@ -21,9 +21,10 @@ const PUBLIC_URL = process.env.PUBLIC_URL || '/';
 // Add these constants
 const NODE_ENV = process.env.NODE_ENV;
 const BUILD_NUM = process.env.CIRCLE_BUILD_NUM || '0';
-const PRODUCT_VERSION_NUMBER = (
-  fs.readFileSync(path.join(__dirname, './version-product.txt'), 'utf8') || ''
-).trim();
+const { productVersion = '' } = JSON.parse(
+  fs.readFileSync(path.join(__dirname, './platform/app/package.json'), 'utf8')
+);
+const PRODUCT_VERSION_NUMBER = String(productVersion).trim();
 const VERSION_NUMBER = fs.readFileSync(path.join(__dirname, './version.txt'), 'utf8') || '';
 const COMMIT_HASH = fs.readFileSync(path.join(__dirname, './commit.txt'), 'utf8') || '';
 const PROXY_TARGET = process.env.PROXY_TARGET;

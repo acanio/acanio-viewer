@@ -13,7 +13,46 @@
 window.config = {
   name: 'config/dev.js',
   routerBasename: null,
-  // whiteLabeling: {},
+  whiteLabeling: {
+    createLogoComponentFn: function (React) {
+      return React.createElement(
+        'a',
+        {
+          target: '_blank',
+          href: 'https://acan.io',
+        },
+        React.createElement(
+          'div',
+          {
+            className: 'h-8',
+            style: {
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            },
+          },
+          React.createElement('img', {
+            src: './assets/acanio.svg',
+            className: 'w-10 h-10',
+            style: {
+              display: 'inline-block',
+            },
+          }),
+          React.createElement(
+            'span',
+            {
+              className: 'ml-3 text-xl',
+              style: {
+                color: '#fff',
+                marginRight: '250px',
+              },
+            },
+            'Acan.io Viewer'
+          )
+        )
+      );
+    },
+  },
   extensions: [],
   modes: [],
   customizationService: ['@ohif/extension-default.customizationModule.theme'],

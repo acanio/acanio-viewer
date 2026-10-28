@@ -728,7 +728,7 @@ export const toolbarSections = {
     'MoreTools',
   ],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: ['orientationMenu', 'dataOverlayMenu'],
+  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: [],
 
   [TOOLBAR_SECTIONS.viewportActionMenu.bottomMiddle]: ['AdvancedRenderingControls'],
 
@@ -740,13 +740,9 @@ export const toolbarSections = {
     'thresholdMenu',
   ],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topRight]: [
-    'modalityLoadBadge',
-    'trackingStatus',
-    'navigationComponent',
-  ],
+  [TOOLBAR_SECTIONS.viewportActionMenu.topRight]: ['windowLevelMenu'],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.bottomLeft]: ['windowLevelMenu'],
+  [TOOLBAR_SECTIONS.viewportActionMenu.bottomLeft]: [],
 
   MeasurementTools: [
     'Length',

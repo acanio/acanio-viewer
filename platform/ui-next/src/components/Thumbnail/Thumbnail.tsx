@@ -84,17 +84,16 @@ const Thumbnail = ({
     return (
       <div
         className={classnames(
-          'flex h-full w-full flex-col items-center justify-center gap-[2px] p-[4px]',
-          isActive && 'bg-popover rounded'
+          'flex h-full w-full flex-col items-center justify-center gap-[2px] p-[4px]'
         )}
       >
         <div className="h-[114px] w-[128px]">
-          <div className="relative bg-background">
+          <div className="relative">
             {shouldRenderThumbnailImage ? (
               <img
                 src={imageSrc}
                 alt={imageAltText}
-                className="h-[114px] w-[128px] rounded object-contain"
+                className="h-[114px] w-[128px] rounded-none object-contain"
                 crossOrigin="anonymous"
                 onError={() => {
                   setImageLoadFailed(true);
@@ -102,16 +101,20 @@ const Thumbnail = ({
                 }}
               />
             ) : (
-              <div className="bg-background h-[114px] w-[128px] rounded">{children}</div>
+              <div className="bg-background h-[114px] w-[128px] rounded-none">{children}</div>
             )}
 
             {/* bottom left */}
-            <div className="absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] rounded-tr pt-[10px] pb-[10px] pr-[6px] pl-[5px]">
+            <div className="bg-customblue-40 absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] p-[4px]">
               <div
                 className={classnames(
-                  'h-[10px] w-[10px] rounded-[2px]',
-                  isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary/65',
-                  loadingProgress && loadingProgress < 1 && 'bg-primary/25'
+                  'h-[10px] w-[10px] rounded-none',
+                  isActive
+                    ? 'bg-white'
+                    : isHydratedForDerivedDisplaySet
+                      ? 'bg-highlight'
+                      : 'bg-primary-light',
+                  loadingProgress && loadingProgress < 1 && 'bg-customblue-100'
                 )}
               ></div>
               <div
@@ -207,8 +210,8 @@ const Thumbnail = ({
           <div
             className={classnames(
               'h-[32px] w-[4px] min-w-[4px] rounded-none',
-              isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary/65',
-              loadingProgress && loadingProgress < 1 && 'bg-primary/25'
+              isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary-light',
+              loadingProgress && loadingProgress < 1 && 'bg-customblue-100'
             )}
           ></div>
           <div className="flex h-full w-[calc(100%-12px)] flex-col justify-start">
@@ -294,8 +297,8 @@ const Thumbnail = ({
     <div
       className={classnames(
         className,
-        'bg-muted group flex select-none flex-col rounded outline-none',
-        isDraggable && 'hover:bg-primary/30 cursor-pointer',
+        'bg-customblue-40 hover:bg-customblue-100 group flex select-none flex-col outline-none',
+        isDraggable && 'cursor-pointer',
         !isDraggable && 'cursor-default',
         viewPreset === 'thumbnails' && 'h-[170px] w-[135px]',
         viewPreset === 'list' && 'h-[40px] w-full'

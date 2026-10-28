@@ -33,9 +33,8 @@ const QUICK_BUILD = process.env.QUICK_BUILD;
 const BUILD_NUM = process.env.CIRCLE_BUILD_NUM || '0';
 const IS_COVERAGE = process.env.COVERAGE === 'true';
 
-const PRODUCT_VERSION_NUMBER = (
-  fs.readFileSync(path.join(__dirname, '../version-product.txt'), 'utf8') || ''
-).trim();
+const { productVersion = '' } = require(path.join(__dirname, '../platform/app/package.json'));
+const PRODUCT_VERSION_NUMBER = String(productVersion).trim();
 
 // read from ../version.txt
 const VERSION_NUMBER = fs.readFileSync(path.join(__dirname, '../version.txt'), 'utf8') || '';

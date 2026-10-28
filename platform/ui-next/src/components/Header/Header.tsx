@@ -84,7 +84,7 @@ function Header({
           </div>
           <div className="absolute right-0 top-1/2 flex -translate-y-1/2 select-none items-center">
             {UndoRedo}
-            <div className="border-muted mx-1.5 h-[25px] border-r"></div>
+            {UndoRedo ? <div className="border-muted mx-1.5 h-[25px] border-r"></div> : null}
             {PatientInfo}
             <div className="border-muted mx-1.5 h-[25px] border-r"></div>
             <div className="flex-shrink-0">
@@ -93,7 +93,7 @@ function Header({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-primary hover:bg-muted mt-2 h-full w-full"
+                    className="text-primary-active hover:bg-primary-dark rounded-none mt-2 h-full w-full"
                   >
                     <Icons.GearSettings />
                   </Button>

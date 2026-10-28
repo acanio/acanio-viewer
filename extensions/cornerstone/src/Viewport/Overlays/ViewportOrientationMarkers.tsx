@@ -5,7 +5,6 @@ import { utilities } from '@cornerstonejs/tools';
 import { vec3 } from 'gl-matrix';
 
 import './ViewportOrientationMarkers.css';
-import { useViewportRendering } from '../../hooks';
 import { getViewportDataShapeType } from '../../utils/viewportDataShape';
 const { getOrientationStringLPS, invertOrientationStringLPS } = utilities.orientation;
 
@@ -18,20 +17,22 @@ function ViewportOrientationMarkers({
   orientationMarkers = ['top', 'left'],
 }: withAppTypes) {
   const [cameraModifiedTime, setCameraModifiedTime] = useState(0);
-  const { isViewportBackgroundLight: isLight } = useViewportRendering(viewportId);
   const { cornerstoneViewportService } = servicesManager.services;
 
   useEffect(() => {
-    const cameraModifiedListener = () => setCameraModifiedTime(Date.now());
-    element.addEventListener(Enums.Events.CAMERA_MODIFIED, cameraModifiedListener);
+    const updateMarkers = () => setCameraModifiedTime(Date.now());
+    updateMarkers();
+    element.addEventListener(Enums.Events.CAMERA_MODIFIED, updateMarkers);
+    element.addEventListener(Enums.Events.IMAGE_RENDERED, updateMarkers);
 
     return () => {
-      element.removeEventListener(Enums.Events.CAMERA_MODIFIED, cameraModifiedListener);
+      element.removeEventListener(Enums.Events.CAMERA_MODIFIED, updateMarkers);
+      element.removeEventListener(Enums.Events.IMAGE_RENDERED, updateMarkers);
     };
   }, [element]);
 
   const markers = useMemo(() => {
-    if (!viewportData || cameraModifiedTime === 0) {
+    if (!viewportData) {
       return '';
     }
 
@@ -83,9 +84,8 @@ function ViewportOrientationMarkers({
         className={classNames(
           'overlay-text',
           `${m}-mid orientation-marker`,
-          isLight ? 'text-neutral-dark/70' : 'text-neutral-light/70',
-          isLight ? 'shadow-light' : 'shadow-dark',
-          'text-base',
+          'text-aqua-pale',
+          'text-[13px]',
           'leading-5'
         )}
         key={`${m}-mid orientation-marker`}
@@ -93,7 +93,7 @@ function ViewportOrientationMarkers({
         <div className="orientation-marker-value">{markers[m]}</div>
       </div>
     ));
-  }, [viewportData, imageSliceData, cameraModifiedTime, orientationMarkers, element, isLight]);
+  }, [viewportData, imageSliceData, cameraModifiedTime, orientationMarkers, element]);
 
   return <div className="ViewportOrientationMarkers select-none">{markers}</div>;
 }

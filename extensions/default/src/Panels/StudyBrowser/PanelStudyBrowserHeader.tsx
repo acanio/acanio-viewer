@@ -17,7 +17,7 @@ function PanelStudyBrowserHeader({
   // Button order: Settings button then List view mode (thumbnails vs. list)
   return (
     <>
-      <div className="bg-primary-dark flex h-[40px] select-none p-2">
+      <div className="bg-customblue-20 flex h-[40px] select-none rounded-t p-2">
         <div className={'flex h-[24px] w-full select-none justify-center self-center text-[14px]'}>
           <div className="flex w-full items-center gap-[10px]">
             <div className="flex items-center justify-center">
@@ -45,7 +45,7 @@ function PanelStudyBrowserHeader({
                     key={index}
                     aria-label={viewPreset.id}
                     value={viewPreset.id}
-                    className="text-primary"
+                    className="text-actions-primary"
                   >
                     {React.createElement(Icons[viewPreset.iconName] || Icons.MissingIcon)}
                   </ToggleGroupItem>

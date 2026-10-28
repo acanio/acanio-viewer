@@ -27,7 +27,7 @@ const locationClasses = {
   ),
   [ViewportActionCornersLocations.topRight]: classNames(
     commonClasses,
-    'absolute top-[4px] right-viewport-scrollbar'
+    'absolute top-[4px] right-[4px] right-viewport-scrollbar gap-1'
   ),
   [ViewportActionCornersLocations.bottomLeft]: classNames(
     commonClasses,

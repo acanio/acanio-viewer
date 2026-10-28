@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ToolButtonList,
   ToolButton,
@@ -6,6 +6,7 @@ import {
   ToolButtonListDropDown,
   ToolButtonListItem,
   ToolButtonListDivider,
+  cn,
 } from '@ohif/ui-next';
 import { useToolbar } from '@ohif/core/src';
 
@@ -25,6 +26,7 @@ export default function ToolButtonListWrapper({ buttonSection, id }: ToolButtonL
   const { onInteraction, toolbarButtons } = useToolbar({
     buttonSection,
   });
+  const [isExpanded, setIsExpanded] = useState(false);
 
   if (!toolbarButtons?.length) {
     return null;
@@ -49,13 +51,18 @@ export default function ToolButtonListWrapper({ buttonSection, id }: ToolButtonL
             onInteraction={({ itemId }) =>
               onInteraction?.({ id, itemId, commands: primary.commands })
             }
-            className={primary.className}
+            className={cn(
+              primary.className,
+              isExpanded && '!bg-primary-dark !text-primary-light hover:!bg-primary-dark'
+            )}
           />
         </div>
       </ToolButtonListDefault>
-      <ToolButtonListDivider className={primary.isActive ? 'opacity-0' : 'opacity-100'} />
+      <ToolButtonListDivider
+        className={primary.isActive || isExpanded ? 'opacity-0' : 'opacity-100'}
+      />
       <div data-cy={`${id}-split-button-secondary`}>
-        <ToolButtonListDropDown>
+        <ToolButtonListDropDown onOpenChange={setIsExpanded}>
           {items.map(item => {
             return (
               <ToolButtonListItem

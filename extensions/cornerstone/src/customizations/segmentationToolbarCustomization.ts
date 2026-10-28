@@ -907,7 +907,7 @@ export const segmentationModeToolbarSections: Record<string, string[]> = {
     'MoreTools',
   ],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: ['orientationMenu', 'dataOverlayMenu'],
+  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: [],
 
   [TOOLBAR_SECTIONS.viewportActionMenu.bottomMiddle]: ['AdvancedRenderingControls'],
 
@@ -919,13 +919,9 @@ export const segmentationModeToolbarSections: Record<string, string[]> = {
     'thresholdMenu',
   ],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topRight]: [
-    'modalityLoadBadge',
-    'trackingStatus',
-    'navigationComponent',
-  ],
+  [TOOLBAR_SECTIONS.viewportActionMenu.topRight]: ['windowLevelMenu'],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.bottomLeft]: ['windowLevelMenu'],
+  [TOOLBAR_SECTIONS.viewportActionMenu.bottomLeft]: [],
 
   MoreTools: [
     'Reset',

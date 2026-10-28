@@ -87,27 +87,40 @@ ToolButtonListDefault.displayName = 'ToolButtonListDefault';
 interface ToolButtonListDropDownProps {
   children: React.ReactNode;
   className?: string;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const ToolButtonListDropDown = React.forwardRef<HTMLDivElement, ToolButtonListDropDownProps>(
-  ({ children, className, ...props }, ref) => (
-    <DropdownMenu {...props}>
+  ({ children, className, onOpenChange, ...props }, ref) => (
+    <DropdownMenu
+      onOpenChange={onOpenChange}
+      {...props}
+    >
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
           className={cn(
-            'text-primary-active hover:bg-primary-dark hover:text-primary-light border-primary-dark',
-            'inline-flex h-10 w-5 items-center justify-center',
-            '!rounded-none',
-            'bg-transparent',
+            'inline-flex h-10 w-4 items-center justify-center border-0 p-0 !rounded-none shadow-none',
+            'bg-secondary-dark text-[#007CAACC] hover:bg-primary-dark hover:text-primary-light',
+            'data-[state=open]:bg-primary-light data-[state=open]:text-primary-dark',
             className
           )}
         >
-          <Icons.ByName
-            name="chevron-down"
-            className="text-primary-active h-5 w-5"
-          />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 20 20"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path
+              fill="currentColor"
+              fillRule="evenodd"
+              stroke="currentColor"
+              d="M10 13L5 7.737 5.7 7 10 11.526 14.3 7 15 7.737z"
+            />
+          </svg>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -115,6 +128,7 @@ const ToolButtonListDropDown = React.forwardRef<HTMLDivElement, ToolButtonListDr
         side="bottom"
         align="start"
         alignOffset={-40}
+        className="bg-secondary-dark text-white border-transparent p-1 shadow-md"
       >
         {children}
       </DropdownMenuContent>
@@ -145,14 +159,17 @@ const ToolButtonListItem = React.forwardRef<
   const menuItem = (
     <DropdownMenuItem
       ref={ref}
-      className={cn('flex items-center space-x-2', className)}
+      className={cn(
+        'flex h-8 items-center space-x-2 px-3 text-base text-white hover:bg-primary-dark focus:bg-primary-dark focus:text-white',
+        className
+      )}
       disabled={disabled}
       {...props}
     >
       {icon && (
         <Icons.ByName
           name={icon || 'MissingIcon'}
-          className="h-6 w-6"
+          className="h-[28px] w-[28px]"
         />
       )}
       {children}
@@ -191,7 +208,7 @@ const ToolButtonListDivider = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('bg-secondary-light h-5 w-px self-center', className)}
+    className={cn('bg-primary-active h-5 w-px self-center', className)}
     {...props}
   />
 ));

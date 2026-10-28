@@ -129,12 +129,12 @@ const Trigger = ({
   const button = (
     <Button
       className={cn(
-        'inline-flex h-10 w-10 items-center justify-center !rounded-lg',
+        'inline-flex h-10 w-10 items-center justify-center !rounded-none',
         disabled
-          ? 'text-foreground/80 hover:bg-muted hover:text-highlight cursor-not-allowed opacity-40'
+          ? 'text-primary-active hover:bg-primary-dark hover:text-primary-light cursor-not-allowed opacity-40'
           : isOpen
-            ? 'bg-background text-foreground/80'
-            : 'text-foreground/80 hover:bg-background hover:text-highlight bg-transparent',
+            ? 'bg-primary-dark text-primary-light'
+            : 'text-primary-active hover:bg-primary-dark hover:text-primary-light bg-transparent',
         className
       )}
       variant="ghost"
@@ -320,7 +320,10 @@ const GridSelector = ({ rows = 3, columns = 4, className }: GridSelectorProps) =
       {Array.from(Array(rows * columns).keys()).map(index => (
         <div
           key={index}
-          className={cn('cursor-pointer', isHovered(index) ? 'bg-primary' : 'bg-accent')}
+          className={cn(
+            'cursor-pointer border border-white/80',
+            isHovered(index) ? 'bg-customblue-100' : 'bg-customblue-20'
+          )}
           data-cy={`Layout-${index % columns}-${Math.floor(index / columns)}`}
           onClick={() => handleSelection(index)}
           onMouseEnter={() => setHoveredIndex(index)}

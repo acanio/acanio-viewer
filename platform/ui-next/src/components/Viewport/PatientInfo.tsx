@@ -37,7 +37,7 @@ function PatientInfo({
     <div ref={showPatientInfoRef}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Icons.Info className="hover:text-highlight cursor-pointer text-white" />
+          <Icons.Info className="hover:text-primary-light cursor-pointer text-white" />
         </TooltipTrigger>
         {isOpen && (
           <TooltipContent

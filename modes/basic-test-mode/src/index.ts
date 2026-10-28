@@ -103,13 +103,9 @@ const toolbarSections = {
 
   AdvancedRenderingControls: ['voiManualControlMenu', 'Colorbar', 'opacityMenu', 'thresholdMenu'],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topRight]: [
-    'modalityLoadBadge',
-    'trackingStatus',
-    'navigationComponent',
-  ],
+  [TOOLBAR_SECTIONS.viewportActionMenu.topRight]: ['windowLevelMenu'],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.bottomLeft]: ['windowLevelMenu'],
+  [TOOLBAR_SECTIONS.viewportActionMenu.bottomLeft]: [],
 
   MeasurementTools: [
     'Length',
