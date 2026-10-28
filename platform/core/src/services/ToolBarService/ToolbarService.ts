@@ -111,6 +111,7 @@ export default class ToolbarService extends PubSubService {
   _servicesManager: AppTypes.ServicesManager;
   _evaluateFunction: Record<string, EvaluateFunction> = {};
   _serviceSubscriptions = [];
+  config: Record<string, unknown> = {};
 
   constructor(
     commandsManager: CommandsManager,
@@ -134,6 +135,14 @@ export default class ToolbarService extends PubSubService {
 
   public onModeEnter(): void {
     this.reset();
+  }
+
+  public setConfig(c: Record<string, unknown>) {
+    this.config = c;
+  }
+
+  public getConfig(): Record<string, unknown> {
+    return this.config;
   }
 
   /**
@@ -658,11 +667,17 @@ export default class ToolbarService extends PubSubService {
       (componentProps as ButtonProps).optionComponent = options.optionComponent;
     }
 
-    return {
+    const mapped = {
       id,
       Component: btn.component,
       componentProps: Object.assign({ id }, btn.props, props),
     };
+
+    if (id === 'Capture' && (this.config as { hideCapture?: boolean }).hideCapture) {
+      (mapped as { hidden?: boolean }).hidden = true;
+    }
+
+    return mapped;
   }
 
   handleEvaluateNested = props => {

@@ -16,6 +16,7 @@ const mappings = {
 let _store = {
   urls: [],
   studyInstanceUIDMap: new Map(), // map of urls to array of study instance UIDs
+  config: {},
   // {
   //   url: url1
   //   studies: [Study1, Study2], // if multiple studies
@@ -117,6 +118,9 @@ function createDicomJSONApi(dicomJsonConfig, servicesManager) {
         evaluatedUrl.normalizedUrl,
         data.studies.map(study => study.StudyInstanceUID)
       );
+      _store.config.toolbar = {
+        hideCapture: data.hideCapture,
+      };
     },
     query: {
       studies: {
@@ -318,7 +322,10 @@ function createDicomJSONApi(dicomJsonConfig, servicesManager) {
         return;
       }
     },
-    getConfig: () => dicomJsonConfig,
+    getConfig: () => ({
+      ...dicomJsonConfig,
+      ..._store.config,
+    }),
   };
   return IWebApiDataSource.create(implementation);
 }
