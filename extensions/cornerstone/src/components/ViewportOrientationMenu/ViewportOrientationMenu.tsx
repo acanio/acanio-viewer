@@ -2,6 +2,7 @@ import React from 'react';
 import { cn, Icons, useIconPresentation } from '@ohif/ui-next';
 import { useSystem } from '@ohif/core';
 import { Enums } from '@cornerstonejs/core';
+import { getViewportAdapter } from '../../services/ViewportService/adapter';
 import { Popover, PopoverTrigger, PopoverContent, Button, useViewportGrid } from '@ohif/ui-next';
 
 function ViewportOrientationMenu({
@@ -36,8 +37,6 @@ function ViewportOrientationMenu({
 
   const handleOrientationChange = (orientation: string) => {
     setCurrentOrientation(orientation);
-    const viewportInfo = cornerstoneViewportService.getViewportInfo(viewportIdToUse);
-    const currentViewportType = viewportInfo?.getViewportType();
 
     if (!displaySets.length) {
       return;
@@ -72,8 +71,17 @@ function ViewportOrientationMenu({
 
     const displaySetUIDs = displaySets.map(ds => ds.displaySetInstanceUID);
 
-    // If viewport is not already a volume type, we need to convert it
-    if (currentViewportType !== Enums.ViewportType.ORTHOGRAPHIC) {
+    // A viewport already rendering in volume mode (legacy ORTHOGRAPHIC OR a next
+    // viewport that reports planarNext but renders volume actors, e.g. a CT+PET
+    // fusion) can be reoriented in place. Recreating it via setDisplaySetsForViewports
+    // would pass empty displaySetOptions and drop per-display-set presentation such
+    // as the PET overlay colormap/opacity. Only the genuine stack -> volume (MPR)
+    // case needs recreation.
+    const csViewport = cornerstoneViewportService.getCornerstoneViewport(viewportIdToUse);
+    const isVolumeMode = !!csViewport && getViewportAdapter(csViewport).canReorientInPlace();
+
+    // If viewport is not already in volume mode, we need to convert it
+    if (!isVolumeMode) {
       // Configure the viewport to be a volume viewport with current display sets
       const updatedViewport = {
         viewportId: viewportIdToUse,
@@ -156,7 +164,7 @@ function ViewportOrientationMenu({
       >
         <Button
           variant="ghost"
-          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('axial')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -168,7 +176,7 @@ function ViewportOrientationMenu({
         </Button>
         <Button
           variant="ghost"
-          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('sagittal')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -180,7 +188,7 @@ function ViewportOrientationMenu({
         </Button>
         <Button
           variant="ghost"
-          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('coronal')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -192,7 +200,7 @@ function ViewportOrientationMenu({
         </Button>
         <Button
           variant="ghost"
-          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('acquisition')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -203,10 +211,10 @@ function ViewportOrientationMenu({
           <div className="flex-1 text-left">Acquisition</div>
         </Button>
         {/* Divider */}
-        <div className="mx-1 my-2 border-t border-white/20" />
+        <div className="border-input mx-1 my-2 border-t" />
         <Button
           variant="ghost"
-          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('reformat')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">

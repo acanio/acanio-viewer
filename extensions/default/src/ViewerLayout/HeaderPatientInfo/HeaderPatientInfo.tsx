@@ -40,33 +40,33 @@ function HeaderPatientInfo({ servicesManager, appConfig }: withAppTypes) {
 
   return (
     <div
-      className="hover:bg-primary-dark flex cursor-pointer items-center justify-center gap-1 rounded-none"
+      className="hover:bg-muted flex cursor-pointer items-center justify-center gap-1 rounded-lg"
       onClick={handleOnClick}
     >
       {isMixedPatients ? (
-        <Icons.MultiplePatients className="text-primary-active" />
+        <Icons.MultiplePatients className="text-primary" />
       ) : (
-        <Icons.Patient className="text-primary-active" />
+        <Icons.Patient className="text-primary" />
       )}
       <div className="flex flex-col justify-center">
         {expanded ? (
           <>
-            <div className="self-start text-[13px] font-bold text-white">
+            <div className="text-foreground self-start text-[13px] font-bold">
               {formattedPatientName}
             </div>
-            <div className="text-aqua-pale flex gap-2 text-[11px]">
+            <div className="text-muted-foreground flex gap-2 text-[11px]">
               <div>{formattedPatientID}</div>
               <div>{patientInfo.PatientSex}</div>
               <div>{patientInfo.PatientDOB}</div>
             </div>
           </>
         ) : (
-          <div className="text-primary-active self-center text-[13px]">
+          <div className="text-primary self-center text-[13px]">
             {isMixedPatients ? 'Multiple Patients' : 'Patient'}
           </div>
         )}
       </div>
-      <Icons.ArrowLeft className={`text-primary-active ${expanded ? 'rotate-180' : ''}`} />
+      <Icons.ArrowLeft className={`text-primary ${expanded ? 'rotate-180' : ''}`} />
     </div>
   );
 }

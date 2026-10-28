@@ -43,7 +43,7 @@ function ToolboxUI(props: ToolboxProps) {
     return (
       <>
         <div className="flex flex-col">
-          <div className="bg-customblue-40 mt-0.5 flex flex-wrap space-x-2 py-2 px-1">
+          <div className="bg-muted mt-0.5 flex flex-wrap space-x-2 py-2 px-1">
             {toolbarButtons.map((toolDef, index) => {
               if (!toolDef) {
                 return null;
@@ -78,7 +78,7 @@ function ToolboxUI(props: ToolboxProps) {
             })}
           </div>
         </div>
-        <div className="bg-primary-dark h-auto px-2">
+        <div className="bg-muted h-auto px-2">
           {activeToolOptions && <ToolSettings options={activeToolOptions} />}
         </div>
       </>

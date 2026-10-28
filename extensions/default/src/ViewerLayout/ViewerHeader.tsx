@@ -28,7 +28,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
     if (dataSourceIdx !== -1 && existingDataSource) {
       searchQuery.append('datasources', pathname.substring(dataSourceIdx + 1));
     }
-    preserveQueryParameters(searchQuery);
+    preserveQueryParameters(searchQuery, customizationService);
 
     navigate({
       pathname: '/',
@@ -43,6 +43,10 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
     'ohif.aboutModal'
   ) as Types.MenuComponentCustomization;
 
+  const AppearanceModal = customizationService.getCustomization(
+    'ohif.appearanceModal'
+  ) as Types.MenuComponentCustomization;
+
   const UserPreferencesModal = customizationService.getCustomization(
     'ohif.userPreferencesModal'
   ) as Types.MenuComponentCustomization;
@@ -54,7 +58,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
       onClick: () =>
         show({
           content: AboutModal,
-          title: AboutModal?.title ?? t('AboutModal:About'),
+          title: AboutModal?.title ?? t('AboutModal:About OHIF Viewer'),
           containerClassName: AboutModal?.containerClassName ?? 'max-w-md',
         }),
     },
@@ -70,6 +74,19 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
         }),
     },
   ];
+
+  if (AppearanceModal) {
+    menuOptions.splice(1, 0, {
+      title: AppearanceModal.menuTitle ?? t('Header:Appearance'),
+      icon: 'ColorChange',
+      onClick: () =>
+        show({
+          content: AppearanceModal,
+          title: AppearanceModal.title ?? t('AppearanceModal:Appearance'),
+          containerClassName: AppearanceModal.containerClassName ?? 'max-w-md',
+        }),
+    });
+  }
 
   if (appConfig.oidc) {
     menuOptions.push({
@@ -97,10 +114,11 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
         )
       }
       UndoRedo={
-        <div className="text-primary-active flex cursor-pointer items-center">
+        <div className="text-primary flex cursor-pointer items-center">
           <Button
             variant="ghost"
-            className="text-primary-active hover:bg-primary-dark rounded-none"
+            className="hover:bg-muted"
+            data-cy="undo-btn"
             onClick={() => {
               commandsManager.run('undo');
             }}
@@ -109,7 +127,8 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
           </Button>
           <Button
             variant="ghost"
-            className="text-primary-active hover:bg-primary-dark rounded-none"
+            className="hover:bg-muted"
+            data-cy="redo-btn"
             onClick={() => {
               commandsManager.run('redo');
             }}

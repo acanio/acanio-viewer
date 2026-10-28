@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { utils } from '@ohif/core';
-import { ImageViewerProvider, DragAndDropProvider, LoadingIndicatorProgress } from '@ohif/ui-next';
+import { ImageViewerProvider, DragAndDropProvider } from '@ohif/ui-next';
 import { useSearchParams } from '../../hooks';
 import { useAppConfig } from '@state';
 import ViewportGrid from '@components/ViewportGrid';
@@ -30,6 +31,8 @@ export default function ModeRoute({
   const params = useParams();
   // The URL's query search parameters where the keys casing is maintained
   const query = useSearchParams();
+
+  const navigate = useNavigate();
 
   mode?.onModeInit?.({
     servicesManager,
@@ -94,6 +97,15 @@ export default function ModeRoute({
         }
       }
 
+      // Mode dependency extensions register their customization modules here,
+      // but `registerExtension` does not merge them into the customization
+      // service — that otherwise only happens later in
+      // `extensionManager.onModeEnter`. Merge them now so anything that runs
+      // before setupRouteInit (e.g. a mode's layoutTemplate) can already read
+      // the defaults these extensions provide.
+      // `init` is idempotent — each extension module is merged at most once.
+      customizationService.init(extensionManager);
+
       if (isMounted.current) {
         setExtensionDependenciesLoaded(true);
       }
@@ -121,15 +133,6 @@ export default function ModeRoute({
         params,
         query,
       });
-
-      const { toolbar: toolbarConfig } = dataSource.getConfig?.() || {};
-      if (toolbarConfig) {
-        servicesManager.services.toolbarService.setConfig({
-          ...servicesManager.services.toolbarService.getConfig(),
-          ...toolbarConfig,
-        });
-      }
-
       setStudyInstanceUIDs(dataSource.getStudyInstanceUIDs({ params, query }));
     };
 
@@ -138,6 +141,38 @@ export default function ModeRoute({
       layoutTemplateData.current = null;
     };
   }, [location, ExtensionDependenciesLoaded]);
+
+  /**
+   * Validates study existence before loading the viewer.
+   * Moved from PanelStudyBrowser.tsx to ensure validation runs in all modes
+   */
+  useEffect(() => {
+    if (!ExtensionDependenciesLoaded || !studyInstanceUIDs?.length || !dataSource) {
+      return;
+    }
+
+    const validateStudies = async () => {
+      for (const studyInstanceUID of studyInstanceUIDs) {
+        try {
+          const qidoForStudyUID = await dataSource.query.studies.search({
+            studyInstanceUid: studyInstanceUID,
+          });
+
+          if (!qidoForStudyUID?.length) {
+            console.warn('Study not found:', studyInstanceUID);
+            navigate('/notfoundstudy');
+            return;
+          }
+        } catch (error) {
+          console.error('Error validating study:', studyInstanceUID, error);
+          navigate('/notfoundstudy');
+          return;
+        }
+      }
+    };
+
+    validateStudies();
+  }, [studyInstanceUIDs, ExtensionDependenciesLoaded, dataSource, navigate]);
 
   useEffect(() => {
     if (!ExtensionDependenciesLoaded || !studyInstanceUIDs?.length) {
@@ -154,9 +189,18 @@ export default function ModeRoute({
       if (isMounted.current) {
         const { leftPanels = [], rightPanels = [], ...layoutProps } = layoutData.props;
 
+        // Register panels immediately so ViewerLayout's first render sees them.
+        // ResizablePanelsHook only auto-expands side panels on the initial mount;
+        // if panels are added later, the viewport grid keeps the wrong width.
+        // setupRouteInit (below) resets and re-applies them after customizations
+        // are layered on, so URL/config modules can still modify the lists.
         panelService.reset();
         panelService.addPanels(panelService.PanelPosition.Left, leftPanels);
         panelService.addPanels(panelService.PanelPosition.Right, rightPanels);
+
+        // Stash the layout lists for setupRouteInit to seed into the
+        // `leftPanels` / `rightPanels` customizations.
+        layoutData.panels = { leftPanels, rightPanels };
 
         // layoutProps contains all props but leftPanels and rightPanels
         layoutData.props = layoutProps;
@@ -194,6 +238,56 @@ export default function ModeRoute({
         commandsManager,
         appConfig,
       });
+
+      // `extensionManager.onModeEnter` resets the customization mode scope via
+      // `customizationService.onModeEnter`; the mode scope is then layered
+      // bottom-up so the final value of every key is decided by scope
+      // precedence (global > mode > default) and application order alone:
+      //   1. the mode's own values — its layout panel lists, seeded as the
+      //      standard `leftPanels` / `rightPanels` customizations;
+      //      its toolbar/tool-group composition, seeded as the plain
+      //      `toolbarButtons` / `toolbarSections` / `toolGroupAdditions`
+      //      customizations (resolved to concrete definitions later, when the
+      //      mode's `onModeEnter` registers the toolbar); and its
+      //      `modeCustomizations` block (declared as data on the mode
+      //      instance, usually as a customization name registered at default
+      //      scope when the mode loaded, so bootstrap/global customizations
+      //      can modify the block itself before it is applied);
+      //   2. the app config / URL `mode` phase blocks — the general (`*`)
+      //      block first, then any block keyed by this mode's id / routeName.
+      const { leftPanels = [], rightPanels = [] } = layoutTemplateData.current.panels ?? {};
+      customizationService.setCustomizations({
+        leftPanels,
+        rightPanels,
+        toolbarButtons: mode.toolbarButtons ?? [],
+        toolbarSections: mode.toolbarSections ?? [],
+        toolGroupAdditions: mode.toolGroupAdditions ?? {},
+      });
+
+      const modeCustomizations =
+        typeof mode.modeCustomizations === 'string'
+          ? customizationService.getCustomization(mode.modeCustomizations)
+          : mode.modeCustomizations;
+      if (modeCustomizations) {
+        customizationService.setCustomizations(modeCustomizations);
+      }
+      customizationService.applyModeCustomizations([mode.id, mode.routeName]);
+
+      // Re-apply panels only when customizations changed the lists. When they
+      // match the layout, the panels registered in retrieveLayoutData are left
+      // in place so ViewerLayout's ResizablePanelsHook keeps the correct sizes
+      // from its one-time initial expand.
+      const resolvedLeftPanels = customizationService.getValue('leftPanels') ?? [];
+      const resolvedRightPanels = customizationService.getValue('rightPanels') ?? [];
+      const panelsChanged =
+        JSON.stringify(resolvedLeftPanels) !== JSON.stringify(leftPanels) ||
+        JSON.stringify(resolvedRightPanels) !== JSON.stringify(rightPanels);
+
+      if (panelsChanged) {
+        panelService.reset();
+        panelService.addPanels(panelService.PanelPosition.Left, resolvedLeftPanels);
+        panelService.addPanels(panelService.PanelPosition.Right, resolvedRightPanels);
+      }
 
       // use the URL hangingProtocolId if it exists, otherwise use the one
       // defined in the mode configuration
@@ -336,11 +430,7 @@ export default function ModeRoute({
   ]);
 
   if (!studyInstanceUIDs || !layoutTemplateData.current || !ExtensionDependenciesLoaded) {
-    return (
-      <div className="flex flex-col items-center justify-center pt-48">
-        <LoadingIndicatorProgress className={'h-full w-full bg-black'} />
-      </div>
-    );
+    return null;
   }
 
   const ViewportGridWithDataSource = props => {

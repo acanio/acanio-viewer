@@ -52,10 +52,7 @@ export function Toolbar({ buttonSection = 'primary', viewportId, location }: Too
           return null;
         }
 
-        const { id, Component, componentProps, hidden } = toolDef as any;
-        if (hidden === true) {
-          return null;
-        }
+        const { id, Component, componentProps } = toolDef;
 
         // Enhanced props with state and actions - respecting viewport specificity
         const enhancedProps = {

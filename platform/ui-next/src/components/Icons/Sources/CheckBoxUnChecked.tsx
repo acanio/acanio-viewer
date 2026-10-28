@@ -15,7 +15,7 @@ export const CheckBoxUnchecked = (props: IconProps) => (
       width="11"
       height="11"
       rx="3"
-      stroke="#007CAACC"
+      stroke="#348CFD"
       fill="none"
       fillRule="evenodd"
     />

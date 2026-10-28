@@ -5,12 +5,12 @@ import { Button } from '../Button';
 import { cn } from '../../lib/utils';
 import { useIconPresentation } from '../../contextProviders/IconPresentationProvider';
 
-const baseClasses = '!rounded-none inline-flex items-center justify-center';
-const defaultClasses =
-  'bg-transparent text-primary-active hover:bg-primary-dark hover:text-primary-light';
+const baseClasses = '!rounded-lg inline-flex items-center justify-center';
+const defaultClasses = 'bg-transparent text-foreground/80 hover:bg-background hover:text-highlight';
 const activeClasses = 'bg-highlight text-background hover:!bg-highlight/80';
+const toggledClasses = 'bg-transparent text-highlight hover:bg-muted';
 const disabledClasses =
-  'text-common-bright hover:bg-primary-dark hover:text-primary-light opacity-40 cursor-not-allowed';
+  'text-foreground hover:bg-muted hover:text-highlight opacity-40 cursor-not-allowed';
 
 const sizeClasses = {
   default: {
@@ -34,6 +34,7 @@ interface ToolButtonProps {
   tooltip?: string;
   size?: 'default' | 'small';
   isActive?: boolean;
+  isToggled?: boolean;
   disabled?: boolean;
   disabledText?: string;
   commands?: Record<string, unknown>;
@@ -51,6 +52,7 @@ function ToolButton(props: ToolButtonProps) {
     size = 'default',
     disabled = false,
     isActive = false,
+    isToggled = false,
     disabledText,
     commands,
     onInteraction,
@@ -64,7 +66,7 @@ function ToolButton(props: ToolButtonProps) {
   const buttonClasses = cn(
     baseClasses,
     buttonSizeClass,
-    disabled ? disabledClasses : isActive ? activeClasses : defaultClasses,
+    disabled ? disabledClasses : isActive ? activeClasses : isToggled ? toggledClasses : defaultClasses,
     className
   );
 
@@ -86,6 +88,7 @@ function ToolButton(props: ToolButtonProps) {
           data-cy={id}
           data-tool={id}
           data-active={isActive}
+          data-toggled={isToggled}
         >
           <Button
             className={buttonClasses}

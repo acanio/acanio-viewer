@@ -35,9 +35,7 @@ const StudyItem = ({
       defaultValue={isActive ? 'study-item' : undefined}
     >
       <AccordionItem value="study-item">
-        <AccordionTrigger
-          className={classnames('hover:bg-customblue-100 bg-customblue-40 group w-full rounded-none')}
-        >
+        <AccordionTrigger className={classnames('hover:bg-accent bg-popover group w-full rounded')}>
           <div className="flex h-[40px] w-full flex-row overflow-hidden">
             <div className="flex w-full flex-row items-center justify-between">
               <div className="flex min-w-0 flex-col items-start text-[13px]">
@@ -47,7 +45,7 @@ const StudyItem = ({
                     className="w-full"
                     asChild
                   >
-                    <div className="h-[18px] w-full max-w-[160px] overflow-hidden truncate whitespace-nowrap text-left text-white">
+                    <div className="text-foreground h-[18px] w-full max-w-[160px] overflow-hidden truncate whitespace-nowrap text-left">
                       {date}
                     </div>
                   </TooltipTrigger>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDrag } from 'react-dnd';
@@ -6,12 +6,36 @@ import { Icons } from '../Icons';
 import { DisplaySetMessageListTooltip } from '../DisplaySetMessageListTooltip';
 import { TooltipTrigger, TooltipContent, Tooltip } from '../Tooltip';
 
+const DraggableThumbnailContent = ({ dragData, children }: any) => {
+  const [, drag] = useDrag({
+    type: 'displayset',
+    item: { ...dragData },
+    canDrag: function () {
+      return Object.keys(dragData).length !== 0;
+    },
+  });
+
+  return (
+    <div
+      ref={drag}
+      className="h-full w-full"
+    >
+      {children}
+    </div>
+  );
+};
+
+const StaticThumbnailContent = ({ children }: any) => {
+  return <div className="h-full w-full">{children}</div>;
+};
+
 /**
  * Display a thumbnail for a display set.
  */
 const Thumbnail = ({
   displaySetInstanceUID,
   className,
+  children,
   imageSrc,
   imageAltText,
   description,
@@ -30,22 +54,20 @@ const Thumbnail = ({
   isTracked = false,
   canReject = false,
   dragData = {},
+  isDraggable = true,
   onReject = () => {},
   onClickUntrack = () => {},
   ThumbnailMenuItems = () => {},
+  onImageLoadError = () => {},
 }: withAppTypes): React.ReactNode => {
-  // TODO: We should wrap our thumbnail to create a "DraggableThumbnail", as
-  // this will still allow for "drag", even if there is no drop target for the
-  // specified item.
-  const [collectedProps, drag, dragPreview] = useDrag({
-    type: 'displayset',
-    item: { ...dragData },
-    canDrag: function (monitor) {
-      return Object.keys(dragData).length !== 0;
-    },
-  });
-
   const [lastTap, setLastTap] = useState(0);
+  const [imageLoadFailed, setImageLoadFailed] = useState(false);
+
+  useEffect(() => {
+    setImageLoadFailed(false);
+  }, [imageSrc]);
+
+  const shouldRenderThumbnailImage = Boolean(imageSrc && !imageLoadFailed);
 
   const handleTouchEnd = e => {
     const currentTime = new Date().getTime();
@@ -63,36 +85,37 @@ const Thumbnail = ({
       <div
         className={classnames(
           'flex h-full w-full flex-col items-center justify-center gap-[2px] p-[4px]',
+          isActive && 'bg-popover rounded'
         )}
       >
         <div className="h-[114px] w-[128px]">
-          <div className="relative">
-            {imageSrc ? (
+          <div className="relative bg-background">
+            {shouldRenderThumbnailImage ? (
               <img
                 src={imageSrc}
                 alt={imageAltText}
-                className="h-[114px] w-[128px] rounded-none object-contain"
+                className="h-[114px] w-[128px] rounded object-contain"
                 crossOrigin="anonymous"
+                onError={() => {
+                  setImageLoadFailed(true);
+                  onImageLoadError();
+                }}
               />
             ) : (
-              <div className="bg-background h-[114px] w-[128px] rounded-none"></div>
+              <div className="bg-background h-[114px] w-[128px] rounded">{children}</div>
             )}
 
             {/* bottom left */}
-            <div className="bg-customblue-40 absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] p-[4px]">
+            <div className="absolute bottom-0 left-0 flex h-[14px] items-center gap-[4px] rounded-tr pt-[10px] pb-[10px] pr-[6px] pl-[5px]">
               <div
                 className={classnames(
-                  'h-[10px] w-[10px] rounded-none',
-                  isActive
-                    ? 'bg-white'
-                    : isHydratedForDerivedDisplaySet
-                      ? 'bg-highlight'
-                      : 'bg-primary-light',
-                  loadingProgress && loadingProgress < 1 && 'bg-customblue-100'
+                  'h-[10px] w-[10px] rounded-[2px]',
+                  isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary/65',
+                  loadingProgress && loadingProgress < 1 && 'bg-primary/25'
                 )}
               ></div>
               <div
-                className="text-[11px] font-semibold text-white"
+                className="text-foreground text-[11px] font-semibold"
                 data-cy="series-modality-label"
               >
                 {modality}
@@ -109,9 +132,9 @@ const Thumbnail = ({
                 <Tooltip>
                   <TooltipTrigger>
                     <div className="group">
-                      <Icons.StatusTracking className="text-primary-light h-[15px] w-[15px] group-hover:hidden" />
+                      <Icons.StatusTracking className="text-highlight h-[15px] w-[15px] group-hover:hidden" />
                       <Icons.Cancel
-                        className="text-primary-light hidden h-[15px] w-[15px] group-hover:block"
+                        className="text-highlight hidden h-[15px] w-[15px] group-hover:block"
                         onClick={onClickUntrack}
                       />
                     </div>
@@ -119,11 +142,11 @@ const Thumbnail = ({
                   <TooltipContent side="right">
                     <div className="flex flex-1 flex-row">
                       <div className="flex-2 flex items-center justify-center pr-4">
-                        <Icons.InfoLink className="text-primary-active" />
+                        <Icons.InfoLink className="text-primary" />
                       </div>
                       <div className="flex flex-1 flex-col">
                         <span>
-                          <span className="text-white">
+                          <span className="text-foreground">
                             {isTracked ? 'Series is tracked' : 'Series is untracked'}
                           </span>
                         </span>
@@ -148,7 +171,7 @@ const Thumbnail = ({
             <TooltipContent>{description}</TooltipContent>
             <TooltipTrigger>
               <div
-                className="min-h-[18px] w-[128px] overflow-hidden text-ellipsis whitespace-nowrap pb-0.5 pl-1 text-left text-[12px] font-normal leading-4 text-white"
+                className="text-foreground min-h-[18px] w-[128px] overflow-hidden text-ellipsis whitespace-nowrap pb-0.5 pl-1 text-left text-[12px] font-normal leading-4"
                 data-cy="series-description-label"
               >
                 {description}
@@ -178,12 +201,13 @@ const Thumbnail = ({
       <div
         className={classnames(
           'flex h-full w-full items-center justify-between pr-[8px] pl-[8px] pt-[4px] pb-[4px]',
+          isActive && 'bg-popover rounded'
         )}
       >
         <div className="relative flex h-[32px] w-full items-center gap-[8px] overflow-hidden">
           <div
             className={classnames(
-              'h-[32px] w-[4px] min-w-[4px] rounded-none',
+              'h-[32px] w-[4px] min-w-[4px] rounded',
               isActive || isHydratedForDerivedDisplaySet ? 'bg-highlight' : 'bg-primary/65',
               loadingProgress && loadingProgress < 1 && 'bg-primary/25'
             )}
@@ -191,7 +215,7 @@ const Thumbnail = ({
           <div className="flex h-full w-[calc(100%-12px)] flex-col justify-start">
             <div className="flex items-center gap-[7px]">
               <div
-                className="text-[13px] font-semibold text-white"
+                className="text-foreground text-[13px] font-semibold"
                 data-cy="series-modality-label"
               >
                 {modality}
@@ -200,7 +224,7 @@ const Thumbnail = ({
                 <TooltipContent>{description}</TooltipContent>
                 <TooltipTrigger className="w-full overflow-hidden">
                   <div
-                    className="max-w-[160px] overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-[13px] font-normal text-white"
+                    className="text-foreground max-w-[160px] overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-[13px] font-normal"
                     data-cy="series-description-label"
                   >
                     {description}
@@ -234,9 +258,9 @@ const Thumbnail = ({
             <Tooltip>
               <TooltipTrigger>
                 <div className="group">
-                  <Icons.StatusTracking className="text-primary-light h-[20px] w-[15px] group-hover:hidden" />
+                  <Icons.StatusTracking className="text-highlight h-[20px] w-[15px] group-hover:hidden" />
                   <Icons.Cancel
-                    className="text-primary-light hidden h-[15px] w-[15px] group-hover:block"
+                    className="text-highlight hidden h-[15px] w-[15px] group-hover:block"
                     onClick={onClickUntrack}
                   />
                 </div>
@@ -244,11 +268,11 @@ const Thumbnail = ({
               <TooltipContent side="right">
                 <div className="flex flex-1 flex-row">
                   <div className="flex-2 flex items-center justify-center pr-4">
-                    <Icons.InfoLink className="text-primary-active" />
+                    <Icons.InfoLink className="text-primary" />
                   </div>
                   <div className="flex flex-1 flex-col">
                     <span>
-                      <span className="text-white">
+                      <span className="text-foreground">
                         {isTracked ? 'Series is tracked' : 'Series is untracked'}
                       </span>
                     </span>
@@ -271,7 +295,9 @@ const Thumbnail = ({
     <div
       className={classnames(
         className,
-        'bg-customblue-40 hover:bg-customblue-100 group flex cursor-pointer select-none flex-col outline-none',
+        'bg-muted group flex select-none flex-col rounded outline-none',
+        isDraggable && 'hover:bg-primary/30 cursor-pointer',
+        !isDraggable && 'cursor-default',
         viewPreset === 'thumbnails' && 'h-[170px] w-[135px]',
         viewPreset === 'list' && 'h-[40px] w-full'
       )}
@@ -285,15 +311,19 @@ const Thumbnail = ({
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       onTouchEnd={handleTouchEnd}
-      role="button"
+      role={isDraggable ? 'button' : undefined}
     >
-      <div
-        ref={drag}
-        className="h-full w-full"
-      >
-        {viewPreset === 'thumbnails' && renderThumbnailPreset()}
-        {viewPreset === 'list' && renderListPreset()}
-      </div>
+      {isDraggable ? (
+        <DraggableThumbnailContent dragData={dragData}>
+          {viewPreset === 'thumbnails' && renderThumbnailPreset()}
+          {viewPreset === 'list' && renderListPreset()}
+        </DraggableThumbnailContent>
+      ) : (
+        <StaticThumbnailContent>
+          {viewPreset === 'thumbnails' && renderThumbnailPreset()}
+          {viewPreset === 'list' && renderListPreset()}
+        </StaticThumbnailContent>
+      )}
     </div>
   );
 };
@@ -301,6 +331,7 @@ const Thumbnail = ({
 Thumbnail.propTypes = {
   displaySetInstanceUID: PropTypes.string.isRequired,
   className: PropTypes.string,
+  children: PropTypes.node,
   imageSrc: PropTypes.string,
   /**
    * Data the thumbnail should expose to a receiving drop target. Use a matching
@@ -328,7 +359,9 @@ Thumbnail.propTypes = {
   isTracked: PropTypes.bool,
   onClickUntrack: PropTypes.func,
   countIcon: PropTypes.string,
+  isDraggable: PropTypes.bool,
   thumbnailType: PropTypes.oneOf(['thumbnail', 'thumbnailTracked', 'thumbnailNoImage']),
+  onImageLoadError: PropTypes.func,
 };
 
 export { Thumbnail };

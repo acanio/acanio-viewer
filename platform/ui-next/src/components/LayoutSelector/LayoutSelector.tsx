@@ -129,12 +129,12 @@ const Trigger = ({
   const button = (
     <Button
       className={cn(
-        'inline-flex h-10 w-10 items-center justify-center !rounded-none',
+        'inline-flex h-10 w-10 items-center justify-center !rounded-lg',
         disabled
-          ? 'text-common-bright hover:bg-primary-dark hover:text-primary-light cursor-not-allowed opacity-40'
+          ? 'text-foreground/80 hover:bg-muted hover:text-highlight cursor-not-allowed opacity-40'
           : isOpen
-            ? 'bg-primary-dark text-primary-light'
-            : 'text-primary-active hover:bg-primary-dark hover:text-primary-light bg-transparent',
+            ? 'bg-background text-foreground/80'
+            : 'text-foreground/80 hover:bg-background hover:text-highlight bg-transparent',
         className
       )}
       variant="ghost"
@@ -196,7 +196,7 @@ const Content = ({ children, className, align = 'center', sideOffset = 8 }: Cont
     <PopoverContent
       align={align}
       sideOffset={sideOffset}
-      className={cn('w-auto rounded-none border-none p-0 shadow-lg', className)}
+      className={cn('w-auto rounded-lg border-none p-0 shadow-lg', className)}
     >
       <div className="flex">{children}</div>
     </PopoverContent>
@@ -256,8 +256,8 @@ const Preset = ({
   return (
     <div
       className={cn(
-        'group cursor-pointer rounded-none transition',
-        'hover:bg-primary-dark flex items-center gap-2 p-1.5',
+        'group cursor-pointer rounded transition',
+        'hover:bg-accent flex items-center gap-2 p-1.5',
         disabled && 'pointer-events-none opacity-50',
         className
       )}
@@ -267,7 +267,7 @@ const Preset = ({
       <div className="flex-shrink-0">
         <Icons.ByName
           name={icon}
-          className={cn('group-hover:text-primary-light', iconSize)}
+          className={cn('group-hover:text-primary', iconSize)}
         />
       </div>
       {title && <div className="text-foreground text-base">{title}</div>}
@@ -320,10 +320,7 @@ const GridSelector = ({ rows = 3, columns = 4, className }: GridSelectorProps) =
       {Array.from(Array(rows * columns).keys()).map(index => (
         <div
           key={index}
-          className={cn(
-            'cursor-pointer border border-white/80',
-            isHovered(index) ? 'bg-customblue-100' : 'bg-customblue-20'
-          )}
+          className={cn('cursor-pointer', isHovered(index) ? 'bg-primary' : 'bg-accent')}
           data-cy={`Layout-${index % columns}-${Math.floor(index / columns)}`}
           onClick={() => handleSelection(index)}
           onMouseEnter={() => setHoveredIndex(index)}
@@ -335,7 +332,7 @@ const GridSelector = ({ rows = 3, columns = 4, className }: GridSelectorProps) =
 };
 
 const Divider = ({ className }: { className?: string }) => (
-  <div className={cn('h-px bg-black', className)}></div>
+  <div className={cn('h-px bg-background', className)}></div>
 );
 
 const HelpText = ({ children, className }: { children: React.ReactNode; className?: string }) => (
