@@ -125,12 +125,5 @@
       "git add"
     ]
   },
-  "pnpm": {
-    "overrides": {
-      "@cornerstonejs/codec-charls": "1.2.7",
-      "@cornerstonejs/codec-libjpeg-turbo-8bit": "1.2.8",
-      "@cornerstonejs/codec-openjph": "2.4.11"
-    }
-  },
   "version": "3.13.13"
 }
