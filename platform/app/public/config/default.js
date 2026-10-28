@@ -19,10 +19,146 @@
 window.config = {
   name: 'config/default.js',
   routerBasename: null,
-  // whiteLabeling: {},
   extensions: [],
   modes: [],
-  customizationService: {},
+  customizationService: [
+    {
+      'viewportOverlay.topLeft': [
+        {
+          id: 'PatientName',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: '',
+          condition: ({ referenceInstance }) =>
+            referenceInstance &&
+            referenceInstance.PatientName &&
+            (typeof referenceInstance.PatientName === 'string' ||
+              referenceInstance.PatientName.Alphabetic),
+          contentF: ({ referenceInstance, formatters: { formatPN } }) =>
+            (typeof referenceInstance.PatientName === 'string'
+              ? formatPN(referenceInstance.PatientName)
+              : formatPN(referenceInstance.PatientName.Alphabetic)) +
+            ' ' +
+            (referenceInstance.PatientSex ? '(' + referenceInstance.PatientSex + ')' : ''),
+        },
+        {
+          id: 'PID',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: '',
+          title: 'Patient PID',
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.PatientID,
+          contentF: ({ referenceInstance }) => referenceInstance.PatientID,
+        },
+        {
+          id: 'PatientBirthDate',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: 'DOB:',
+          title: "Patient's Date of birth",
+          condition: ({ referenceInstance }) =>
+            referenceInstance && referenceInstance.PatientBirthDate,
+          contentF: ({ referenceInstance }) => referenceInstance.PatientBirthDate,
+        },
+        {
+          id: 'OtherPid',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: 'Other PID:',
+          title: 'Other Patient IDs',
+          condition: ({ referenceInstance }) =>
+            referenceInstance && referenceInstance.OtherPatientIDs,
+          contentF: ({ referenceInstance, formatters: { formatPN } }) =>
+            formatPN(referenceInstance.OtherPatientIDs),
+        },
+      ],
+      'viewportOverlay.topRight': [
+        {
+          id: 'SeriesDescription',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: '',
+          title: 'Series Description',
+          condition: ({ referenceInstance }) =>
+            referenceInstance && referenceInstance.SeriesDescription,
+          contentF: ({ referenceInstance }) => referenceInstance.SeriesDescription,
+        },
+        {
+          id: 'StudyDateTime',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: '',
+          title: 'Study date',
+          condition: ({ referenceInstance }) =>
+            referenceInstance && (referenceInstance.StudyDate || referenceInstance.StudyTime),
+          contentF: ({ referenceInstance, formatters: { formatDate, formatTime } }) =>
+            [
+              referenceInstance.StudyDate ? formatDate(referenceInstance.StudyDate) : '',
+              referenceInstance.StudyTime ? formatTime(referenceInstance.StudyTime) : '',
+            ].join(' '),
+        },
+      ],
+      'viewportOverlay.bottomLeft': [
+        {
+          id: 'SeriesNumber',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: 'Ser:',
+          title: 'Series Number',
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SeriesNumber,
+          contentF: ({ referenceInstance }) => referenceInstance.SeriesNumber,
+        },
+        {
+          id: 'InstanceNumber',
+          inheritsFrom: 'ohif.overlayItem.instanceNumber',
+          color: '#fff',
+        },
+        {
+          id: 'ColumnsRows',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: '',
+          condition: ({ referenceInstance }) =>
+            referenceInstance && referenceInstance.Columns && referenceInstance.Rows,
+          contentF: ({ referenceInstance }) =>
+            `${referenceInstance.Columns} x ${referenceInstance.Rows}`,
+        },
+        {
+          id: 'SliceLocation',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: 'Loc:',
+          title: 'Slice Location',
+          condition: ({ referenceInstance }) => referenceInstance && referenceInstance.SliceLocation,
+          contentF: ({ referenceInstance, formatters: { formatNumberPrecision } }) =>
+            formatNumberPrecision(referenceInstance.SliceLocation, 2) + ' mm',
+        },
+        {
+          id: 'SliceThickness',
+          inheritsFrom: 'ohif.overlayItem',
+          color: '#fff',
+          label: 'Thick:',
+          title: 'Slice Thickness',
+          condition: ({ referenceInstance }) =>
+            referenceInstance && referenceInstance.SliceThickness,
+          contentF: ({ referenceInstance, formatters: { formatNumberPrecision } }) =>
+            formatNumberPrecision(referenceInstance.SliceThickness, 2) + ' mm',
+        },
+      ],
+      'viewportOverlay.bottomRight': [
+        {
+          id: 'ZoomLevel',
+          inheritsFrom: 'ohif.overlayItem.zoomLevel',
+          color: '#fff',
+        },
+        {
+          id: 'WindowLevel',
+          inheritsFrom: 'ohif.overlayItem.windowLevel',
+          color: '#fff',
+        },
+      ],
+    },
+  ],
 
   // --- URL-driven customizations (?customization=) ----------------------------
   // OFF by default. To allow loading customization data files from the URL, set
@@ -76,6 +212,10 @@ window.config = {
   // parameter) is intentionally left OFF in the secure default build. See
   // config/dev.js for the documented shape.
   defaultDataSourceName: 'ohif',
+  investigationalUseDialog: {
+    option: 'configure',
+    days: 90,
+  },
   dataSources: [
     {
       // Read-only public demo server. Replace with your own DICOMweb server.
@@ -118,6 +258,46 @@ window.config = {
     //                    `dangerouslyAllowedOriginsForAuthenticatedEnvironments`).
     //   - dicomwebproxy: delegating proxy driven by `?url=`.
   ],
+  whiteLabeling: {
+    createLogoComponentFn: function (React) {
+      return React.createElement(
+        'a',
+        {
+          target: '_blank',
+          href: 'https://acan.io',
+        },
+        React.createElement(
+          'div',
+          {
+            className: 'h-8',
+            style: {
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            },
+          },
+          React.createElement('img', {
+            src: './assets/acanio.svg',
+            className: 'w-10 h-10',
+            style: {
+              display: 'inline-block',
+            },
+          }),
+          React.createElement(
+            'span',
+            {
+              className: 'ml-3 text-xl',
+              style: {
+                color: '#fff',
+                marginRight: '250px',
+              },
+            },
+            'Acan.io Viewer'
+          )
+        )
+      );
+    },
+  },
   httpErrorHandler: error => {
     // This is 429 when rejected from the public idc sandbox too often.
     console.warn(error.status);

@@ -164,7 +164,7 @@ function ViewportOrientationMenu({
       >
         <Button
           variant="ghost"
-          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('axial')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -176,7 +176,7 @@ function ViewportOrientationMenu({
         </Button>
         <Button
           variant="ghost"
-          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('sagittal')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -188,7 +188,7 @@ function ViewportOrientationMenu({
         </Button>
         <Button
           variant="ghost"
-          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('coronal')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -200,7 +200,7 @@ function ViewportOrientationMenu({
         </Button>
         <Button
           variant="ghost"
-          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('acquisition')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">
@@ -214,7 +214,7 @@ function ViewportOrientationMenu({
         <div className="border-input mx-1 my-2 border-t" />
         <Button
           variant="ghost"
-          className="flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
+          className="text-foreground flex h-7 w-full flex-shrink-0 items-center justify-start self-stretch px-1 py-0"
           onClick={() => handleOrientationChange('reformat')}
         >
           <div className="mr-1 flex w-6 items-center justify-start">

@@ -55,10 +55,33 @@ module.exports = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          light: '#c4e2f3',
+          main: '#527a88',
+          dark: '#233243',
+          active: '#fff',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+          light: '#55b0db',
+          main: '#293d51',
+          dark: '#16202b',
+          active: '#c0e6f7',
+        },
+        aqua: {
+          pale: '#88d3f1',
+        },
+        customblue: {
+          10: '#007caa1a',
+          20: '#007caa33',
+          30: '#007caa4d',
+          40: '#007caa66',
+          50: '#007caa80',
+          80: '#007caacc',
+          100: '#007caacc',
+          200: '#007caae6',
+          300: '#007caa',
+          400: '#007caacc',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',

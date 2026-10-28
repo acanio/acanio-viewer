@@ -35,7 +35,7 @@ export function defaultSettingsMenuItems({
         const AboutModal = customizationService.getCustomization('ohif.aboutModal');
         show({
           content: AboutModal,
-          title: AboutModal?.title ?? t('AboutModal:About OHIF Viewer'),
+          title: AboutModal?.title ?? t('AboutModal:About'),
           containerClassName: AboutModal?.containerClassName ?? 'max-w-md',
         });
       },

@@ -58,7 +58,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
       onClick: () =>
         show({
           content: AboutModal,
-          title: AboutModal?.title ?? t('AboutModal:About OHIF Viewer'),
+          title: AboutModal?.title ?? t('AboutModal:About'),
           containerClassName: AboutModal?.containerClassName ?? 'max-w-md',
         }),
     },
@@ -114,10 +114,10 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
         )
       }
       UndoRedo={
-        <div className="text-primary flex cursor-pointer items-center">
+        <div className="text-primary-active flex cursor-pointer items-center">
           <Button
             variant="ghost"
-            className="hover:bg-muted"
+            className="text-primary-active hover:bg-primary-dark rounded-none"
             data-cy="undo-btn"
             onClick={() => {
               commandsManager.run('undo');
@@ -127,7 +127,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
           </Button>
           <Button
             variant="ghost"
-            className="hover:bg-muted"
+            className="text-primary-active hover:bg-primary-dark rounded-none"
             data-cy="redo-btn"
             onClick={() => {
               commandsManager.run('redo');

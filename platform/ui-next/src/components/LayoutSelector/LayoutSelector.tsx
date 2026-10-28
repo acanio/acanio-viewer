@@ -196,7 +196,7 @@ const Content = ({ children, className, align = 'center', sideOffset = 8 }: Cont
     <PopoverContent
       align={align}
       sideOffset={sideOffset}
-      className={cn('w-auto rounded-lg border-none p-0 shadow-lg', className)}
+      className={cn('w-auto rounded-none border-none p-0 shadow-lg', className)}
     >
       <div className="flex">{children}</div>
     </PopoverContent>
@@ -256,8 +256,8 @@ const Preset = ({
   return (
     <div
       className={cn(
-        'group cursor-pointer rounded transition',
-        'hover:bg-accent flex items-center gap-2 p-1.5',
+        'group cursor-pointer rounded-none transition',
+        'hover:bg-primary-dark flex items-center gap-2 p-1.5',
         disabled && 'pointer-events-none opacity-50',
         className
       )}
@@ -267,7 +267,7 @@ const Preset = ({
       <div className="flex-shrink-0">
         <Icons.ByName
           name={icon}
-          className={cn('group-hover:text-primary', iconSize)}
+          className={cn('group-hover:text-primary-light', iconSize)}
         />
       </div>
       {title && <div className="text-foreground text-base">{title}</div>}

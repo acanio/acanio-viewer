@@ -97,16 +97,16 @@ const ToolButtonListDropDown = React.forwardRef<HTMLDivElement, ToolButtonListDr
           variant="ghost"
           size="icon"
           className={cn(
-            'text-foreground/80 hover:bg-background hover:text-highlight border-primary',
+            'text-primary-active hover:bg-primary-dark hover:text-primary-light border-primary-dark',
             'inline-flex h-10 w-5 items-center justify-center',
-            '!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none',
+            '!rounded-none',
             'bg-transparent',
             className
           )}
         >
           <Icons.ByName
             name="chevron-down"
-            className="text-primary h-5 w-5"
+            className="text-primary-active h-5 w-5"
           />
         </Button>
       </DropdownMenuTrigger>
@@ -191,7 +191,7 @@ const ToolButtonListDivider = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('bg-primary h-5 w-px self-center', className)}
+    className={cn('bg-secondary-light h-5 w-px self-center', className)}
     {...props}
   />
 ));
