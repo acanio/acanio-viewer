@@ -1,5 +1,4 @@
 import {
-  attemptAction,
   checkForScreenshot,
   reduce3DViewportSize,
   screenShotPaths,
@@ -22,8 +21,8 @@ test.describe('3D primary Test', async () => {
   }) => {
     await mainToolbarPageObject.layoutSelection.threeDPrimary.click();
 
-    await attemptAction(() => reduce3DViewportSize(page), 10, 100);
-    await waitForViewportsRendered(page);
+    await reduce3DViewportSize(page);
+    await waitForViewportsRendered(page, { timeout: 60_000 });
     await checkForScreenshot({
       page,
       locator: viewportPageObject.grid,

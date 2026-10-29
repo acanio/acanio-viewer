@@ -1,5 +1,4 @@
 import {
-  attemptAction,
   checkForScreenshot,
   reduce3DViewportSize,
   screenShotPaths,
@@ -21,8 +20,8 @@ test.describe('3D only Test', async () => {
     viewportPageObject,
   }) => {
     await mainToolbarPageObject.layoutSelection.threeDOnly.click();
-    await attemptAction(() => reduce3DViewportSize(page), 10, 100);
-    await waitForViewportsRendered(page);
+    await reduce3DViewportSize(page);
+    await waitForViewportsRendered(page, { timeout: 60_000 });
     // Use a 4 percent diff pixel ratio to account for slight color differences in the 3D viewport
     await checkForScreenshot({
       page,

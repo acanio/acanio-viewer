@@ -44,7 +44,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -54,7 +54,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -64,7 +64,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -74,7 +74,8 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            // Layout changes render in place; wait for the viewport in the test instead.
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -84,7 +85,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -94,7 +95,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -104,7 +105,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },

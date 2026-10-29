@@ -12,8 +12,9 @@ export default defineConfig({
   snapshotPathTemplate: './tests/screenshots{/projectName}/{testFilePath}/{arg}{ext}',
   outputDir: './tests/test-results',
   reporter: [['html', { outputFolder: './tests/playwright-report' }]],
-  globalTimeout: 800_000,
-  timeout: 800_000,
+  // The complete imaging suite needs substantially longer than an individual test.
+  globalTimeout: 60 * 60 * 1000,
+  timeout: 5 * 60 * 1000,
   use: {
     baseURL: 'http://localhost:3335',
     trace: 'on-first-retry',

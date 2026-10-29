@@ -1,5 +1,4 @@
 import {
-  attemptAction,
   checkForScreenshot,
   reduce3DViewportSize,
   screenShotPaths,
@@ -26,9 +25,9 @@ test.describe('3D four up SEG hydration', async () => {
   }) => {
     await mainToolbarPageObject.layoutSelection.threeDFourUp.click();
 
-    await attemptAction(() => reduce3DViewportSize(page), 10, 100);
+    await reduce3DViewportSize(page);
 
-    await waitForViewportsRendered(page);
+    await waitForViewportsRendered(page, { timeout: 60_000 });
 
     await checkForScreenshot(
       page,
