@@ -1,7 +1,7 @@
 {
   "name": "@ohif/app",
   "version": "3.13.13",
-  "productVersion": "1.2.0",
+  "productVersion": "1.3.0",
   "description": "Acan.io Nextcloud DICOM Viewer",
   "author": "ACANIO LLC",
   "license": "MIT",
