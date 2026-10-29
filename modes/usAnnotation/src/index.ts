@@ -32,7 +32,6 @@ const dicomsr = {
 
 const dicomvideo = {
   sopClassHandler: '@ohif/extension-dicom-video.sopClassHandlerModule.dicom-video',
-  viewport: '@ohif/extension-dicom-video.viewportModule.dicom-video',
 };
 
 const dicompdf = {
@@ -136,14 +135,10 @@ function modeFactory({ modeConfiguration }) {
       ]);
 
       toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topRight, [
-        'modalityLoadBadge',
-        'trackingStatus',
-        'navigationComponent',
-      ]);
-
-      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomLeft, [
         'windowLevelMenu',
       ]);
+
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomLeft, []);
 
       toolbarService.updateSection(toolbarService.sections.measurementSection, [
         'Length',

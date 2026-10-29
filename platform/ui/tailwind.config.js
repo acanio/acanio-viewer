@@ -60,8 +60,8 @@ module.exports = {
         active: '#20a5d6',
       },
       bkg: {
-        low: '#050615',
-        med: '#090C29',
+        low: '#000000',
+        med: '#000000',
         full: '#041C4A',
       },
       info: {
@@ -69,9 +69,9 @@ module.exports = {
         secondary: '#7BB2CE',
       },
       actions: {
-        primary: '#348CFD',
+        primary: '#007caa',
         highlight: '#5ACCE6',
-        hover: 'rgba(52, 140, 253, 0.2)',
+        hover: 'rgba(0, 124, 170, 0.2)',
       },
       customgreen: {
         100: '#05D97C',
@@ -306,7 +306,7 @@ module.exports = {
       full: '100%',
       viewport: '0.5rem',
       '1/2': '50%',
-      'viewport-scrollbar': '1.3rem',
+      'viewport-scrollbar': '1.5rem',
     }),
     letterSpacing: {
       tighter: '-0.05em',

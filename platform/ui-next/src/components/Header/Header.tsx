@@ -60,7 +60,10 @@ function Header({
         isSticky={isSticky}
         {...props}
       >
-        <div className="relative h-[48px] items-center">
+        <div
+          className="relative h-[48px] items-center"
+          data-cy="viewer-header"
+        >
           <div className="absolute left-0 top-1/2 flex -translate-y-1/2 items-center">
             <div
               className={classNames(
@@ -84,9 +87,9 @@ function Header({
           </div>
           <div className="absolute right-0 top-1/2 flex -translate-y-1/2 select-none items-center">
             {UndoRedo}
-            <div className="border-primary-dark mx-1.5 h-[25px] border-r"></div>
+            {UndoRedo ? <div className="border-muted mx-1.5 h-[25px] border-r"></div> : null}
             {PatientInfo}
-            <div className="border-primary-dark mx-1.5 h-[25px] border-r"></div>
+            <div className="border-muted mx-1.5 h-[25px] border-r"></div>
             <div className="flex-shrink-0">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

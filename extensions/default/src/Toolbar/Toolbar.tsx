@@ -52,7 +52,9 @@ export function Toolbar({ buttonSection = 'primary', viewportId, location }: Too
           return null;
         }
 
-        const { id, Component, componentProps, hidden } = toolDef as any;
+        const { id, Component, componentProps, hidden } = toolDef as typeof toolDef & {
+          hidden?: boolean;
+        };
         if (hidden === true) {
           return null;
         }

@@ -40,7 +40,7 @@ const MeasurementTable = ({
       <PanelSection defaultOpen={true}>
         <PanelSection.Header
           key="measurementTableHeader"
-          className="bg-secondary-dark"
+          className="bg-popover"
         >
           <span>{`${t(title)} (${amount})`}</span>
         </PanelSection.Header>
@@ -59,7 +59,7 @@ const Body = () => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="text-primary-light mb-1 flex flex-1 items-center px-2 py-2 text-base">
+      <div className="text-highlight mb-1 flex flex-1 items-center px-2 py-2 text-base">
         {useTranslation('MeasurementTable').t('No tracked measurements')}
       </div>
     );
@@ -107,28 +107,28 @@ const Row = ({ item, index }: RowProps) => {
 
   const { uid } = item;
   return (
-    <DataRow
-      key={item.uid}
-      description={item.label}
-      number={index + 1}
-      title={item.label}
-      colorHex={item.colorHex}
-      isSelected={item.isSelected}
-      details={item.displayText}
-      onDelete={e => onAction(e, 'removeMeasurement', uid)}
-      onSelect={e => onAction(e, 'jumpToMeasurement', uid)}
-      onRename={e => onAction(e, 'renameMeasurement', uid)}
-      onToggleVisibility={e => onAction(e, 'toggleVisibilityMeasurement', uid)}
-      onToggleLocked={e => onAction(e, 'toggleLockMeasurement', uid)}
-      onColor={e => onAction(e, 'changeMeasurementColor', uid)}
-      disableEditing={disableEditing}
-      isVisible={item.isVisible}
-      isLocked={item.isLocked}
-    >
-      {item.isUnmapped && (
-        <DataRow.Status.Warning tooltip={item.statusTooltip} />
-      )}
-    </DataRow>
+    <div data-cy={`measurement-table-row-${index}`}>
+      <DataRow
+        key={item.uid}
+        description={item.label}
+        number={index + 1}
+        title={item.label}
+        colorHex={item.colorHex}
+        isSelected={item.isSelected}
+        details={item.displayText}
+        onDelete={e => onAction(e, 'removeMeasurement', uid)}
+        onSelect={e => onAction(e, 'jumpToMeasurement', uid)}
+        onRename={e => onAction(e, 'renameMeasurement', uid)}
+        onToggleVisibility={e => onAction(e, 'toggleVisibilityMeasurement', uid)}
+        onToggleLocked={e => onAction(e, 'toggleLockMeasurement', uid)}
+        onColor={e => onAction(e, 'changeMeasurementColor', uid)}
+        disableEditing={disableEditing}
+        isVisible={item.isVisible}
+        isLocked={item.isLocked}
+      >
+        {item.isUnmapped && <DataRow.Status.Warning tooltip={item.statusTooltip} />}
+      </DataRow>
+    </div>
   );
 };
 

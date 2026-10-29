@@ -25,7 +25,8 @@ function PresetBody({ children, className }: PresetBodyProps) {
   return (
     <div
       className={cn(
-        'bg-primary-dark border-secondary-light/30 flex min-h-0 flex-1 flex-col rounded-md border p-2',
+        // Adjust these classes for your desired look
+        'border-foreground/10 flex min-h-0 flex-1 flex-col rounded-md border bg-background p-2',
         className
       )}
     >

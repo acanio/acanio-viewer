@@ -8,9 +8,10 @@ import { useIconPresentation } from '../../contextProviders/IconPresentationProv
 const baseClasses = '!rounded-none inline-flex items-center justify-center';
 const defaultClasses =
   'bg-transparent text-primary-active hover:bg-primary-dark hover:text-primary-light';
-const activeClasses = 'bg-highlight text-background hover:!bg-highlight/80';
+const activeClasses = '!bg-primary-light !text-black hover:!bg-primary-light';
+const toggledClasses = activeClasses;
 const disabledClasses =
-  'text-common-bright hover:bg-primary-dark hover:text-primary-light opacity-40 cursor-not-allowed';
+  'text-primary-active hover:bg-primary-dark hover:text-primary-light opacity-40 cursor-not-allowed';
 
 const sizeClasses = {
   default: {
@@ -34,6 +35,7 @@ interface ToolButtonProps {
   tooltip?: string;
   size?: 'default' | 'small';
   isActive?: boolean;
+  isToggled?: boolean;
   disabled?: boolean;
   disabledText?: string;
   commands?: Record<string, unknown>;
@@ -51,6 +53,7 @@ function ToolButton(props: ToolButtonProps) {
     size = 'default',
     disabled = false,
     isActive = false,
+    isToggled = false,
     disabledText,
     commands,
     onInteraction,
@@ -64,7 +67,7 @@ function ToolButton(props: ToolButtonProps) {
   const buttonClasses = cn(
     baseClasses,
     buttonSizeClass,
-    disabled ? disabledClasses : isActive ? activeClasses : defaultClasses,
+    disabled ? disabledClasses : isActive ? activeClasses : isToggled ? toggledClasses : defaultClasses,
     className
   );
 
@@ -86,6 +89,7 @@ function ToolButton(props: ToolButtonProps) {
           data-cy={id}
           data-tool={id}
           data-active={isActive}
+          data-toggled={isToggled}
         >
           <Button
             className={buttonClasses}

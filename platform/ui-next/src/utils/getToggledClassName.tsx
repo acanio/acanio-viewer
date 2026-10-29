@@ -1,7 +1,7 @@
 const getToggledClassName = isToggled => {
   return isToggled
-    ? '!text-primary'
-    : '!text-common-bright hover:text-primary-light';
+    ? '!bg-primary-light !text-black hover:!bg-primary-light'
+    : '!text-primary-active hover:text-primary-light';
 };
 
 export { getToggledClassName };

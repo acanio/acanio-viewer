@@ -60,11 +60,11 @@ const DicomUploadProgressItem = memo(
             />
           );
         case UploadStatus.InProgress:
-          return <Icons.ByName name="icon-transferring" />;
+          return <Icons.ByName name="icon-transferring" className="text-highlight" />;
         case UploadStatus.Failed:
-          return <Icons.ByName name="icon-alert-small" />;
+          return <Icons.ByName name="icon-alert-small" className="text-destructive" />;
         case UploadStatus.Cancelled:
-          return <Icons.ByName name="icon-alert-outline" />;
+          return <Icons.ByName name="icon-alert-outline" className="text-highlight" />;
         default:
           return <></>;
       }
@@ -75,7 +75,7 @@ const DicomUploadProgressItem = memo(
         <div className="self-top flex w-0 shrink grow flex-col gap-1">
           <div className="flex gap-4">
             <div className="flex w-6 shrink-0 items-center justify-center">{getStatusIcon()}</div>
-            <div className="overflow-hidden text-ellipsis whitespace-nowrap text-white">
+            <div className="text-foreground overflow-hidden text-ellipsis whitespace-nowrap">
               {dicomFileUploader.getFileName()}
             </div>
           </div>

@@ -1,8 +1,9 @@
-import { VolumeViewport, metaData, utilities } from '@cornerstonejs/core';
+import { metaData, utilities } from '@cornerstonejs/core';
 import { IStackViewport, IVolumeViewport } from '@cornerstonejs/core/types';
 import { AnnotationDisplayTool, drawing } from '@cornerstonejs/tools';
 import { guid, b64toBlob } from '@ohif/core/src/utils';
 import OverlayPlaneModuleProvider from './OverlayPlaneModuleProvider';
+import { isOrthographicViewportType } from '../utils/getLegacyViewportType';
 
 interface CachedStat {
   color: number[]; // [r, g, b, a]
@@ -16,7 +17,7 @@ interface CachedStat {
 }
 
 /**
- * Image Overlay Viewer tool is not a traditional tool that requires user interaction.
+ * Image Overlay Viewer tool is not a traditional tool that requires user interactin.
  * But it is used to display Pixel Overlays. And it will provide toggling capability.
  *
  * The documentation for Overlay Plane Module of DICOM can be found in [C.9.2 of
@@ -49,12 +50,21 @@ class ImageOverlayViewerTool extends AnnotationDisplayTool {
   onSetToolDisabled = (): void => {};
 
   protected getReferencedImageId(viewport: IStackViewport | IVolumeViewport): string {
-    if (viewport instanceof VolumeViewport) {
+    if (isOrthographicViewportType(viewport)) {
+      return;
+    }
+
+    // A direct Generic ("next") viewport returns a falsy view-reference id until
+    // it has data bound (e.g. while it is being enabled, before setDisplaySets).
+    // getTargetId() would throw in that case and break the whole render pass, so
+    // skip overlay rendering until a reference is resolvable. Legacy viewports
+    // always return a string here, so this leaves their behavior unchanged.
+    if (!viewport.getViewReferenceId?.()) {
       return;
     }
 
     const targetId = this.getTargetId(viewport);
-    return targetId.split('imageId:')[1];
+    return targetId?.split('imageId:')[1];
   }
 
   renderAnnotation = (enabledElement, svgDrawingHelper) => {

@@ -55,10 +55,33 @@ module.exports = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          light: '#c4e2f3',
+          main: '#527a88',
+          dark: '#233243',
+          active: '#fff',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+          light: '#55b0db',
+          main: '#293d51',
+          dark: '#16202b',
+          active: '#c0e6f7',
+        },
+        aqua: {
+          pale: '#88d3f1',
+        },
+        customblue: {
+          10: '#007caa1a',
+          20: '#007caa33',
+          30: '#007caa4d',
+          40: '#007caa66',
+          50: '#007caa80',
+          80: '#007caacc',
+          100: '#007caacc',
+          200: '#007caae6',
+          300: '#007caa',
+          400: '#007caacc',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
@@ -101,8 +124,8 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       bkg: {
-        low: '#050615',
-        med: '#090C29',
+        low: '#000000',
+        med: '#000000',
         full: '#041C4A',
       },
       info: {
@@ -110,9 +133,9 @@ module.exports = {
         secondary: '#7BB2CE',
       },
       actions: {
-        primary: '#348CFD',
+        primary: '#007caa',
         highlight: '#5ACCE6',
-        hover: 'rgba(52, 140, 253, 0.2)',
+        hover: 'rgba(0, 124, 170, 0.2)',
       },
     },
   },

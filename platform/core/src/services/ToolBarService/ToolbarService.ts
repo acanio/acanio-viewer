@@ -111,7 +111,6 @@ export default class ToolbarService extends PubSubService {
   _servicesManager: AppTypes.ServicesManager;
   _evaluateFunction: Record<string, EvaluateFunction> = {};
   _serviceSubscriptions = [];
-
   config: Record<string, unknown> = {};
 
   constructor(
@@ -674,8 +673,8 @@ export default class ToolbarService extends PubSubService {
       componentProps: Object.assign({ id }, btn.props, props),
     };
 
-    if (id === 'Capture' && (this.config as any).hideCapture) {
-      (mapped as any).hidden = true;
+    if (id === 'Capture' && (this.config as { hideCapture?: boolean }).hideCapture) {
+      (mapped as { hidden?: boolean }).hidden = true;
     }
 
     return mapped;

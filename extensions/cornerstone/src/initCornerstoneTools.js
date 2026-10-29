@@ -3,6 +3,7 @@ import {
   WindowLevelTool,
   SegmentBidirectionalTool,
   StackScrollTool,
+  PlanarRotateTool,
   VolumeRotateTool,
   ZoomTool,
   MIPJumpToClickTool,
@@ -39,7 +40,7 @@ import {
   OrientationMarkerTool,
   WindowLevelRegionTool,
   SegmentSelectTool,
-  RegionSegmentPlusTool,
+  ClickSegmentTool,
   SegmentLabelTool,
   LivewireContourSegmentationTool,
   SculptorTool,
@@ -50,7 +51,7 @@ import { LabelmapSlicePropagationTool, MarkerLabelmapTool } from '@cornerstonejs
 import * as polySeg from '@cornerstonejs/polymorphic-segmentation';
 
 import CalibrationLineTool from './tools/CalibrationLineTool';
-// import ImageOverlayViewerTool from './tools/ImageOverlayViewerTool';
+import ImageOverlayViewerTool from './tools/ImageOverlayViewerTool';
 
 export default function initCornerstoneTools(configuration = {}) {
   CrosshairsTool.isAnnotation = false;
@@ -74,6 +75,7 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(SegmentBidirectionalTool);
   addTool(WindowLevelTool);
   addTool(StackScrollTool);
+  addTool(PlanarRotateTool);
   addTool(VolumeRotateTool);
   addTool(ZoomTool);
   addTool(ProbeTool);
@@ -98,7 +100,7 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(ReferenceLinesTool);
   addTool(CalibrationLineTool);
   addTool(TrackballRotateTool);
-  // addTool(ImageOverlayViewerTool);
+  addTool(ImageOverlayViewerTool);
   addTool(AdvancedMagnifyTool);
   addTool(UltrasoundDirectionalTool);
   addTool(UltrasoundPleuraBLineTool);
@@ -112,7 +114,7 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(SegmentLabelTool);
   addTool(LabelmapSlicePropagationTool);
   addTool(MarkerLabelmapTool);
-  addTool(RegionSegmentPlusTool);
+  addTool(ClickSegmentTool);
   addTool(LivewireContourSegmentationTool);
   addTool(SculptorTool);
   addTool(SplineContourSegmentationTool);
@@ -138,6 +140,7 @@ const toolNames = {
   WindowLevel: WindowLevelTool.toolName,
   StackScroll: StackScrollTool.toolName,
   Zoom: ZoomTool.toolName,
+  PlanarRotate: PlanarRotateTool.toolName,
   VolumeRotate: VolumeRotateTool.toolName,
   MipJumpToClick: MIPJumpToClickTool.toolName,
   Length: LengthTool.toolName,
@@ -160,7 +163,7 @@ const toolNames = {
   CircleScissors: CircleScissorsTool.toolName,
   RectangleScissors: RectangleScissorsTool.toolName,
   SphereScissors: SphereScissorsTool.toolName,
-  // ImageOverlayViewer: ImageOverlayViewerTool.toolName,
+  ImageOverlayViewer: ImageOverlayViewerTool.toolName,
   AdvancedMagnify: AdvancedMagnifyTool.toolName,
   UltrasoundDirectional: UltrasoundDirectionalTool.toolName,
   UltrasoundAnnotation: UltrasoundPleuraBLineTool.toolName,
@@ -175,7 +178,7 @@ const toolNames = {
   SegmentLabel: SegmentLabelTool.toolName,
   LabelmapSlicePropagation: LabelmapSlicePropagationTool.toolName,
   MarkerLabelmap: MarkerLabelmapTool.toolName,
-  RegionSegmentPlus: RegionSegmentPlusTool.toolName,
+  ClickSegment: ClickSegmentTool.toolName,
   LivewireContourSegmentation: LivewireContourSegmentationTool.toolName,
   SculptorTool: SculptorTool.toolName,
   SplineContourSegmentation: SplineContourSegmentationTool.toolName,

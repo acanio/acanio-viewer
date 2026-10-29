@@ -7,6 +7,14 @@ export class MainToolbarPageObject {
     this.page = page;
   }
 
+  get header() {
+    return {
+      locator: this.page.getByTestId('viewer-header'),
+      primary: this.page.getByTestId('primary-toolbar'),
+      history: this.page.getByTestId('history-toolbar'),
+    };
+  }
+
   get crosshairs() {
     const button = this.page.getByTestId('Crosshairs');
     return {
@@ -18,6 +26,7 @@ export class MainToolbarPageObject {
   }
   get layoutSelection() {
     const page = this.page;
+    const self = this;
 
     const button = page.getByTestId('Layout');
     const layoutSelection = {
@@ -29,13 +38,23 @@ export class MainToolbarPageObject {
 
     return {
       ...layoutSelection,
+      grid(cols: number, rows: number) {
+        const button = page.getByTestId(`Layout-${cols - 1}-${rows - 1}`);
+        return {
+          button,
+          async click() {
+            await layoutSelection.click();
+            await button.click({ noWaitAfter: true });
+          },
+        };
+      },
       get axialPrimary() {
         const button = page.getByTestId('Axial Primary');
         return {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -45,7 +64,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -55,7 +74,8 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            // Layout changes render in place; wait for the viewport in the test instead.
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -65,7 +85,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -75,7 +95,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -85,7 +105,7 @@ export class MainToolbarPageObject {
           button,
           async click() {
             await layoutSelection.click();
-            await button.click();
+            await button.click({ noWaitAfter: true });
           },
         };
       },
@@ -194,6 +214,31 @@ export class MainToolbarPageObject {
           },
         };
       },
+      get freehandROI() {
+        const button = page.getByTestId('PlanarFreehandROI');
+        return {
+          button,
+          async click() {
+            await measurementTools.click();
+            await button.click();
+          },
+        };
+      },
+      /* microscopy specific tools */
+      // `.last()` targets the menu item inside the dropdown, not the active-tool
+      // indicator inside the split-button primary
+      // because both share the same data-cy value (e.g. "line")
+      // Other microscopy tools might follow the same pattern
+      get line() {
+        const button = page.getByTestId('line').last();
+        return {
+          button,
+          async click() {
+            await measurementTools.click();
+            await button.click();
+          },
+        };
+      },
     };
   }
 
@@ -210,6 +255,20 @@ export class MainToolbarPageObject {
 
     return {
       ...moreTools,
+      get referenceLines() {
+        return {
+          button: page.getByRole('menuitem').filter({
+            has: page.getByText('Reference Lines', { exact: true }),
+          }),
+        };
+      },
+      get imageOverlay() {
+        return {
+          button: page.getByRole('menuitem').filter({
+            has: page.getByText('Image Overlay', { exact: true }),
+          }),
+        };
+      },
       get angle() {
         const button = page.getByTestId('Angle');
         return {
@@ -290,11 +349,39 @@ export class MainToolbarPageObject {
           },
         };
       },
+      get magnify() {
+        const button = page.getByTestId('Magnify');
+        return {
+          button,
+          async click() {
+            await moreTools.click();
+            await button.click();
+          },
+        };
+      },
     };
   }
 
   get panTool() {
     const button = this.page.getByTestId('Pan');
+    return {
+      button,
+      async click() {
+        await button.click();
+      },
+    };
+  }
+  get undo() {
+    const button = this.page.getByTestId('Undo');
+    return {
+      button,
+      async click() {
+        await button.click();
+      },
+    };
+  }
+  get redo() {
+    const button = this.page.getByTestId('Redo');
     return {
       button,
       async click() {

@@ -131,7 +131,7 @@ const Trigger = ({
       className={cn(
         'inline-flex h-10 w-10 items-center justify-center !rounded-none',
         disabled
-          ? 'text-common-bright hover:bg-primary-dark hover:text-primary-light cursor-not-allowed opacity-40'
+          ? 'text-primary-active hover:bg-primary-dark hover:text-primary-light cursor-not-allowed opacity-40'
           : isOpen
             ? 'bg-primary-dark text-primary-light'
             : 'text-primary-active hover:bg-primary-dark hover:text-primary-light bg-transparent',
@@ -335,7 +335,7 @@ const GridSelector = ({ rows = 3, columns = 4, className }: GridSelectorProps) =
 };
 
 const Divider = ({ className }: { className?: string }) => (
-  <div className={cn('h-px bg-black', className)}></div>
+  <div className={cn('h-px bg-background', className)}></div>
 );
 
 const HelpText = ({ children, className }: { children: React.ReactNode; className?: string }) => (

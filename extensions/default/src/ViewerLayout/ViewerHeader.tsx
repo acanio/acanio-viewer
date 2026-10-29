@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Header, Icons, useModal } from '@ohif/ui-next';
-import { useSystem } from '@ohif/core';
+import { Header, useModal } from '@ohif/ui-next';
+import { useSystem, useToolbar } from '@ohif/core';
 import { Toolbar } from '../Toolbar/Toolbar';
 import HeaderPatientInfo from './HeaderPatientInfo';
 import { PatientInfoVisibility } from './HeaderPatientInfo/HeaderPatientInfo';
@@ -11,8 +11,9 @@ import { preserveQueryParameters } from '@ohif/app';
 import { Types } from '@ohif/core';
 
 function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }>) {
-  const { servicesManager, extensionManager, commandsManager } = useSystem();
+  const { servicesManager, extensionManager } = useSystem();
   const { customizationService } = servicesManager.services;
+  const { toolbarButtons: historyButtons } = useToolbar({ buttonSection: 'history' });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +29,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
     if (dataSourceIdx !== -1 && existingDataSource) {
       searchQuery.append('datasources', pathname.substring(dataSourceIdx + 1));
     }
-    preserveQueryParameters(searchQuery);
+    preserveQueryParameters(searchQuery, customizationService);
 
     navigate({
       pathname: '/',
@@ -41,6 +42,10 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
 
   const AboutModal = customizationService.getCustomization(
     'ohif.aboutModal'
+  ) as Types.MenuComponentCustomization;
+
+  const AppearanceModal = customizationService.getCustomization(
+    'ohif.appearanceModal'
   ) as Types.MenuComponentCustomization;
 
   const UserPreferencesModal = customizationService.getCustomization(
@@ -71,6 +76,19 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
     },
   ];
 
+  if (AppearanceModal) {
+    menuOptions.splice(1, 0, {
+      title: AppearanceModal.menuTitle ?? t('Header:Appearance'),
+      icon: 'ColorChange',
+      onClick: () =>
+        show({
+          content: AppearanceModal,
+          title: AppearanceModal.title ?? t('AppearanceModal:Appearance'),
+          containerClassName: AppearanceModal.containerClassName ?? 'max-w-md',
+        }),
+    });
+  }
+
   if (appConfig.oidc) {
     menuOptions.push({
       title: t('Header:Logout'),
@@ -88,6 +106,16 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
       onClickReturnButton={onClickReturnButton}
       WhiteLabeling={appConfig.whiteLabeling}
       Secondary={<Toolbar buttonSection="secondary" />}
+      UndoRedo={
+        historyButtons.length > 0 && (
+          <div
+            className="flex shrink-0 items-center gap-1"
+            data-cy="history-toolbar"
+          >
+            <Toolbar buttonSection="history" />
+          </div>
+        )
+      }
       PatientInfo={
         appConfig.showPatientInfo !== PatientInfoVisibility.DISABLED && (
           <HeaderPatientInfo
@@ -96,30 +124,11 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
           />
         )
       }
-      UndoRedo={
-        <div className="text-primary-active flex cursor-pointer items-center">
-          <Button
-            variant="ghost"
-            className="text-primary-active hover:bg-primary-dark rounded-none"
-            onClick={() => {
-              commandsManager.run('undo');
-            }}
-          >
-            <Icons.Undo className="" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-primary-active hover:bg-primary-dark rounded-none"
-            onClick={() => {
-              commandsManager.run('redo');
-            }}
-          >
-            <Icons.Redo className="" />
-          </Button>
-        </div>
-      }
     >
-      <div className="relative flex justify-center gap-[4px]">
+      <div
+        className="relative flex justify-center gap-[4px]"
+        data-cy="primary-toolbar"
+      >
         <Toolbar buttonSection="primary" />
       </div>
     </Header>

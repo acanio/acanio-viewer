@@ -81,14 +81,10 @@ function modeFactory({ modeConfiguration }) {
       ]);
 
       toolbarService.updateSection(toolbarService.sections.viewportActionMenu.topRight, [
-        'modalityLoadBadge',
-        'trackingStatus',
-        'navigationComponent',
-      ]);
-
-      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomLeft, [
         'windowLevelMenu',
       ]);
+
+      toolbarService.updateSection(toolbarService.sections.viewportActionMenu.bottomLeft, []);
 
       // the primary button section is created in the workflow steps
       // specific to the step

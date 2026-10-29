@@ -33,12 +33,13 @@ function sopInstanceLocation(displaySets) {
   if (!displaySet) {
     return;
   }
-  // Read it from JSON file or parameters
-  const initialSOPInstanceUID =
-    displaySet.instances.find(
-      (instance: { SOPInstanceUID: string, selected: boolean }) => instance.selected)?.SOPInstanceUID ||
-    getSplitParam('initialsopinstanceuid')
-
+  // Prefer the instance marked selected in DICOM JSON, then URL parameters.
+  const selectedInstanceUID = displaySet.instances.find(
+    (instance: { SOPInstanceUID: string; selected: boolean }) => instance.selected
+  )?.SOPInstanceUID;
+  const initialSOPInstanceUID = selectedInstanceUID
+    ? [selectedInstanceUID]
+    : getSplitParam('initialsopinstanceuid');
   if (!initialSOPInstanceUID) {
     return;
   }

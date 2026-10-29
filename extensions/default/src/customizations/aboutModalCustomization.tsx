@@ -7,7 +7,7 @@ function AboutModalDefault() {
   const { t } = useTranslation('AboutModal');
   const { os, version, name } = detect();
   const browser = `${name[0].toUpperCase()}${name.substr(1)} ${version}`;
-  const versionNumber = process.env.PRODUCT_VERSION_NUMBER;
+  const versionNumber = (process.env.PRODUCT_VERSION_NUMBER || '').trim();
 
   const [main, beta] = versionNumber.split('-');
 

@@ -1,5 +1,7 @@
-import { expect } from 'playwright-test-coverage';
+import { expect, test } from 'playwright-test-coverage';
 import { Locator, Page } from 'playwright';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 type CheckForScreenshotProps = {
   page: Page;
@@ -18,22 +20,77 @@ type CheckForScreenshotProps = {
   fullPage?: boolean;
 };
 
+const _isIntermediateScreenshotArtifact = (filename: string, screenshotPath: string) => {
+  const { name } = path.parse(screenshotPath);
+  const lowerFilename = filename.toLowerCase();
+
+  if (!lowerFilename.endsWith('.png')) {
+    return false;
+  }
+
+  return (
+    lowerFilename.startsWith(`${name.toLowerCase()}-`) &&
+    (lowerFilename.endsWith('-actual.png') ||
+      lowerFilename.endsWith('-diff.png') ||
+      lowerFilename.endsWith('-expected.png'))
+  );
+};
+
+const _cleanupIntermediateScreenshotArtifacts = async (
+  outputDir: string,
+  screenshotPath: string
+) => {
+  const stack = [outputDir];
+
+  while (stack.length) {
+    const currentDir = stack.pop();
+
+    if (!currentDir) {
+      continue;
+    }
+
+    let entries;
+    try {
+      entries = await fs.readdir(currentDir, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    for (const entry of entries) {
+      const fullPath = path.join(currentDir, entry.name);
+
+      if (entry.isDirectory()) {
+        stack.push(fullPath);
+        continue;
+      }
+
+      if (!_isIntermediateScreenshotArtifact(entry.name, screenshotPath)) {
+        continue;
+      }
+
+      try {
+        await fs.unlink(fullPath);
+      } catch {
+        // Best-effort cleanup only.
+      }
+    }
+  }
+};
+
 const _checkForScreenshot = async (props: CheckForScreenshotProps) => {
   const {
     page,
     screenshotPath,
     attempts = 10,
-    delay = 500,
-    // A 10% ratio absorbs the platform rendering drift so
-    // locally-generated baselines still pass in CI. Individual calls can pass
-    // a tighter value if needed.
-    maxDiffPixelRatio = 0.1,
+    delay = 1250,
+    maxDiffPixelRatio = 0.02,
     threshold = 0.05,
     normalizedClip,
     fullPage = false,
   } = props;
 
   let { locator = page } = props;
+  const testOutputDir = test.info().outputDir;
 
   await page.waitForLoadState('networkidle');
 
@@ -73,6 +130,7 @@ const _checkForScreenshot = async (props: CheckForScreenshotProps) => {
         console.debug('Screenshot comparison failed after all attempts');
         throw error; // Throw the original error with details instead of a generic message
       }
+      await _cleanupIntermediateScreenshotArtifacts(testOutputDir, screenshotPath);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }

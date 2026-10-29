@@ -114,6 +114,8 @@ const getTabClassNames = (
 ) =>
   classnames('h-[28px] mb-[2px] cursor-pointer text-white bg-black', {
     'hover:text-primary-active': !isActiveTab && !isTabDisabled,
+    'rounded-l': tabIndex % numColumns === 0,
+    'rounded-r': (tabIndex + 1) % numColumns === 0 || tabIndex === numTabs - 1,
   });
 
 const getTabStyle = (numTabs: number) => {
@@ -125,6 +127,7 @@ const getTabStyle = (numTabs: number) => {
 const getTabIconClassNames = (numTabs: number, isActiveTab: boolean) => {
   return classnames('h-full w-full flex items-center justify-center', {
     'bg-customblue-40': isActiveTab,
+    rounded: isActiveTab,
   });
 };
 const createStyleMap = (
@@ -160,7 +163,9 @@ const getToolTipContent = (label: string, disabled: boolean) => {
   return (
     <>
       <div>{label}</div>
-      {disabled && <div className="text-white">{'Not available based on current context'}</div>}
+      {disabled && (
+        <div className="text-foreground">{'Not available based on current context'}</div>
+      )}
     </>
   );
 };
@@ -373,12 +378,9 @@ const SidePanel = ({
                 <React.Fragment key={tabIndex}>
                   {tabIndex % numCols !== 0 && (
                     <div
-                      className={classnames(
-                        'flex h-[28px] w-[2px] items-center bg-black',
-                        tabSpacerWidth
-                      )}
+                      className={classnames('flex h-[28px] w-[2px] items-center', tabSpacerWidth)}
                     >
-                      <div className="bg-primary-dark h-[20px] w-full"></div>
+                      <div className="bg-muted h-[20px] w-full"></div>
                     </div>
                   )}
                   <Tooltip key={tabIndex}>
@@ -444,12 +446,12 @@ const SidePanel = ({
   const getOpenStateComponent = () => {
     return (
       <>
-        <div className="bg-bkg-med flex h-[40px] flex-shrink-0 select-none p-2">
+        <div className="bg-bkg-med flex h-[40px] flex-shrink-0 select-none rounded-t p-2">
           {tabs.length === 1 ? getOneTabComponent() : getTabGridComponent()}
         </div>
         <Separator
           orientation="horizontal"
-          className="bg-black"
+          className="bg-black h-[2px]"
           thickness="2px"
         />
       </>

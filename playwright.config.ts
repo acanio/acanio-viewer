@@ -2,34 +2,30 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  globalSetup: './tests/globalSetup.ts',
   fullyParallel: !!process.env.CI,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 3 : 0,
-  // One worker per shard: concurrent heavy 3D volume renders in a single CI
-  // container contend for GPU/memory and render black. Parallelism comes from
-  // sharding across jobs instead.
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 1 : 0,
+  maxFailures: process.env.CI ? 10 : undefined,
+  // Keep browser/volume rendering within GitHub-hosted runner memory limits.
+  workers: process.env.CI ? 2 : undefined,
   snapshotPathTemplate: './tests/screenshots{/projectName}/{testFilePath}/{arg}{ext}',
   outputDir: './tests/test-results',
-  reporter: [
-    [process.env.CI ? 'blob' : 'html', { outputFolder: './tests/playwright-report' }],
-    ['list'],
-  ],
-  globalTimeout: 800_000,
-  timeout: 800_000,
+  reporter: [['html', { outputFolder: './tests/playwright-report' }]],
+  // The complete imaging suite needs substantially longer than an individual test.
+  globalTimeout: 60 * 60 * 1000,
+  timeout: 5 * 60 * 1000,
+  expect: { timeout: 30_000 },
   use: {
     baseURL: 'http://localhost:3335',
     trace: 'on-first-retry',
-    video: 'on-first-retry',
+    video: 'retain-on-failure',
     testIdAttribute: 'data-cy',
     actionTimeout: 30_000,
-    // Disable web security / CSP so cross-origin DICOMweb fetches (the cloudfront
-    // data sources) are not blocked by CORS in the CI browser.
-    bypassCSP: true,
     launchOptions: {
       // do not hide the scrollbars so that we can assert their look-and-feel
       ignoreDefaultArgs: ['--hide-scrollbars'],
-      args: ['--disable-web-security'],
+      args: ['--use-gl=egl'],
     },
   },
 
@@ -52,7 +48,8 @@ export default defineConfig({
     //},
   ],
   webServer: {
-    command: 'cross-env APP_CONFIG=config/e2e.js OHIF_PORT=3335 yarn start',
+    command:
+      'cross-env APP_CONFIG=config/e2e.js COVERAGE=true OHIF_PORT=3335 OHIF_OPEN=false nyc pnpm --filter @ohif/app exec rspack serve --config .webpack/webpack.pwa.js',
     url: 'http://localhost:3335',
     reuseExistingServer: !process.env.CI,
     timeout: 360_000,
