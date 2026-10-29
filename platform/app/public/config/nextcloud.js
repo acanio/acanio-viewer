@@ -1,3 +1,22 @@
+// Extend the inherited viewport toolbars without replacing their other controls.
+const nextcloudViewportToolbarOverrides = {
+  'viewportActionMenu.topLeft': {
+    $apply: (buttons = []) => [
+      'orientationMenu',
+      ...buttons.filter(id => id !== 'orientationMenu'),
+    ],
+  },
+  'viewportActionMenu.topRight': {
+    $apply: (buttons = []) => buttons.filter(id => id !== 'windowLevelMenu'),
+  },
+  'viewportActionMenu.bottomLeft': {
+    $apply: (buttons = []) => [
+      ...buttons.filter(id => id !== 'windowLevelMenu'),
+      'windowLevelMenu',
+    ],
+  },
+};
+
 /** @type {AppTypes.Config} */
 window.config = {
   routerBasename: '__NEXTCLOUD_BASE_PATH__/apps/dicomviewer/ncviewer',
@@ -6,6 +25,8 @@ window.config = {
   modes: [],
   customizationService: [
     {
+      'cornerstone.toolbarSections': nextcloudViewportToolbarOverrides,
+      'cornerstone.segmentationModeToolbarSections': nextcloudViewportToolbarOverrides,
       'viewportOverlay.topLeft': [
         {
           id: 'PatientName',

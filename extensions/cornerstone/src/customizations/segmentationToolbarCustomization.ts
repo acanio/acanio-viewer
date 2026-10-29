@@ -907,7 +907,9 @@ export const segmentationModeToolbarSections: Record<string, string[]> = {
     'MoreTools',
   ],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: [],
+  history: ['Undo', 'Redo'],
+
+  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: ['dataOverlayMenu', 'navigationComponent'],
 
   [TOOLBAR_SECTIONS.viewportActionMenu.bottomMiddle]: ['AdvancedRenderingControls'],
 

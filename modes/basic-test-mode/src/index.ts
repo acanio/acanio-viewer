@@ -97,7 +97,13 @@ const toolbarSections = {
 
   WindowLevelGroup: ['WindowLevel', 'Soft tissue', 'Lung', 'Liver', 'Bone', 'Brain'],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: ['orientationMenu', 'dataOverlayMenu'],
+  history: ['Undo', 'Redo'],
+
+  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: [
+    'orientationMenu',
+    'dataOverlayMenu',
+    'navigationComponent',
+  ],
 
   [TOOLBAR_SECTIONS.viewportActionMenu.bottomMiddle]: ['AdvancedRenderingControls'],
 
@@ -195,8 +201,8 @@ export const modeInstance = {
   id,
   routeName: 'basic-test',
   displayName: i18n.t('Modes:Basic Test Mode'),
-  // Literal toolbar values instead of the basic mode's customization names.
-  toolbarButtons,
+  // Reuse shared buttons, then apply the test mode's button definitions and layout.
+  toolbarButtons: [{ $reference: 'cornerstone.toolbarButtons' }, ...toolbarButtons],
   toolbarSections,
   // Tool group setup used by the shared onModeEnter.
   initToolGroups,

@@ -64,7 +64,7 @@ export async function assertBoundingBoxIsContainedWithin({
 }
 
 export async function expectRowSelected(rowObject) {
-  await expect(rowObject.locator).toContainClass('bg-popover');
+  await expect(rowObject.locator).toHaveAttribute('data-selected', 'true');
 }
 
 export async function expectRowLocked(rowObject: { lockIcon: Locator }) {
@@ -76,7 +76,7 @@ export async function expectRowUnlocked(rowObject: { lockIcon: Locator }) {
 }
 
 export async function expectRowNotSelected(rowObject) {
-  await expect(rowObject.locator).not.toContainClass('bg-popover');
+  await expect(rowObject.locator).toHaveAttribute('data-selected', 'false');
 }
 
 // Opens the segmentation selector, asserts its options match `labels`, then closes it.

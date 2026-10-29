@@ -7,6 +7,14 @@ export class MainToolbarPageObject {
     this.page = page;
   }
 
+  get header() {
+    return {
+      locator: this.page.getByTestId('viewer-header'),
+      primary: this.page.getByTestId('primary-toolbar'),
+      history: this.page.getByTestId('history-toolbar'),
+    };
+  }
+
   get crosshairs() {
     const button = this.page.getByTestId('Crosshairs');
     return {
@@ -246,6 +254,20 @@ export class MainToolbarPageObject {
 
     return {
       ...moreTools,
+      get referenceLines() {
+        return {
+          button: page.getByRole('menuitem').filter({
+            has: page.getByText('Reference Lines', { exact: true }),
+          }),
+        };
+      },
+      get imageOverlay() {
+        return {
+          button: page.getByRole('menuitem').filter({
+            has: page.getByText('Image Overlay', { exact: true }),
+          }),
+        };
+      },
       get angle() {
         const button = page.getByTestId('Angle');
         return {
@@ -349,7 +371,7 @@ export class MainToolbarPageObject {
     };
   }
   get undo() {
-    const button = this.page.getByTestId('undo-btn');
+    const button = this.page.getByTestId('Undo');
     return {
       button,
       async click() {
@@ -358,7 +380,7 @@ export class MainToolbarPageObject {
     };
   }
   get redo() {
-    const button = this.page.getByTestId('redo-btn');
+    const button = this.page.getByTestId('Redo');
     return {
       button,
       async click() {

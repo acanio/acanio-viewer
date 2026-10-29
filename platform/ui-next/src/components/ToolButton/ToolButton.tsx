@@ -9,7 +9,7 @@ const baseClasses = '!rounded-none inline-flex items-center justify-center';
 const defaultClasses =
   'bg-transparent text-primary-active hover:bg-primary-dark hover:text-primary-light';
 const activeClasses = '!bg-primary-light !text-black hover:!bg-primary-light';
-const toggledClasses = 'bg-transparent text-primary-light hover:bg-primary-dark';
+const toggledClasses = activeClasses;
 const disabledClasses =
   'text-primary-active hover:bg-primary-dark hover:text-primary-light opacity-40 cursor-not-allowed';
 

@@ -22,7 +22,31 @@ export const setToolActiveToolbar = {
   },
 };
 
+const historyToolbarButtons: Button[] = [
+  {
+    id: 'Undo',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'Undo',
+      label: i18n.t('Buttons:Undo'),
+      commands: { commandName: 'undo' },
+      evaluate: 'evaluate.action',
+    },
+  },
+  {
+    id: 'Redo',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'Redo',
+      label: i18n.t('Buttons:Redo'),
+      commands: { commandName: 'redo' },
+      evaluate: 'evaluate.action',
+    },
+  },
+];
+
 const toolbarButtons: Button[] = [
+  ...historyToolbarButtons,
   // sections
   {
     id: 'MeasurementTools',
@@ -728,7 +752,9 @@ export const toolbarSections = {
     'MoreTools',
   ],
 
-  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: [],
+  history: ['Undo', 'Redo'],
+
+  [TOOLBAR_SECTIONS.viewportActionMenu.topLeft]: ['dataOverlayMenu', 'navigationComponent'],
 
   [TOOLBAR_SECTIONS.viewportActionMenu.bottomMiddle]: ['AdvancedRenderingControls'],
 

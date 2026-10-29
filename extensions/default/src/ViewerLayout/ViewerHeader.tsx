@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Header, useModal } from '@ohif/ui-next';
-import { useSystem } from '@ohif/core';
+import { useSystem, useToolbar } from '@ohif/core';
 import { Toolbar } from '../Toolbar/Toolbar';
 import HeaderPatientInfo from './HeaderPatientInfo';
 import { PatientInfoVisibility } from './HeaderPatientInfo/HeaderPatientInfo';
@@ -13,6 +13,7 @@ import { Types } from '@ohif/core';
 function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }>) {
   const { servicesManager, extensionManager } = useSystem();
   const { customizationService } = servicesManager.services;
+  const { toolbarButtons: historyButtons } = useToolbar({ buttonSection: 'history' });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -105,6 +106,16 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
       onClickReturnButton={onClickReturnButton}
       WhiteLabeling={appConfig.whiteLabeling}
       Secondary={<Toolbar buttonSection="secondary" />}
+      UndoRedo={
+        historyButtons.length > 0 && (
+          <div
+            className="flex shrink-0 items-center gap-1"
+            data-cy="history-toolbar"
+          >
+            <Toolbar buttonSection="history" />
+          </div>
+        )
+      }
       PatientInfo={
         appConfig.showPatientInfo !== PatientInfoVisibility.DISABLED && (
           <HeaderPatientInfo
@@ -114,7 +125,10 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
         )
       }
     >
-      <div className="relative flex justify-center gap-[4px]">
+      <div
+        className="relative flex justify-center gap-[4px]"
+        data-cy="primary-toolbar"
+      >
         <Toolbar buttonSection="primary" />
       </div>
     </Header>

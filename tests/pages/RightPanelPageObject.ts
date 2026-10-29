@@ -194,7 +194,7 @@ export class RightPanelPageObject {
       const rowWrapper = trackedMeasurementsPanel.getByTestId(`measurement-table-row-${index}`);
       const dataRow = rowWrapper.getByTestId('data-row');
       const row = this.getPanelRowDataObject(rowWrapper);
-      // Selection highlight (bg-popover) is on the inner DataRow, not the measurement-table-row wrapper
+      // Selection state is on the inner DataRow, not the measurement-table-row wrapper.
       return {
         ...row,
         locator: dataRow,

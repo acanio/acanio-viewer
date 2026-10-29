@@ -14,7 +14,7 @@ export class DataOverlayPageObject {
   }
 
   async toggle() {
-    await this.page.getByTestId(`dataOverlayMenu-${this.viewportId}-btn`).click();
+    await this.page.getByTestId(`dataOverlayMenu-${this.viewportId}`).click();
   }
 
   async addSegmentation(segmentation: string) {

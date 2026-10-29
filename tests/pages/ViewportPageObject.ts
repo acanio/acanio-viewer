@@ -169,21 +169,24 @@ export class ViewportPageObject {
   }
 
   private async getOverlayMenu(viewport: Locator) {
+    const menu = this.page.getByRole('dialog');
     return {
       dataOverlay: new DataOverlayPageObject(this.page, await this.getViewportId(viewport)),
       get orientation() {
-        const button = viewport.locator('[data-cy^="orientationMenu"]');
+        const button = viewport.locator('button[data-cy^="orientationMenu"]');
         return {
           button,
+          menu,
           async click() {
             await button.click();
           },
         };
       },
       get windowLevel() {
-        const button = viewport.locator('[data-cy^="windowLevelMenu"]');
+        const button = viewport.locator('button[data-cy^="windowLevelMenu"]');
         return {
           button,
+          menu,
           async click() {
             await button.click();
           },
