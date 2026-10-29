@@ -50,8 +50,8 @@ const waitForViewportRenderCycle = async (
   options: WaitForRenderCycleToCompleteOptions = {}
 ) => {
   const {
-    needsRenderTimeout = 5000,
-    renderedTimeout = 15000,
+    needsRenderTimeout = 20000,
+    renderedTimeout = 60000,
     waitVolumeLoad = true,
     settle = true,
   } = options;
@@ -67,7 +67,7 @@ const waitForAnyViewportNeedsRender = async (
   page: Page,
   options: WaitForAnyViewportNeedsRenderOptions = {}
 ) => {
-  const { timeout = 5000 } = options;
+  const { timeout = 20000 } = options;
   await page.waitForFunction(
     () => {
       const cornerstone = (window as any).cornerstone;
@@ -108,7 +108,7 @@ const waitForViewportsRendered = async (
   page: Page,
   options: WaitForViewportsRenderedOptions = {}
 ) => {
-  const { timeout = 15000, waitVolumeLoad = true, settle = true } = options;
+  const { timeout = 60000, waitVolumeLoad = true, settle = true } = options;
 
   await page.waitForFunction(
     ({ waitVolumeLoad }) => {

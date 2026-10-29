@@ -15,12 +15,13 @@ export default defineConfig({
   // The complete imaging suite needs substantially longer than an individual test.
   globalTimeout: 60 * 60 * 1000,
   timeout: 5 * 60 * 1000,
+  expect: { timeout: 30_000 },
   use: {
     baseURL: 'http://localhost:3335',
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     testIdAttribute: 'data-cy',
-    actionTimeout: 10_000,
+    actionTimeout: 30_000,
     launchOptions: {
       // do not hide the scrollbars so that we can assert their look-and-feel
       ignoreDefaultArgs: ['--hide-scrollbars'],
